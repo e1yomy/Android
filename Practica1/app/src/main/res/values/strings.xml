@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Practica1</string>
+    <string name="fuerza">Fuerza</string>
+    <string name="masa">Masa</string>
+    <string name="angulo">Angulo</string>
+    <string name="fuerza2">Newtons</string>
+    <string name="masa2">Kilogramos</string>
+    <string name="angulo2">Grados</string>
+    <string name="lanzar">Lanzar</string>
+    <string name="posicionx">Posicion X: </string>
+    <string name="posiciony">Posicion Y: </string>
+    <string name="none">__________</string>
+</resources>

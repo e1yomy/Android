@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="elyo.my.practica1.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="50dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/fuerza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="9"
+                    android:id="@+id/editText2"
+                    android:layout_width="170dp" />
+
+                <TextView
+                    android:text="@string/fuerza2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView4"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/masa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView5"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <EditText
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="9"
+                    android:id="@+id/editText3" />
+
+                <TextView
+                    android:text="@string/masa2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView6"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/angulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView7"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="9"
+                    android:id="@+id/editText4"
+                    android:layout_width="170dp" />
+
+                <TextView
+                    android:text="@string/angulo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView8"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:text="@string/lanzar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/posicionx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <TextView
+                    android:text="@string/none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="@string/posiciony"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView10"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <TextView
+                    android:text="@string/none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView9"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
