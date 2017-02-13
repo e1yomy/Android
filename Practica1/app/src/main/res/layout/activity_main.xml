@@ -36,9 +36,9 @@
 
                 <EditText
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:ems="9"
-                    android:id="@+id/editText2"
+                    android:id="@+id/editFuerza"
                     android:layout_width="170dp" />
 
                 <TextView
@@ -63,9 +63,9 @@
                 <EditText
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:ems="9"
-                    android:id="@+id/editText3" />
+                    android:id="@+id/editMasa" />
 
                 <TextView
                     android:text="@string/masa2"
@@ -88,9 +88,9 @@
 
                 <EditText
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:ems="9"
-                    android:id="@+id/editText4"
+                    android:id="@+id/editAngulo"
                     android:layout_width="170dp" />
 
                 <TextView
@@ -107,7 +107,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:onClick="onClic"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -121,15 +122,15 @@
                     android:text="@string/posicionx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
+                    android:id="@+id/asdasdas"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <TextView
                     android:text="@string/none"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                    android:id="@+id/textPosX"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -146,8 +147,8 @@
                     android:text="@string/none"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView9"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                    android:id="@+id/textPosY"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </TableRow>
         </TableLayout>
 
