@@ -5,6 +5,7 @@ package elyo.my;
  */
 
 public class Fisica {
-    final static float g=-9.81f;
+//    final static float g=-9.81f;
+    final static float g=-20f;
 
 }
