@@ -13,15 +13,15 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Objeto {
     TextureRegion textura;
     Body body;
+    float width;
+    float height;
 
-    protected Objeto(TextureRegion textura, Body body){
+    public Objeto(TextureRegion textura,Body body,
+                  float width, float height ){
         this.textura=textura;
         this.body=body;
+        this.width = width;
+        this.height = height;
     }
 
-
-
-
-
 }
-

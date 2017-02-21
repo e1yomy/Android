@@ -27,222 +27,161 @@ import com.badlogic.gdx.utils.Array;
 
 import java.awt.Button;
 
-public class Ejemplo extends ApplicationAdapter {
+public class Ejemplo extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
 	Texture img;
-	final float masa=1;
-	final float fuerza=100;
-	final float angulo=45;
-	Body bodyPelota, bodyCaja;
+
 	World world;
-	Box2DDebugRenderer debugRenderer;
 	OrthographicCamera camara;
-	TextureRegion pelota;
-	TextureRegion caja;
-	Array<Objeto> figuras;
-	Objeto piedra;
-	float xx=0;
-	float yy=0;
-	float x1,y1,x2,y2;
+	Box2DDebugRenderer debugRenderer;
+	TextureRegion fotopelota;
+	TextureRegion fotocaja;
+
+	Body caja;
+
+	float worldWidth = 20;
+	float worldHeight = 20;
+	float pantallaWidth = 400;
+	float pantallaHeight = 400;
+	float escalaX;
+	float escalaY;
+
+	Vector2 fuerza;
+	Body pelota;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		fuerza = new Vector2(0,0);
+		fotopelota=new TextureRegion(new Texture(Gdx.files.internal("pelota.png")));
+		fotocaja=new TextureRegion(new Texture(Gdx.files.internal("caja.png")));
 
-		world = new World(new Vector2(0, -50f), true);
+		pantallaWidth = Gdx.graphics.getWidth();
+		pantallaHeight = Gdx.graphics.getHeight();
+		escalaX = pantallaWidth / worldWidth;
+		escalaY = pantallaHeight / worldHeight;
+		camara=new OrthographicCamera(
+				worldWidth,worldHeight);
+		camara.position.x=worldWidth/2;
+		camara.position.y=worldHeight/2;
+		world = new World(new Vector2(0, -9.8f), true);
 		debugRenderer = new Box2DDebugRenderer();
-		camara=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		camara.position.x=Gdx.graphics.getWidth()/2;
-		camara.position.y=Gdx.graphics.getHeight()/2;
-		pelota=new TextureRegion(new Texture(Gdx.files.internal("pelota.png")));
-		caja=new TextureRegion(new Texture(Gdx.files.internal("caja.png")));
-		figuras= new Array<Objeto>();
-		CrearPiso();
-		Input();
+		pelota = (new Pelota(world, fotopelota,
+				0,1,1)).body;
+		new Caja(world, fotocaja,15,2,2,2);
+		new Caja(world, fotocaja,15,4,2,2);
+		new Caja(world, fotocaja,15,6,2,2);
+		new Caja(world, fotocaja,15,8,2,2);
+		crearPiso(-1,0,21,0);
+		crearPiso(-1,20,21,20);
+		crearPiso(-1,0,-1,20);
+		crearPiso(21,0,21,20);
 
 	}
 
 	@Override
 	public void render () {
-
-		if(Gdx.input.justTouched())
-		{
-
-			xx=Gdx.input.getX();
-			yy=Gdx.graphics.getHeight()-Gdx.input.getY();
-			if(MathUtils.randomBoolean())
-				CrearPelota();
-			else
-				CrearCaja();
-		}
-
-
-		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		float tiempo=Gdx.graphics.getDeltaTime();
-		//piedra=Fisica.mover(piedra, tiempo);
 		camara.update();
-
 		world.step(tiempo, 6, 2);
 		debugRenderer.render(world, camara.combined);
 		batch.begin();
-		//batch.draw(img, piedra.posicion.x, piedra.posicion.y);
-		for(int i=0;i<figuras.size;i++)
-		{
-			//batch.draw(figuras.get(i).textura,figuras.get(i).body.getPosition().x-20, bodyPelota.getPosition().y-20,20,20,40,40,1,1,(float)Math.toDegrees(figuras.get(i).body.getAngle()));
-			batch.draw(figuras.get(i).textura,figuras.get(i).body.getPosition().x-20, figuras.get(i).body.getPosition().y-20,20,20,40,40,1,1,(float)Math.toDegrees(figuras.get(i).body.getAngle()));
+
+		Array<Body> figuras = new Array<Body>();
+		world.getBodies(figuras);
+		for(int i=0;i<figuras.size;i++){
+			Objeto o = (Objeto)figuras.get(i).getUserData();
+			Body b = figuras.get(i);
+			if (o!=null)
+			{
+				float x = (-camara.position.x + worldWidth/2
+						+ b.getPosition().x)*
+						escalaX;
+				float y = (-camara.position.y + worldHeight/2
+						+ b.getPosition().y)*
+						escalaY;
+				batch.draw(o.textura,x,y,
+						o.width/2, o.height/2,
+						o.width, o.height,
+						escalaX,escalaY,
+						(float)Math.toDegrees(b.getAngle()));
+			}
 		}
 
-		//batch.draw(pelota, bodyPelota.getPosition().x-20, bodyPelota.getPosition().y-20,20,20,40,40,1,1,(float)Math.toDegrees(bodyPelota.getAngle()));
-		//batch.draw(caja, bodyCaja.getPosition().x-30, bodyCaja.getPosition().y-30,30,30,60,60,1,1,(float)Math.toDegrees(bodyCaja.getAngle()));
+		//batch.draw(fotocaja, caja.getPosition().x-10, caja.getPosition().y-10,10,10,20,20,1,1,(float)Math.toDegrees(caja.getAngle()));
+
 		batch.end();
 	}
-	public void CrearPelota(){
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		//bodyDef.position.set(280, 30);
-		bodyDef.position.set(xx, yy);
-		bodyPelota = world.createBody(bodyDef);
-		CircleShape circle = new CircleShape();
 
-		circle.setRadius(20f);
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = circle;
-		fixtureDef.density = 0.5f;
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 0.6f; // Make it bounce a little bit
-		Fixture fixture = bodyPelota.createFixture(fixtureDef);
-		circle.dispose();
-		figuras.add(new Objeto(pelota,bodyPelota));
-	}
-	public void CrearPiso() {
+	public  void crearPiso(float x, float y, float x2, float y2){
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-		bodyDef.position.set(0, 10);
+		bodyDef.position.set(0, 0);
+
 		Body body = world.createBody(bodyDef);
-		EdgeShape edge = new EdgeShape();
-		edge.set(0,0,Gdx.graphics.getWidth(),0);
-		//edge.set(0,0,Gdx.graphics.getWidth(),200);
+
+		EdgeShape piso = new EdgeShape();
+		piso.set(x,y,x2,y2);
+
 		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = edge;
-		fixtureDef.friction = 0.3f;
+		fixtureDef.shape = piso;
+
+		fixtureDef.friction = 0.7f;
 		Fixture fixture = body.createFixture(fixtureDef);
-		edge.dispose();
+		piso.dispose();
+		Gdx.input.setInputProcessor(this);
 	}
-	public void CrearCaja(){
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(xx, yy);
-		bodyCaja = world.createBody(bodyDef);
-		PolygonShape poli = new PolygonShape();
-		poli.setAsBox(20f,20f);
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = poli;
-		fixtureDef.density = 15f;
-		fixtureDef.friction = 0.5f;
-		fixtureDef.restitution = 0.5f; // Make it bounce a little bit
-		Fixture fixture = bodyCaja.createFixture(fixtureDef);
-		poli.dispose();
-		figuras.add(new Objeto(caja,bodyCaja));
-	}
+
+
+
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+  	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		return false;
 	}
-	public void Input(){
-		Gdx.input.setInputProcessor(new InputProcessor() {
-			@Override
-			public boolean keyDown(int keycode) {
-				return false;
-			}
 
-			@Override
-			public boolean keyUp(int keycode) {
-				return false;
-			}
+	@Override
+	public boolean keyUp(int keycode) {
+		return false;
+	}
 
-			@Override
-			public boolean keyTyped(char character) {
-				return false;
-			}
+	@Override
+	public boolean keyTyped(char character) {
+		return false;
+	}
 
-			@Override
-			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-				x1=screenX;
-				y1=Gdx.graphics.getHeight()-screenY;
-				return false;
-			}
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		fuerza.x = screenX;
+		fuerza.y = screenY;
+		return false;
+	}
 
-			@Override
-			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-				x2=screenX;
-				y2=Gdx.graphics.getHeight()-screenY;
-				float dx=0,dy=0;
-				if(x1!=x2&&y1!=y2)
-				{
-					if(x1>x2)
-					{
-						//Izquierda
-						dx=x1-x2;
-						dx=-dx;
-					}
-					if (x1<x2)
-					{
-						//Derecha
-						dx=x2-x1;
-					}
-					if(y1>y2)
-					{
-						//Abajo
-						dy=y2-y1;
-					}
-					if (y1<y2)
-					{
-						//Arriba
-						dy=y1-y2;
-						dy=-dy;
-					}
-					dx*=100000;
-					dy*=100000;
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		fuerza.x = (screenX - fuerza.x)*100;
+		fuerza.y = -(screenY - fuerza.y)*100;
+		pelota.applyForceToCenter(fuerza,true);
+		return false;
+	}
 
-					for(int i=0;i<figuras.size;i++)
-					{
-						figuras.get(i).body.applyForceToCenter(new Vector2(dx,dy),true);
-					}
-					dx=dy=0;
-				}
-				else
-				{
-					if(MathUtils.randomBoolean())
-						CrearPelota();
-					else
-						CrearCaja();
-				}
-				x1=x2=y1=y2=-10;
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
 
-				return false;
-			}
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
 
-			@Override
-			public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-
-				return false;
-			}
-
-			@Override
-			public boolean mouseMoved(int screenX, int screenY) {
-				xx = screenX;
-				yy = Gdx.graphics.getHeight()-screenY;
-				return false;
-			}
-
-			@Override
-			public boolean scrolled(int amount) {
-				return false;
-			}
-		});
-
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
 	}
 }
