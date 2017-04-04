@@ -14,6 +14,22 @@
             android:id="@+id/nav_salir"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/salir" />
+        <item
+            android:id="@+id/nav_clavepadre"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/generarclavepadre" />
+        <item
+            android:id="@+id/nav_clavehijo"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/generarclavehijo" />
+        <item
+            android:id="@+id/nav_agregarpadre"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/addpadre" />
+        <item
+            android:id="@+id/nav_agregarhijo"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/addhijo" />
     </group>
 
 </menu>
