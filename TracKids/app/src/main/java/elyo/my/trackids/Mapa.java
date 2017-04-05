@@ -1,12 +1,31 @@
 package elyo.my.trackids;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import static android.content.Context.LOCATION_SERVICE;
+import static elyo.my.trackids.Principal.c;
 
 
 /**
@@ -17,11 +36,16 @@ import android.view.ViewGroup;
  * Use the {@link Mapa#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Mapa extends Fragment {
+public class Mapa extends Fragment implements OnMapReadyCallback,LocationListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    GoogleMap m;
+    LocationManager locationManager;
+    Location l;
+    boolean gps;
+    LatLng la;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,8 +89,17 @@ public class Mapa extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_mapa, container, false);
-
-
+        try {
+            SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                    .findFragmentById(R.id.mapa1);
+            mapFragment.getMapAsync(this);
+            locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
+            gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         return view;
     }
@@ -93,6 +126,73 @@ public class Mapa extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        try {
+            m = googleMap;
+            m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            m.getUiSettings().setZoomControlsEnabled(true);
+            m.getUiSettings().setCompassEnabled(true);
+            m.getUiSettings().setAllGesturesEnabled(true);
+            m.getUiSettings().setScrollGesturesEnabled(true);
+            m.getUiSettings().setZoomGesturesEnabled(true);
+
+            if (ActivityCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            if (gps) {
+                locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
+                locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
+                if (locationManager != null) {
+
+                    l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                    ActualizarMarcador(l);
+                }
+            }
+
+        } catch (Exception ex) {
+            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+            ActualizarMarcador(location);
+
+    }
+    public void ActualizarMarcador(Location lo){
+        l=lo;
+        if (l != null) {
+            la=new LatLng(l.getLatitude(), l.getLongitude());
+            m.clear();
+            m.addMarker(new MarkerOptions().position(la).title("Tú").icon(BitmapDescriptorFactory.defaultMarker()));
+            //m.moveCamera(CameraUpdateFactory.newLatLng(la));
+            //m.animateCamera(CameraUpdateFactory.zoomTo(m.getCameraPosition().zoom));
+            m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
+        }
+    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     /**

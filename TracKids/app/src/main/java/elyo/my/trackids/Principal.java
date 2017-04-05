@@ -1,6 +1,7 @@
 package elyo.my.trackids;
 
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,13 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Mapa.OnFragmentInteractionListener{
 
-    FragmentManager manager=getSupportFragmentManager();
-    android.support.v4.app.FragmentTransaction transaction= manager.beginTransaction();
-
+    public static Context c;
 
 
     @Override
@@ -39,6 +39,15 @@ public class Principal extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        c=this;
+        try{
+            navigationView.getMenu().getItem(0).setChecked(true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -75,33 +84,32 @@ public class Principal extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-
-        int id = item.getItemId();
         switch (id)
         {
             case R.id.nav_inicio:
-                transaction.add(R.id.contenedor,new Mapa());
+                transaction.replace(R.id.content_principal,new Mapa());
+                Toast.makeText(c, "1", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_hijos:
-
+                Toast.makeText(c, "2", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_salir:
-
+                Toast.makeText(c, "3", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_clavepadre:
-
+                Toast.makeText(c, "4", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_clavehijo:
-
+                Toast.makeText(c, "5", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_agregarpadre:
-
+                Toast.makeText(c, "6", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_agregarhijo:
-
+                Toast.makeText(c, "6", Toast.LENGTH_SHORT).show();
                 break;
         }
         transaction.commit();
@@ -110,6 +118,7 @@ public class Principal extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
