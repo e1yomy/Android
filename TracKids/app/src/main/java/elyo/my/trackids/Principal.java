@@ -19,9 +19,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class Principal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Mapa.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener,
+        Mapa.OnFragmentInteractionListener,
+        GenerarClaves.OnFragmentInteractionListener,
+        ListaHijos.OnFragmentInteractionListener
+
+{
 
     public static Context c;
+    public static byte padre;
+    public static byte pantalla=1;
 
 
     @Override
@@ -80,6 +87,13 @@ public class Principal extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -91,25 +105,34 @@ public class Principal extends AppCompatActivity
         {
             case R.id.nav_inicio:
                 transaction.replace(R.id.content_principal,new Mapa());
-                Toast.makeText(c, "1", Toast.LENGTH_SHORT).show();
+                pantalla=1;
                 break;
             case R.id.nav_hijos:
-                Toast.makeText(c, "2", Toast.LENGTH_SHORT).show();
+                transaction.replace(R.id.content_principal,new ListaHijos());
+                pantalla=2;
                 break;
             case R.id.nav_salir:
-                Toast.makeText(c, "3", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_clavepadre:
-                Toast.makeText(c, "4", Toast.LENGTH_SHORT).show();
+                padre=1;
+                transaction.replace(R.id.content_principal,new GenerarClaves());
+                pantalla=3;
                 break;
             case R.id.nav_clavehijo:
-                Toast.makeText(c, "5", Toast.LENGTH_SHORT).show();
+                padre=0;
+                transaction.replace(R.id.content_principal,new GenerarClaves());
+                pantalla=4;
                 break;
             case R.id.nav_agregarpadre:
-                Toast.makeText(c, "6", Toast.LENGTH_SHORT).show();
+                padre=1;
+
+
+                pantalla=5;
                 break;
             case R.id.nav_agregarhijo:
-                Toast.makeText(c, "6", Toast.LENGTH_SHORT).show();
+                padre=0;
+
+                pantalla=6;
                 break;
         }
         transaction.commit();
@@ -119,9 +142,4 @@ public class Principal extends AppCompatActivity
         return true;
     }
 
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
