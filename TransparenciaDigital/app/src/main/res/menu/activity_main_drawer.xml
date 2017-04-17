@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_missolicitudes"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Mis solicitudes" />
+        <item
+            android:id="@+id/nav_acceso"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Sol. de acceso a informacion" />
+        <item
+            android:id="@+id/nav_recurso"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Sol. de recurso de revision" />
+    </group>
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_misdatos"
+        android:icon="@drawable/ic_menu_share"
+        android:title="Mis datos" />
+    <item
+        android:id="@+id/nav_sesion"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Cerrar sesion" />
+    </group>
+</menu>
