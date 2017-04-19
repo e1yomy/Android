@@ -4,9 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
+import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
 
 
 /**
@@ -17,7 +25,7 @@ import android.view.ViewGroup;
  * Use the {@link Sesion#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Sesion extends Fragment {
+public class Sesion extends Fragment implements Registro.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,12 +68,6 @@ public class Sesion extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sesion, container, false);
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -91,6 +93,11 @@ public class Sesion extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -104,5 +111,44 @@ public class Sesion extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    Button entrar;
+    TextView registro;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_sesion, container, false);
+        entrar=(Button) view.findViewById(R.id.btnEntrar);
+        registro=(TextView)view.findViewById(R.id.txtRegistro);
+        Entrar();
+        Registrar();
+
+        return view;
+    }
+
+    private void Registrar() {
+            registro.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        drawer.openDrawer(GravityCompat.START);
+                    } catch (Exception ex) {
+                        String s = ex.getMessage();
+                    }
+
+                }
+            });
+
+    }
+
+    private void Entrar() {
+        entrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

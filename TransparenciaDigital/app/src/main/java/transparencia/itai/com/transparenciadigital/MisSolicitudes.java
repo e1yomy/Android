@@ -3,10 +3,20 @@ package transparencia.itai.com.transparenciadigital;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 
 
 /**
@@ -60,12 +70,6 @@ public class MisSolicitudes extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mis_solicitudes, container, false);
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -104,5 +108,62 @@ public class MisSolicitudes extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    ListView lv1, lv2;
+    List<String> lista1 = new ArrayList<String>();
+    List<String> lista2 = new ArrayList<String>();
+    FloatingActionButton btnVolver;
+    LinearLayout layoutMisSolicitudes;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_mis_solicitudes, container, false);
+
+        lv1 = (ListView) view.findViewById(R.id.listSolicitudes);
+        lv2 = (ListView) view.findViewById(R.id.listDatos);
+        btnVolver = (FloatingActionButton) view.findViewById(R.id.btnVolver);
+        layoutMisSolicitudes = (LinearLayout)view.findViewById(R.id.layoutMisSolicitudes);
+
+        lv1.setVisibility(View.VISIBLE);
+        lv2.setVisibility(View.GONE);
+        lv2.setItemsCanFocus(false);
+        btnVolver.setVisibility(View.GONE);
+
+        lista1.add("lista1");
+        lista1.add("lista1");
+        lista1.add("lista1");
+        lista1.add("lista1");
+        lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");
+
+        lista2.add("lista2");
+        lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");
+        Toques();
+        return view;
+    }
+
+    private void Toques() {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista1);
+        lv1.setAdapter(arrayAdapter);
+        arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista2);
+        lv2.setAdapter(arrayAdapter);
+
+        lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lv1.setVisibility(View.GONE);
+                lv2.setVisibility(View.VISIBLE);
+                btnVolver.setVisibility(View.VISIBLE);
+            }
+        });
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lv1.setVisibility(View.VISIBLE);
+                lv2.setVisibility(View.GONE);
+                btnVolver.setVisibility(View.GONE);
+            }
+        });
     }
 }

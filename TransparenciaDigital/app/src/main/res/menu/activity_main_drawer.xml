@@ -19,14 +19,19 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Sol. de recurso de revision" />
     </group>
-    <group android:checkableBehavior="single">
-    <item
-        android:id="@+id/nav_misdatos"
-        android:icon="@drawable/ic_menu_share"
-        android:title="Mis datos" />
-    <item
-        android:id="@+id/nav_sesion"
-        android:icon="@drawable/ic_menu_send"
-        android:title="Cerrar sesion" />
-    </group>
+
+
+    <item>
+    <menu>
+        <item
+            android:id="@+id/nav_registro"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Registrate" />
+        <item
+            android:id="@+id/nav_salir"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Salir" />
+    </menu>
+    </item>
+
 </menu>

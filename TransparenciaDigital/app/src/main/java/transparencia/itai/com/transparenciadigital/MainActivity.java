@@ -1,13 +1,12 @@
 package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,29 +14,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
+        Splash.OnFragmentInteractionListener,
         Sesion.OnFragmentInteractionListener,
         NuevaSolicitudAcceso.OnFragmentInteractionListener,
         NuevaSolicitudRecurso.OnFragmentInteractionListener,
-        MisSolicitudes.OnFragmentInteractionListener
+        MisSolicitudes.OnFragmentInteractionListener,
+        Registro.OnFragmentInteractionListener
 {
 
 
     static Context c;
     Toolbar toolbar;
+    static DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Transparencia Digital");
+
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -49,14 +52,25 @@ public class MainActivity extends AppCompatActivity
         c=this;
         try{
             //navigationView.getMenu().getItem(0).setChecked(true);
-            //getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
+            toolbar.setVisibility(View.GONE);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toolbar.setVisibility(View.VISIBLE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
+                }
+            },2000);
+
+            fragmentManager=getSupportFragmentManager();
         }
         catch (Exception ex)
         {
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        //startActivity(new Intent(this,Splash.class));
+
     }
 
     @Override
@@ -78,25 +92,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
+    static FragmentManager fragmentManager;
     static boolean sesion=false;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -106,26 +105,34 @@ public class MainActivity extends AppCompatActivity
 
         if(!sesion)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
             sesion=!sesion;
         }
         else
         {
+            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
             if (id == R.id.nav_inicio) {
                 // Handle the camera action
+                fragmentTransaction.replace(R.id.content_principal,new Splash()).commit();
             } else if (id == R.id.nav_missolicitudes) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                //Listado de solicitudes del usuario
+                fragmentTransaction.replace(R.id.content_principal, new MisSolicitudes()).commit();
 
             } else if (id == R.id.nav_acceso) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new NuevaSolicitudAcceso()).commit();
+                //Solicitar acceso a informacion
+                fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudAcceso()).commit();
 
             } else if (id == R.id.nav_recurso) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new NuevaSolicitudRecurso()).commit();
+                //Solicitar recurso de revision
+                fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudRecurso()).commit();
 
-            } else if (id == R.id.nav_misdatos) {
+            } else if(id==R.id.nav_registro){
+                fragmentTransaction.replace(R.id.content_principal, new Registro()).commit();
+            }
+            else if(id==R.id.nav_salir){
+                fragmentTransaction.commit();
+                finish();
 
-            } else if (id == R.id.nav_sesion) {
-                sesion=!sesion;
             }
         }
 
@@ -133,6 +140,26 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            //return true;
+        }
+        else if(id==R.id.action_misdatos){
+
+        } else if(id==R.id.action_cerrarsesion){
+            sesion=!sesion;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
