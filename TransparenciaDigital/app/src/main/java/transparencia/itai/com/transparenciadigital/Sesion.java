@@ -1,6 +1,7 @@
 package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
 import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
 
@@ -115,6 +117,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
 
     Button entrar;
     TextView registro;
+    FragmentManager fragmentManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -122,6 +125,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         View view = inflater.inflate(R.layout.fragment_sesion, container, false);
         entrar=(Button) view.findViewById(R.id.btnEntrar);
         registro=(TextView)view.findViewById(R.id.txtRegistro);
+        fragmentManager= getFragmentManager();
+        registro.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         Entrar();
         Registrar();
 
@@ -129,11 +134,12 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     }
 
     private void Registrar() {
+
             registro.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
-                        drawer.openDrawer(GravityCompat.START);
+                        fragmentManager.beginTransaction().replace(R.id.content_principal,new Registro()).commit();
                     } catch (Exception ex) {
                         String s = ex.getMessage();
                     }
@@ -148,6 +154,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
             @Override
             public void onClick(View v) {
 
+                fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
             }
         });
     }

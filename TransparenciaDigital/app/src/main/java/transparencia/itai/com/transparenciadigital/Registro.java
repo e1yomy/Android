@@ -4,9 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 
 
 /**
@@ -17,7 +28,7 @@ import android.view.ViewGroup;
  * Use the {@link Registro#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Registro extends Fragment {
+public class Registro extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,13 +71,6 @@ public class Registro extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registro, container, false);
-    }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -91,6 +95,7 @@ public class Registro extends Fragment {
         mListener = null;
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -104,5 +109,74 @@ public class Registro extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    ArrayList<EditText> texto= new ArrayList<>();
+    Button btnRegistro;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view =inflater.inflate(R.layout.fragment_registro, container, false);
+        btnRegistro =(Button)view.findViewById(R.id.btnRegistro);
+        btnRegistro.setFocusable(true);
+        btnRegistro.setFocusableInTouchMode(true);
+        Llenar(view);
+        Boton();
+
+        return view;
+    }
+
+    FragmentManager fragmentManager;
+    private void Boton() {
+        try {
+            btnRegistro.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragmentManager.popBackStackImmediate();
+                }
+            });
+        } catch (Exception ex) {
+            String s = ex.getMessage();
+        }
+    }
+
+    public void Llenar(View view){
+        texto.add((EditText) view.findViewById(R.id.editNombres));
+        texto.add((EditText) view.findViewById(R.id.editPaterno));
+        texto.add((EditText) view.findViewById(R.id.editMaterno));
+        texto.add((EditText) view.findViewById(R.id.editEmail));
+        texto.add((EditText) view.findViewById(R.id.editContra1));
+        texto.add((EditText) view.findViewById(R.id.editContra2));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioCalle));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioExterior));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioInterior));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioEntreCalles));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioColonia));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioCP));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioEntidadFederativa));
+        texto.add((EditText) view.findViewById(R.id.editDomicilioMunicipio));
+        texto.add((EditText) view.findViewById(R.id.editTelefono));
+
+        for(byte i=0;i<texto.size();i++){
+            final byte finalI = i;
+            texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if(finalI <texto.size())
+                        {
+                            texto.get(finalI+1).setFocusable(true);
+                            texto.get(finalI+1).requestFocus();
+                        }
+                        else
+                        {
+                            btnRegistro.requestFocus();
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 }
