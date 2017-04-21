@@ -154,7 +154,7 @@ public class MisSolicitudes extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lv1.setVisibility(View.GONE);
                 lv2.setVisibility(View.VISIBLE);
-                btnVolver.setVisibility(View.VISIBLE);
+                btnVolver.show();
             }
         });
         btnVolver.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +162,7 @@ public class MisSolicitudes extends Fragment {
             public void onClick(View v) {
                 lv1.setVisibility(View.VISIBLE);
                 lv2.setVisibility(View.GONE);
-                btnVolver.setVisibility(View.GONE);
+                btnVolver.hide();
             }
         });
     }
