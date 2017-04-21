@@ -12,11 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
 import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
+import static transparencia.itai.com.transparenciadigital.MainActivity.sesion;
 
 
 /**
@@ -118,6 +121,9 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     Button entrar;
     TextView registro;
     FragmentManager fragmentManager;
+    ScrollView layoutRegistro;
+    LinearLayout layoutInicioSesion;
+    Button btnRegistro;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,6 +133,10 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         registro=(TextView)view.findViewById(R.id.txtRegistro);
         fragmentManager= getFragmentManager();
         registro.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        layoutRegistro = (ScrollView)view.findViewById(R.id.layoutRegistro);
+        layoutInicioSesion=(LinearLayout)view.findViewById(R.id.layoutInicioSesion);
+        btnRegistro=(Button)view.findViewById(R.id.btnRegistro);
         Entrar();
         Registrar();
 
@@ -134,18 +144,32 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     }
 
     private void Registrar() {
-
+        //Label para registrarse
             registro.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
-                        fragmentManager.beginTransaction().replace(R.id.content_principal,new Registro()).commit();
+                        //fragmentManager.beginTransaction().replace(R.id.content_principal,new Registro()).commit();
+                        layoutInicioSesion.setVisibility(View.GONE);
+                        layoutRegistro.setVisibility(View.VISIBLE);
+                        layoutRegistro.fullScroll(View.FOCUS_UP);
                     } catch (Exception ex) {
                         String s = ex.getMessage();
                     }
 
                 }
             });
+        //Boton de finalizar el registro
+            btnRegistro.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        layoutInicioSesion.setVisibility(View.VISIBLE);
+                        layoutRegistro.setVisibility(View.GONE);
+                        sesion=false;
+
+                        ///
+                    }
+                });
 
     }
 

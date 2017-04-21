@@ -132,7 +132,7 @@ public class Registro extends Fragment  {
             btnRegistro.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fragmentManager.popBackStackImmediate();
+
                 }
             });
         } catch (Exception ex) {

@@ -4,10 +4,128 @@
     android:layout_height="match_parent"
     tools:context="transparencia.itai.com.transparenciadigital.NuevaSolicitudAcceso">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/layoutSolicitudAcceso"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="30dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sujeto Obligado" />
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Nombre del Sujeto Obligado"
+                android:inputType="textPersonName" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:text="Información solicitada" />
+
+            <EditText
+                android:id="@+id/editText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Descripción clara y precisa de la información solicitada. Con el fin de brindar un mejor servicio, además de describir la información o documentos que solicita, se sugiere proporcionar todos los datos que considere facilitan su búsqueda"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:text="Modalidad en que se desea le sea entregada la información " />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioOpcion1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Consulta directa" />
+
+                <RadioButton
+                    android:id="@+id/radioOpcion2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Copia simple" />
+
+                <RadioButton
+                    android:id="@+id/radioOpcion3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Copia simple con costo más de 20 hojas" />
+
+                <RadioButton
+                    android:id="@+id/radioOpcion4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Copia certificada costo" />
+
+                <RadioButton
+                    android:id="@+id/radioOpcion5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Correo electrónico" />
+
+                <RadioButton
+                    android:id="@+id/radioOpcion6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Digitalizada" />
+
+                <RadioButton
+                    android:id="@+id/radioOpcion7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Otro" />
+
+                <EditText
+                    android:id="@+id/editOpcion7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:visibility="invisible" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnTerminarSolicitudAcceso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enviar solicitud" />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>
