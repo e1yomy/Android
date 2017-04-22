@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -30,6 +31,25 @@ public class MainActivity extends AppCompatActivity
 
 {
 
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+            //super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+    static FragmentManager fragmentManager;
+    static boolean sesion=false;
 
     static Context c;
     Toolbar toolbar;
@@ -78,30 +98,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            //drawer.openDrawer(GravityCompat.START);
-            super.onBackPressed();
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-    static FragmentManager fragmentManager;
-    static boolean sesion=false;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -111,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         if(!sesion)
         {
             fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
-            sesion=!sesion;
         }
         else
         {
@@ -163,9 +159,30 @@ public class MainActivity extends AppCompatActivity
         } else if(id==R.id.action_cerrarsesion){
             sesion=!sesion;
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
+            HabilitarMenu(false);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    static MenuItem misDatos, cerrarSesion;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        misDatos=menu.getItem(1);
+        cerrarSesion=menu.getItem(2);
+        HabilitarMenu(false);
+
+        return true;
+    }
+
+
+    public static void HabilitarMenu(boolean boo)
+    {
+        misDatos.setEnabled(boo);
+        cerrarSesion.setEnabled(boo);
     }
 
 }

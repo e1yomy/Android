@@ -1,12 +1,18 @@
 package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 
 
 /**
@@ -105,14 +111,48 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
             mListener.onFragmentInteraction(uri);
         }
     }
-
+    Button btnTerminarSolicitudDenuncia;
+    FragmentManager fragmentManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
         View view =inflater.inflate(R.layout.fragment_nueva_solicitud_denuncia, container, false);
+        btnTerminarSolicitudDenuncia= (Button)view.findViewById(R.id.btnTerminarSolicitudDenuncia);
+        fragmentManager= getFragmentManager();
 
+        Boton(view);
 
         return view;
+    }
+
+    private void Boton(View view) {
+        btnTerminarSolicitudDenuncia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert= new AlertDialog.Builder(c);
+                alert.setTitle("Denuncia por incumplimiento");
+                alert.setMessage("¿Desea enviar la solicitud? ");
+                alert.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Hilo para subir a la base de datos
+                        //ProgressDialog progress= new ProgressDialog(c);
+                        //progress.setTitle("Enviando");
+
+                        //Snackbar con mensaje de que la solicitud se envio correctamente y después mandar a la lista de solicitudes
+                        //Si no se envio, mantener en esa pantalla y mostrar mensaje de error de conexion.
+                        fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                    }
+                });
+                alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Volver a la edición de la solicitúd
+                    }
+                });
+                alert.show();
+            }
+        });
     }
 }
