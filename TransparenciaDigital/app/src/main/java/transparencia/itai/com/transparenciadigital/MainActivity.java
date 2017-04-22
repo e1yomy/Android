@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity
         NuevaSolicitudAcceso.OnFragmentInteractionListener,
         NuevaSolicitudRecurso.OnFragmentInteractionListener,
         MisSolicitudes.OnFragmentInteractionListener,
-        Registro.OnFragmentInteractionListener
+        Registro.OnFragmentInteractionListener,
+        SujetosObligados.OnFragmentInteractionListener
 {
 
 
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     toolbar.setVisibility(View.VISIBLE);
+                    //if hay sesion
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                    //else
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
                 }
             },2000);
@@ -111,14 +115,13 @@ public class MainActivity extends AppCompatActivity
         else
         {
             FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-            if (id == R.id.nav_inicio) {
-                // Handle the camera action
-                fragmentTransaction.replace(R.id.content_principal,new Splash()).commit();
-            } else if (id == R.id.nav_missolicitudes) {
+            if (id == R.id.nav_missolicitudes) {
                 //Listado de solicitudes del usuario
                 fragmentTransaction.replace(R.id.content_principal, new MisSolicitudes()).commit();
-
-            } else if (id == R.id.nav_acceso) {
+            }else if (id == R.id.nav_sujetosobligados) {
+                // Handle the camera action
+                fragmentTransaction.replace(R.id.content_principal,new SujetosObligados()).commit();
+            }else if (id == R.id.nav_acceso) {
                 //Solicitar acceso a informacion
                 fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudAcceso()).commit();
 
@@ -154,9 +157,11 @@ public class MainActivity extends AppCompatActivity
             //return true;
         }
         else if(id==R.id.action_misdatos){
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Registro()).commit();
 
         } else if(id==R.id.action_cerrarsesion){
             sesion=!sesion;
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
         }
 
         return super.onOptionsItemSelected(item);

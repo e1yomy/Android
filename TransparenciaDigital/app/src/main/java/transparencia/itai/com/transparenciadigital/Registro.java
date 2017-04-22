@@ -1,17 +1,17 @@
 package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -112,32 +112,59 @@ public class Registro extends Fragment  {
     }
 
     ArrayList<EditText> texto= new ArrayList<>();
-    Button btnRegistro;
+    FloatingActionButton btnEditar, btnActualizar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_registro, container, false);
-        btnRegistro =(Button)view.findViewById(R.id.btnRegistro);
-        btnRegistro.setFocusable(true);
-        btnRegistro.setFocusableInTouchMode(true);
-        Llenar(view);
-        Boton();
+        btnEditar= (FloatingActionButton)view.findViewById(R.id.btnEditar);
+        btnActualizar=(FloatingActionButton)view.findViewById(R.id.btnActualizar);
 
+        Llenar(view);
+        HabilitarCampos(false);
+        Boton();
         return view;
     }
 
-    FragmentManager fragmentManager;
     private void Boton() {
-        try {
-            btnRegistro.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnEditar.hide();
+                btnActualizar.show();
+                HabilitarCampos(true);
+            }
+        });
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert= new AlertDialog.Builder(c);
+                alert.setTitle("Edición de datos personales");
+                alert.setMessage("¿Seguro que desea actualizar sus datos personales? ");
+                alert.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        btnActualizar.hide();
+                        btnEditar.show();
+                        //actualizacion en base de datos
+                        //ProgressDialog?
+                        HabilitarCampos(false);
+                    }
+                });
+                alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-        } catch (Exception ex) {
-            String s = ex.getMessage();
-        }
+                    }
+                });
+
+                alert.show();
+                //Mensaje de confirmacion, si dice que si, se hace lo siguiente
+
+                //Actualizar datos en la base de datos
+            }
+        });
     }
 
     public void Llenar(View view){
@@ -158,20 +185,14 @@ public class Registro extends Fragment  {
         texto.add((EditText) view.findViewById(R.id.editTelefono));
 
         for(byte i=0;i<texto.size();i++){
+            texto.get(i).setEnabled(false);
             final byte finalI = i;
             texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if(finalI <texto.size())
-                        {
                             texto.get(finalI+1).setFocusable(true);
                             texto.get(finalI+1).requestFocus();
-                        }
-                        else
-                        {
-                            btnRegistro.requestFocus();
-                        }
                         return true;
                     }
                     return false;
@@ -179,4 +200,10 @@ public class Registro extends Fragment  {
             });
         }
     }
+    public void HabilitarCampos(boolean boo){
+        for(byte i=0;i<texto.size();i++) {
+            texto.get(i).setEnabled(boo);
+        }
+    }
+
 }

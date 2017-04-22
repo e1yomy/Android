@@ -3,10 +3,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_inicio"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Inicio" />
-        <item
             android:id="@+id/nav_missolicitudes"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Mis solicitudes" />
@@ -18,6 +14,10 @@
             android:id="@+id/nav_recurso"
             android:icon="@drawable/ic_menu_manage"
             android:title="Sol. de recurso de revision" />
+        <item
+            android:id="@+id/nav_sujetosobligados"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Sujetos Obligados" />
     </group>
 
 
@@ -26,7 +26,8 @@
         <item
             android:id="@+id/nav_registro"
             android:icon="@drawable/ic_menu_share"
-            android:title="Registrate" />
+            android:title="Registrate"
+            android:visible="false" />
         <item
             android:id="@+id/nav_salir"
             android:icon="@drawable/ic_menu_send"

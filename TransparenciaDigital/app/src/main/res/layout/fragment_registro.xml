@@ -1,4 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,10 +7,40 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnActualizar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp">
+        android:layout_margin="30dp"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -188,19 +219,6 @@
                 android:hint="Número telefónico"
                 android:inputType="phone" />
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="30dp"
-                android:text="El llenado de estos datos evitará que deba capturarlos al momento de realizar alguna solicitud." />
-
-            <Button
-                android:id="@+id/btnRegistro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Terminar registro" />
-
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</RelativeLayout>
