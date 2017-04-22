@@ -28,6 +28,10 @@ import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentM
 import static transparencia.itai.com.transparenciadigital.MainActivity.navigationView;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.sesion;
+import static transparencia.itai.com.transparenciadigital.MainActivity.txtEmailUsuario;
+import static transparencia.itai.com.transparenciadigital.MainActivity.txtNoSolicitudes;
+import static transparencia.itai.com.transparenciadigital.MainActivity.txtNombreUsuario;
+
 
 
 /**
@@ -222,6 +226,11 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                 preferences.edit().putBoolean("sesion",true).commit();
                 HabilitarMenu(preferences.getBoolean("sesion",false));
                 navigationView.getMenu().getItem(0).setChecked(true);
+
+                txtNombreUsuario.setText("Nombre"+ " " + "Apellido"+ " "+ "Apellido");
+                txtEmailUsuario.setText("alguien@ejemplo.com");
+                txtNoSolicitudes.setText("20"+ " "+ "solicitudes realizadas");
+
                 fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
             }
         });

@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_missolicitudes"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_mis_solicitudes"
             android:title="Mis solicitudes" />
         <item
             android:id="@+id/nav_acceso"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_sol_informacion"
             android:title="Sol. de informacion" />
         <item
             android:id="@+id/nav_denuncia"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_incumplimiento"
             android:title="Denuncia por incumplimiento" />
         <item
             android:id="@+id/nav_sujetosobligados"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_sujeto_obligado"
             android:title="Sujetos Obligados" />
     </group>
 
@@ -30,7 +30,7 @@
             android:visible="false" />
         <item
             android:id="@+id/nav_salir"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_salir"
             android:title="Salir" />
     </menu>
     </item>

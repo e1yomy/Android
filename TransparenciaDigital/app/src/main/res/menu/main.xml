@@ -5,16 +5,15 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:icon="@color/colorAccent"
         />
     <item android:id="@+id/action_misdatos"
         android:title="Mis datos"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:icon="@color/colorPrimary"/>
+        />
     <item android:id="@+id/action_cerrarsesion"
         android:title="Cerrar sesion"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:icon="@color/colorPrimaryDark"/>
+        />
 </menu>

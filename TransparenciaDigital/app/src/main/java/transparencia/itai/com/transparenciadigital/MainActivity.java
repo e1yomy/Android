@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     static MenuItem misDatos, cerrarSesion;
     static SharedPreferences preferences;
     static NavigationView navigationView;
+    static TextView txtNombreUsuario, txtEmailUsuario,txtNoSolicitudes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +71,15 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header= navigationView.getHeaderView(0);
+
+        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
+        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
+        txtNoSolicitudes= (TextView)header.findViewById(R.id.txtNoSolicitudes);
+
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         c=this;
         try{
@@ -176,6 +184,11 @@ public class MainActivity extends AppCompatActivity
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
             QuitarSeleccionMenu();
+
+            txtNombreUsuario.setText("");
+            txtEmailUsuario.setText("");
+            txtNoSolicitudes.setText("");
+
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
 
         }
