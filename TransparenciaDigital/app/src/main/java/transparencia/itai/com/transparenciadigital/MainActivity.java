@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     static DrawerLayout drawer;
     static MenuItem misDatos, cerrarSesion;
     static SharedPreferences preferences;
+    static NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         c=this;
@@ -82,9 +83,9 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     toolbar.setVisibility(View.VISIBLE);
-                    sesion=preferences.getBoolean("sesion",false);
-                    if(sesion)
+                    if(preferences.getBoolean("sesion",false))
                     {
+                        navigationView.getMenu().getItem(0).setChecked(true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
                     }
                     else
@@ -109,42 +110,51 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         if(!preferences.getBoolean("sesion",false))
         {
             fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
+
+            if(id==R.id.nav_salir) {
+                finish();
+            }
+
         }
         else
         {
-            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
             if (id == R.id.nav_missolicitudes) {
                 //Listado de solicitudes del usuario
                 fragmentTransaction.replace(R.id.content_principal, new MisSolicitudes()).commit();
+                navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_sujetosobligados) {
                 // Handle the camera action
                 fragmentTransaction.replace(R.id.content_principal,new SujetosObligados()).commit();
+                navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_acceso) {
                 //Solicitar acceso a informacion
                 fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudAcceso()).commit();
+                navigationView.getMenu().findItem(id).setChecked(true);
 
             } else if (id == R.id.nav_denuncia) {
                 //Solicitar recurso de revision
                 fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudDenuncia()).commit();
+                navigationView.getMenu().findItem(id).setChecked(true);
 
             } else if(id==R.id.nav_registro){
                 fragmentTransaction.replace(R.id.content_principal, new Registro()).commit();
             }
-            else if(id==R.id.nav_salir){
-                fragmentTransaction.commit();
-                finish();
 
-            }
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
+    }
+
+    private void QuitarSeleccionMenu() {
+        for(byte i=0;i<navigationView.getMenu().size();i++){
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
     }
 
     @Override
@@ -159,11 +169,13 @@ public class MainActivity extends AppCompatActivity
             //return true;
         }
         else if(id==R.id.action_misdatos){
+            QuitarSeleccionMenu();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Registro()).commit();
 
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
+            QuitarSeleccionMenu();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
 
         }
@@ -178,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         menuInflater.inflate(R.menu.main, menu);
         misDatos=menu.getItem(1);
         cerrarSesion=menu.getItem(2);
-        HabilitarMenu(false);
+        HabilitarMenu(preferences.getBoolean("sesion",false));
 
         return true;
     }
