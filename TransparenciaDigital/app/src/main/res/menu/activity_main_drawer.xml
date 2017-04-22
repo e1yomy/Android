@@ -9,11 +9,11 @@
         <item
             android:id="@+id/nav_acceso"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Sol. de acceso a informacion" />
+            android:title="Sol. de informacion" />
         <item
-            android:id="@+id/nav_recurso"
+            android:id="@+id/nav_denuncia"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Sol. de recurso de revision" />
+            android:title="Denuncia por incumplimiento" />
         <item
             android:id="@+id/nav_sujetosobligados"
             android:icon="@drawable/ic_menu_camera"

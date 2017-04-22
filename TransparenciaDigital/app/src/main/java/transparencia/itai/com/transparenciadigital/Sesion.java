@@ -8,13 +8,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
@@ -121,9 +126,10 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     Button entrar;
     TextView registro;
     FragmentManager fragmentManager;
-    ScrollView layoutRegistro;
+    ScrollView layoutRegistro1;
     LinearLayout layoutInicioSesion;
-    Button btnRegistro;
+    Button btnRegistro1;
+    ArrayList<EditText> textos= new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -134,12 +140,14 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         fragmentManager= getFragmentManager();
         registro.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        layoutRegistro = (ScrollView)view.findViewById(R.id.layoutRegistro);
+        layoutRegistro1 = (ScrollView)view.findViewById(R.id.layoutRegistro1);
         layoutInicioSesion=(LinearLayout)view.findViewById(R.id.layoutInicioSesion);
-        btnRegistro=(Button)view.findViewById(R.id.btnRegistro);
+        layoutInicioSesion.setVisibility(View.VISIBLE);
+        layoutRegistro1.setVisibility(View.GONE);
+        btnRegistro1=(Button)view.findViewById(R.id.btnRegistro1);
         Entrar();
         Registrar();
-
+        Llenar(view);
         return view;
     }
 
@@ -151,8 +159,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                     try {
                         //fragmentManager.beginTransaction().replace(R.id.content_principal,new Registro()).commit();
                         layoutInicioSesion.setVisibility(View.GONE);
-                        layoutRegistro.setVisibility(View.VISIBLE);
-                        layoutRegistro.fullScroll(View.FOCUS_UP);
+                        layoutRegistro1.setVisibility(View.VISIBLE);
+                        layoutRegistro1.fullScroll(View.FOCUS_UP);
                     } catch (Exception ex) {
                         String s = ex.getMessage();
                     }
@@ -160,17 +168,48 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                 }
             });
         //Boton de finalizar el registro
-            btnRegistro.setOnClickListener(new View.OnClickListener() {
+            btnRegistro1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         layoutInicioSesion.setVisibility(View.VISIBLE);
-                        layoutRegistro.setVisibility(View.GONE);
+                        layoutRegistro1.setVisibility(View.GONE);
                         sesion=false;
 
                         ///
                     }
                 });
+    }
+    public void Llenar(View view){
+        textos.add((EditText) view.findViewById(R.id.editNombres1));
+        textos.add((EditText) view.findViewById(R.id.editPaterno1));
+        textos.add((EditText) view.findViewById(R.id.editMaterno1));
+        textos.add((EditText) view.findViewById(R.id.editEmail1));
+        textos.add((EditText) view.findViewById(R.id.editContra11));
+        textos.add((EditText) view.findViewById(R.id.editContra21));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioCalle1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioExterior1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioInterior1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioEntreCalles1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioColonia1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioCP1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioEntidadFederativa1));
+        textos.add((EditText) view.findViewById(R.id.editDomicilioMunicipio1));
+        textos.add((EditText) view.findViewById(R.id.editTelefono1));
 
+        for(byte i=0;i<textos.size();i++){
+            final byte finalI = i;
+            textos.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        textos.get(finalI+1).setFocusable(true);
+                        textos.get(finalI+1).requestFocus();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private void Entrar() {

@@ -145,10 +145,11 @@ public class Registro extends Fragment  {
                 alert.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //ProgresDialog para actualizar datos en la base de datos
+                        //Si todo sale bien, continua, caso contrario, muestra mensaje de error y vuelve a la pantalla
                         btnActualizar.hide();
                         btnEditar.show();
-                        //actualizacion en base de datos
-                        //ProgressDialog?
+
                         HabilitarCampos(false);
                     }
                 });
@@ -200,6 +201,7 @@ public class Registro extends Fragment  {
             });
         }
     }
+
     public void HabilitarCampos(boolean boo){
         for(byte i=0;i<texto.size();i++) {
             texto.get(i).setEnabled(boo);

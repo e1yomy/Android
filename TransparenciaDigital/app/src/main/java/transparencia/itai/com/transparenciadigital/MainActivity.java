@@ -23,9 +23,11 @@ public class MainActivity extends AppCompatActivity
         Sesion.OnFragmentInteractionListener,
         NuevaSolicitudAcceso.OnFragmentInteractionListener,
         NuevaSolicitudRecurso.OnFragmentInteractionListener,
+        NuevaSolicitudDenuncia.OnFragmentInteractionListener,
         MisSolicitudes.OnFragmentInteractionListener,
         Registro.OnFragmentInteractionListener,
         SujetosObligados.OnFragmentInteractionListener
+
 {
 
 
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
 
@@ -125,9 +126,9 @@ public class MainActivity extends AppCompatActivity
                 //Solicitar acceso a informacion
                 fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudAcceso()).commit();
 
-            } else if (id == R.id.nav_recurso) {
+            } else if (id == R.id.nav_denuncia) {
                 //Solicitar recurso de revision
-                fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudRecurso()).commit();
+                fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudDenuncia()).commit();
 
             } else if(id==R.id.nav_registro){
                 fragmentTransaction.replace(R.id.content_principal, new Registro()).commit();

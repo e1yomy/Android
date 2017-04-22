@@ -1,20 +1,56 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="transparencia.itai.com.transparenciadigital.SujetosObligados">
 
-    <!-- TODO: Update blank fragment layout -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnVolverSO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/LayoutSujetosObligados"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="30dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txtTituloSO"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:text="Listado de Sujetos Obligados" />
 
-        </LinearLayout>
-    </ScrollView>
+        <ListView
+            android:id="@+id/listSujetosObligados"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+
+        <ListView
+            android:id="@+id/listSolicitudes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+        <ListView
+            android:id="@+id/listDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
 </RelativeLayout>
