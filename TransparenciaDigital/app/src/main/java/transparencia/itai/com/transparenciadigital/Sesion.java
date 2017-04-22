@@ -25,6 +25,7 @@ import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static transparencia.itai.com.transparenciadigital.MainActivity.HabilitarMenu;
 import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
 import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
+import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.sesion;
 
 
@@ -217,8 +218,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sesion=!sesion;
-                HabilitarMenu(true);
+                preferences.edit().putBoolean("sesion",true).commit();
+                HabilitarMenu(preferences.getBoolean("sesion",false));
                 fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
             }
         });
