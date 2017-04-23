@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    static FragmentManager fragmentManager;
+    static FragmentManager fragmentManager; //Administrador de fragmentos
     static boolean sesion=false;
-    static Context c;
-    static Toolbar toolbar;
+    static Context c; //Variable de Contexto para mostrar Toast
+    static Toolbar toolbar;  //Para modificar las opr de titulo
     static DrawerLayout drawer;
     static MenuItem misDatos, cerrarSesion;
     static SharedPreferences preferences;
