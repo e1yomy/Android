@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity
 
         txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
         txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
-        txtNoSolicitudes= (TextView)header.findViewById(R.id.txtNoSolicitudes);
 
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         c=this;
@@ -96,6 +95,8 @@ public class MainActivity extends AppCompatActivity
                     if(preferences.getBoolean("sesion",false))
                     {
                         toolbar.setVisibility(View.VISIBLE);
+                        txtNombreUsuario.setText(FormatoNombre(preferences.getString("usuario","Nombre")));
+                        txtEmailUsuario.setText(FormatoNombre(preferences.getString("correo","alguien@example.com")));
                         navigationView.getMenu().getItem(0).setChecked(true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
                     }
@@ -123,13 +124,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         fragmentTransaction=fragmentManager.beginTransaction();
+
+        if(id==R.id.nav_salir) {
+            finish();
+        }
         if(!preferences.getBoolean("sesion",false))
         {
             //fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
-
-            if(id==R.id.nav_salir) {
-                finish();
-            }
 
         }
         else
@@ -191,7 +192,6 @@ public class MainActivity extends AppCompatActivity
 
             txtNombreUsuario.setText("");
             txtEmailUsuario.setText("");
-            txtNoSolicitudes.setText("");
 
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
 
@@ -256,16 +256,18 @@ public class MainActivity extends AppCompatActivity
 
         if(ini==1)
         {
-
+            toolbar.setVisibility(View.VISIBLE);
             preferences.edit().putBoolean("sesion", true).commit();
             HabilitarMenu(preferences.getBoolean("sesion", false));
             navigationView.getMenu().getItem(0).setChecked(true);
-            txtNombreUsuario.setText(Conexion.listaDeDatos.get(4)+" "+ Conexion.listaDeDatos.get(5) + " "+  Conexion.listaDeDatos.get(5) );
-            txtEmailUsuario.setText("alguien@ejemplo.com");
-            txtNoSolicitudes.setText("20" + " " + "solicitudes realizadas");
+            txtNombreUsuario.setText(FormatoNombre(preferences.getString("usuario","Nombre")));
+            txtEmailUsuario.setText(FormatoNombre(preferences.getString("correo","alguien@example.com")));
             fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
             ini=0;
         }
     }
 
+    public static String FormatoNombre(String nombre){
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+    }
 }

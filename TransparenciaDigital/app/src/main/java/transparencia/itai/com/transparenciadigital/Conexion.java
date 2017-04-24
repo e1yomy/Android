@@ -28,7 +28,7 @@ public class Conexion {
     int respuesta=0;
     StringBuilder resul=new StringBuilder();
     HttpURLConnection conection;
-    static ArrayList<String> listaDeDatos;
+
 
     public int ConexionCorrecta(String url){
         try {
@@ -67,35 +67,57 @@ public class Conexion {
     }
     public int obtenerDatosJson(String response){
         int res =0;
-        listaDeDatos= new ArrayList<>();
         try {
             JSONArray json=new JSONArray(response);
             String str="";
             if (json.length()>0){
                 res=1;
-                preferences.edit().putString("usuario",json.getJSONObject(0).getString("nombre")+" "+ json.getJSONObject(0).getString("apellidoPaterno"));
-                listaDeDatos.add(json.getJSONObject(0).getString("idUsuario"));
-                listaDeDatos.add(json.getJSONObject(0).getString("idRol"));
-                listaDeDatos.add(json.getJSONObject(0).getString("correo"));
-                listaDeDatos.add(json.getJSONObject(0).getString("contrasena"));
-                listaDeDatos.add(json.getJSONObject(0).getString("nombre"));
-                listaDeDatos.add(json.getJSONObject(0).getString("apellidoPaterno"));
-                listaDeDatos.add(json.getJSONObject(0).getString("apellidoMaterno"));
-                listaDeDatos.add(json.getJSONObject(0).getString("calle"));
-                listaDeDatos.add(json.getJSONObject(0).getString("numeroExterior"));
-                listaDeDatos.add(json.getJSONObject(0).getString("numeroInterior"));
-                listaDeDatos.add(json.getJSONObject(0).getString("entreCalles"));
-                listaDeDatos.add(json.getJSONObject(0).getString("colonia"));
-                listaDeDatos.add(json.getJSONObject(0).getString("CP"));
-                listaDeDatos.add(json.getJSONObject(0).getString("entidad"));
-                listaDeDatos.add(json.getJSONObject(0).getString("municipio"));
-                listaDeDatos.add(json.getJSONObject(0).getString("telefono"));
+                preferences.edit().putString("usuario",json.getJSONObject(0).getString("nombre")+" "+ json.getJSONObject(0).getString("apellidoPaterno")).commit();
+                preferences.edit().putString("correo",json.getJSONObject(0).getString("correo")).commit();
             }
 
         }catch (Exception e){
             Log.e(null,e.getMessage(),e.getCause());
         }
         return  res;
+    }
+    public ArrayList<String> GetSolicitudes(String usuario)
+    {
+        urlprevia=webService+"";
+
+        if(ConexionCorrecta(urlprevia)==1);
+        {
+            try {
+                InputStream in = new BufferedInputStream(conection.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                while ((linea = reader.readLine()) != null)
+                    resul.append(linea);
+            }
+            catch (Exception ex){
+                String s = ex.getMessage();
+            }
+        }
+        //Else de mensaje de error por falta de red
+        return ObtenerListaDeSolicitudes(resul.toString());
+
+    }
+    public ArrayList<String> ObtenerListaDeSolicitudes(String response)
+    {
+        ArrayList<String> lista= new ArrayList<>();
+        try{
+            JSONArray json=new JSONArray(response);
+            for(int i=0; i<json.length();i++){
+                //Ya que se agregue el campo titulo a la tabla de solicitudes, se podra hacer uso de esta funcion
+                //lista.add(json.getJSONObject(i).getString("titulo"));
+            }
+        }
+        catch (Exception ex)
+        {
+            String exx=ex.getMessage();
+        }
+
+
+        return  lista;
     }
     public int RegistrarUsuario(String id, String rol, String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono)
     {
