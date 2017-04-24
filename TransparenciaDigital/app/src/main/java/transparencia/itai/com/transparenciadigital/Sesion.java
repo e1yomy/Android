@@ -32,6 +32,7 @@ import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentM
 import static transparencia.itai.com.transparenciadigital.MainActivity.navigationView;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.sesion;
+import static transparencia.itai.com.transparenciadigital.MainActivity.toolbar;
 import static transparencia.itai.com.transparenciadigital.MainActivity.txtEmailUsuario;
 import static transparencia.itai.com.transparenciadigital.MainActivity.txtNoSolicitudes;
 import static transparencia.itai.com.transparenciadigital.MainActivity.txtNombreUsuario;
@@ -137,8 +138,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     Button entrar;
     TextView registro;
     FragmentManager fragmentManager;
-    ScrollView layoutRegistro1;
-    LinearLayout layoutInicioSesion;
+    ScrollView layoutRegistro1,layoutInicioSesion;
+    //LinearLayout layoutInicioSesion;
     Button btnRegistro1;
     ArrayList<EditText> textos= new ArrayList<>();
     EditText editCuenta, editContrasena;
@@ -156,10 +157,12 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         editContrasena = (EditText)view.findViewById(R.id.editContrasena);
 
         layoutRegistro1 = (ScrollView)view.findViewById(R.id.layoutRegistro1);
-        layoutInicioSesion=(LinearLayout)view.findViewById(R.id.layoutInicioSesion);
+        //layoutInicioSesion=(LinearLayout)view.findViewById(R.id.layoutInicioSesion);
+        layoutInicioSesion=(ScrollView)view.findViewById(R.id.layoutInicioSesion);
         layoutInicioSesion.setVisibility(View.VISIBLE);
         layoutRegistro1.setVisibility(View.GONE);
         btnRegistro1=(Button)view.findViewById(R.id.btnRegistro1);
+        toolbar.setVisibility(View.GONE);
         Entrar();
         Registrar();
         Llenar(view);

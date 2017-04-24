@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity
 
             txtNombreUsuario.setText("");
             txtEmailUsuario.setText("");
+            toolbar.setVisibility(View.GONE);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
 
@@ -225,13 +226,13 @@ public class MainActivity extends AppCompatActivity
     //
     public static void IniciarSesion(final String cuenta, final String contra){
 
-        new Thread(new Runnable() {
+        Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Conexion conexion = new Conexion();
                     if(conexion.IniciarSesion(cuenta,contra)==1) {
-                        toolbar.setVisibility(View.GONE);
+
                         ini=1;
                     }
                 }
@@ -240,7 +241,8 @@ public class MainActivity extends AppCompatActivity
                     String s= ex.getMessage();
                 }
             }
-        }).start();
+        });
+        tr.start();
         try
         {
             //Se asigna un tiempo de espera hasta que la conexion y verificacion de datos haya terminado
@@ -251,6 +253,7 @@ public class MainActivity extends AppCompatActivity
                 tiempo+=100;
                 if(tiempo>5000) {
                     //Mensaje de que no se encuentra el usuario
+                    tr.stop();
                     break;
                 }
             }
@@ -266,6 +269,7 @@ public class MainActivity extends AppCompatActivity
             txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
             fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
             ini=0;
+            tr.stop();
         }
     }
 

@@ -8,13 +8,19 @@
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <ScrollView
             android:id="@+id/layoutInicioSesion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="visible">
+        <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -94,7 +100,7 @@
                 android:textAlignment="center" />
 
         </LinearLayout>
-
+        </ScrollView>
         <ScrollView
             android:id="@+id/layoutRegistro1"
             android:layout_width="match_parent"

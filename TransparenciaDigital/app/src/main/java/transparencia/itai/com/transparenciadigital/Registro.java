@@ -155,7 +155,17 @@ public class Registro extends Fragment  {
                         HabilitarCampos(false);
                     }
                 });
-                alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Lo mismo pero sin actualizar campos.
+                        btnActualizar.hide();
+                        btnEditar.show();
+
+                        HabilitarCampos(false);
+                    }
+                });
+                alert.setNeutralButton("Volver", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
