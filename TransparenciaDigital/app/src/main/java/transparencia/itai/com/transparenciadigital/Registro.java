@@ -112,13 +112,13 @@ public class Registro extends Fragment  {
         void onFragmentInteraction(Uri uri);
     }
 
-    ArrayList<EditText> texto= new ArrayList<>();
+    ArrayList<EditText> texto;
     FloatingActionButton btnEditar, btnActualizar;
-
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_registro, container, false);
+        view =inflater.inflate(R.layout.fragment_registro, container, false);
         btnEditar= (FloatingActionButton)view.findViewById(R.id.btnEditar);
         btnActualizar=(FloatingActionButton)view.findViewById(R.id.btnActualizar);
 
@@ -159,6 +159,7 @@ public class Registro extends Fragment  {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Lo mismo pero sin actualizar campos.
+                        Llenar(view);
                         btnActualizar.hide();
                         btnEditar.show();
 
@@ -181,8 +182,7 @@ public class Registro extends Fragment  {
     }
 
     public void Llenar(View view){
-
-
+        texto= new ArrayList<>();
         texto.add((EditText) view.findViewById(R.id.editEmail));
         texto.add((EditText) view.findViewById(R.id.editContra1));
         texto.add((EditText) view.findViewById(R.id.editContra2));

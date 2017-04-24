@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -143,6 +144,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     Button btnRegistro1;
     ArrayList<EditText> textos= new ArrayList<>();
     EditText editCuenta, editContrasena;
+    FloatingActionButton btnVolverRegistro;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -159,14 +161,29 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         layoutRegistro1 = (ScrollView)view.findViewById(R.id.layoutRegistro1);
         //layoutInicioSesion=(LinearLayout)view.findViewById(R.id.layoutInicioSesion);
         layoutInicioSesion=(ScrollView)view.findViewById(R.id.layoutInicioSesion);
+        btnVolverRegistro=(FloatingActionButton)view.findViewById(R.id.btnVolverRegistro);
+
+
         layoutInicioSesion.setVisibility(View.VISIBLE);
         layoutRegistro1.setVisibility(View.GONE);
         btnRegistro1=(Button)view.findViewById(R.id.btnRegistro1);
         toolbar.setVisibility(View.GONE);
+        Boton();
         Entrar();
         Registrar();
         Llenar(view);
         return view;
+    }
+
+    private void Boton() {
+        btnVolverRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutInicioSesion.setVisibility(View.VISIBLE);
+                layoutRegistro1.setVisibility(View.GONE);
+                btnVolverRegistro.hide();
+            }
+        });
     }
 
     private void Registrar() {
@@ -179,6 +196,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                         layoutInicioSesion.setVisibility(View.GONE);
                         layoutRegistro1.setVisibility(View.VISIBLE);
                         layoutRegistro1.fullScroll(View.FOCUS_UP);
+                        btnVolverRegistro.show();
                     } catch (Exception ex) {
                         String s = ex.getMessage();
                     }

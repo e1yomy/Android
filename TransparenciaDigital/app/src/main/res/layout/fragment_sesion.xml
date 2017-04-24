@@ -5,6 +5,21 @@
     android:layout_height="match_parent"
     tools:context="transparencia.itai.com.transparenciadigital.Sesion">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnVolverRegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
