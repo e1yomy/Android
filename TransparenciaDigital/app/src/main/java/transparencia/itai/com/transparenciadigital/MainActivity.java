@@ -92,14 +92,16 @@ public class MainActivity extends AppCompatActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    toolbar.setVisibility(View.VISIBLE);
+
                     if(preferences.getBoolean("sesion",false))
                     {
+                        toolbar.setVisibility(View.VISIBLE);
                         navigationView.getMenu().getItem(0).setChecked(true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
                     }
                     else
                     {
+                        toolbar.setVisibility(View.GONE);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
                     }
                 }
@@ -185,7 +187,6 @@ public class MainActivity extends AppCompatActivity
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
-            ini=0;
             QuitarSeleccionMenu();
 
             txtNombreUsuario.setText("");
@@ -216,7 +217,10 @@ public class MainActivity extends AppCompatActivity
         misDatos.setEnabled(boo);
         cerrarSesion.setEnabled(boo);
     }
-    static byte ini=0;
+    static byte ini=0; //Puede sustituirse por un boolean
+
+    //Funcion que se encarga de verificar que la cuenta que se ha ingresado sea valida
+    //
     public static void IniciarSesion(final String cuenta, final String contra){
 
         new Thread(new Runnable() {
@@ -225,6 +229,7 @@ public class MainActivity extends AppCompatActivity
                 try {
                     Conexion conexion = new Conexion();
                     if(conexion.IniciarSesion(cuenta,contra)==1) {
+                        toolbar.setVisibility(View.GONE);
                         ini=1;
                     }
                 }
@@ -236,21 +241,30 @@ public class MainActivity extends AppCompatActivity
         }).start();
         try
         {
-            while(ini!=1)
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            //Se asigna un tiempo de espera hasta que la conexion y verificacion de datos haya terminado
+            //De no haber devuelto resultado favorable en cinco segundos, el proceso termina.
+            int tiempo=0;
+            while(ini!=1) {
+                Thread.sleep(100);
+                tiempo+=100;
+                if(tiempo>5000) {
+                    //Mensaje de que no se encuentra el usuario
+                    break;
+                }
+            }
+        } catch (InterruptedException e) {e.printStackTrace();}
+
         if(ini==1)
         {
 
             preferences.edit().putBoolean("sesion", true).commit();
             HabilitarMenu(preferences.getBoolean("sesion", false));
             navigationView.getMenu().getItem(0).setChecked(true);
-            txtNombreUsuario.setText("Nombre" + " " + "Apellido" + " " + "Apellido");
+            txtNombreUsuario.setText(Conexion.listaDeDatos.get(4)+" "+ Conexion.listaDeDatos.get(5) + " "+  Conexion.listaDeDatos.get(5) );
             txtEmailUsuario.setText("alguien@ejemplo.com");
             txtNoSolicitudes.setText("20" + " " + "solicitudes realizadas");
             fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+            ini=0;
         }
     }
 
