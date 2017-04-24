@@ -18,11 +18,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static transparencia.itai.com.transparenciadigital.MainActivity.HabilitarMenu;
+import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
 import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
 import static transparencia.itai.com.transparenciadigital.MainActivity.navigationView;
@@ -137,6 +139,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     LinearLayout layoutInicioSesion;
     Button btnRegistro1;
     ArrayList<EditText> textos= new ArrayList<>();
+    EditText editCuenta, editContrasena;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -146,6 +149,9 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         registro=(TextView)view.findViewById(R.id.txtRegistro);
         fragmentManager= getFragmentManager();
         registro.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        editCuenta = (EditText)view.findViewById(R.id.editCuenta);
+        editContrasena = (EditText)view.findViewById(R.id.editContrasena);
 
         layoutRegistro1 = (ScrollView)view.findViewById(R.id.layoutRegistro1);
         layoutInicioSesion=(LinearLayout)view.findViewById(R.id.layoutInicioSesion);
@@ -223,15 +229,24 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferences.edit().putBoolean("sesion",true).commit();
-                HabilitarMenu(preferences.getBoolean("sesion",false));
-                navigationView.getMenu().getItem(0).setChecked(true);
+                Conexion conexion= new Conexion();
+                if(conexion.IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString())==1)
+                {
+                    preferences.edit().putBoolean("sesion",true).commit();
+                    HabilitarMenu(preferences.getBoolean("sesion",false));
+                    navigationView.getMenu().getItem(0).setChecked(true);
 
-                txtNombreUsuario.setText("Nombre"+ " " + "Apellido"+ " "+ "Apellido");
-                txtEmailUsuario.setText("alguien@ejemplo.com");
-                txtNoSolicitudes.setText("20"+ " "+ "solicitudes realizadas");
+                    txtNombreUsuario.setText("Nombre"+ " " + "Apellido"+ " "+ "Apellido");
+                    txtEmailUsuario.setText("alguien@ejemplo.com");
+                    txtNoSolicitudes.setText("20"+ " "+ "solicitudes realizadas");
 
-                fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                }
+                else
+                {
+                    Toast.makeText( c, "Cuenta o contrasena incorrecta, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
