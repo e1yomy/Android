@@ -168,53 +168,72 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         layoutRegistro1.setVisibility(View.GONE);
         btnRegistro1=(Button)view.findViewById(R.id.btnRegistro1);
         toolbar.setVisibility(View.GONE);
-        Boton();
-        Entrar();
-        Registrar();
+        Botones();
         Llenar(view);
         return view;
     }
 
-    private void Boton() {
+    private void Botones() {
+        //Label para registrarse
+        registro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    //fragmentManager.beginTransaction().replace(R.id.content_principal,new Registro()).commit();
+                    layoutInicioSesion.setVisibility(View.GONE);
+                    layoutRegistro1.setVisibility(View.VISIBLE);
+                    layoutRegistro1.fullScroll(View.FOCUS_UP);
+                    btnVolverRegistro.show();
+                } catch (Exception ex) {
+                    String s = ex.getMessage();
+                }
+
+            }
+        });
+        //Boton de finalizar el registro
+        btnRegistro1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editCuenta.setText("");
+                editContrasena.setText("");
+                layoutInicioSesion.setVisibility(View.VISIBLE);
+                layoutRegistro1.setVisibility(View.GONE);
+                preferences.edit().putBoolean("sesion",false);
+                btnVolverRegistro.hide();
+                LimpiarCampos();
+
+                ///
+            }
+        });
+
+        entrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    //MainActivity.fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+
+                    IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString());
+                } catch (Exception ex) {
+                    String exx = ex.getMessage();
+                    Log.e("Error",ex.getMessage(),ex.getCause());
+
+                }
+
+            }
+        });
+
         btnVolverRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layoutInicioSesion.setVisibility(View.VISIBLE);
                 layoutRegistro1.setVisibility(View.GONE);
                 btnVolverRegistro.hide();
+                LimpiarCampos();
             }
         });
     }
 
-    private void Registrar() {
-        //Label para registrarse
-            registro.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        //fragmentManager.beginTransaction().replace(R.id.content_principal,new Registro()).commit();
-                        layoutInicioSesion.setVisibility(View.GONE);
-                        layoutRegistro1.setVisibility(View.VISIBLE);
-                        layoutRegistro1.fullScroll(View.FOCUS_UP);
-                        btnVolverRegistro.show();
-                    } catch (Exception ex) {
-                        String s = ex.getMessage();
-                    }
-
-                }
-            });
-        //Boton de finalizar el registro
-            btnRegistro1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        layoutInicioSesion.setVisibility(View.VISIBLE);
-                        layoutRegistro1.setVisibility(View.GONE);
-                        preferences.edit().putBoolean("sesion",false);
-
-                        ///
-                    }
-                });
-    }
     public void Llenar(View view){
         textos.add((EditText) view.findViewById(R.id.editNombres1));
         textos.add((EditText) view.findViewById(R.id.editPaterno1));
@@ -247,26 +266,10 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
             });
         }
     }
-
-    private void Entrar() {
-        entrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                        try {
-
-                            //MainActivity.fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
-
-                            IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString());
-                        } catch (Exception ex) {
-                            String exx = ex.getMessage();
-                            Log.e("Error",ex.getMessage(),ex.getCause());
-
-                        }
-
-            }
-        });
+    public void LimpiarCampos(){
+        for(byte i=0;i<textos.size();i++){
+            textos.get(i).setText("");
+        }
     }
 
 }
