@@ -56,15 +56,6 @@
                 android:text="Correo electronico"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
 
-            <TextView
-                android:id="@+id/txtNoSolicitudes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtEmailUsuario"
-                android:layout_toEndOf="@+id/imageView"
-                android:layout_toRightOf="@+id/imageView"
-                android:paddingTop="10dp"
-                android:text="Número de solicitudes creadas" />
         </LinearLayout>
     </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Splash.OnFragmentInteractionListener,
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     static FragmentManager fragmentManager; //Administrador de fragmentos
+    FragmentTransaction fragmentTransaction;
     static boolean sesion=false;
     static Context c; //Variable de Contexto para mostrar Toast
     static Toolbar toolbar;  //Para modificar las opr de titulo
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     static SharedPreferences preferences;
     static NavigationView navigationView;
     static TextView txtNombreUsuario, txtEmailUsuario,txtNoSolicitudes;
+    static Usuario usr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,6 @@ public class MainActivity extends AppCompatActivity
 
         txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
         txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
-        txtNoSolicitudes= (TextView)header.findViewById(R.id.txtNoSolicitudes);
 
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         c=this;
@@ -90,14 +92,19 @@ public class MainActivity extends AppCompatActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    toolbar.setVisibility(View.VISIBLE);
+
                     if(preferences.getBoolean("sesion",false))
                     {
+                        toolbar.setVisibility(View.VISIBLE);
+                        txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+                        txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
+                        RecuperarDatosDeUsuario();
                         navigationView.getMenu().getItem(0).setChecked(true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
                     }
                     else
                     {
+                        toolbar.setVisibility(View.GONE);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
                     }
                 }
@@ -118,14 +125,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction=fragmentManager.beginTransaction();
+
+        if(id==R.id.nav_salir) {
+            finish();
+        }
         if(!preferences.getBoolean("sesion",false))
         {
-            fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
-
-            if(id==R.id.nav_salir) {
-                finish();
-            }
+            //fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
 
         }
         else
@@ -187,7 +194,7 @@ public class MainActivity extends AppCompatActivity
 
             txtNombreUsuario.setText("");
             txtEmailUsuario.setText("");
-            txtNoSolicitudes.setText("");
+            toolbar.setVisibility(View.GONE);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
 
@@ -213,5 +220,80 @@ public class MainActivity extends AppCompatActivity
         misDatos.setEnabled(boo);
         cerrarSesion.setEnabled(boo);
     }
+    static byte ini=0; //Puede sustituirse por un boolean
 
+    //Funcion que se encarga de verificar que la cuenta que se ha ingresado sea valida
+    //
+    public static void IniciarSesion(final String cuenta, final String contra){
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    if(conexion.IniciarSesion(cuenta,contra)==1) {
+
+                        ini=1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+        try
+        {
+            //Se asigna un tiempo de espera hasta que la conexion y verificacion de datos haya terminado
+            //De no haber devuelto resultado favorable en cinco segundos, el proceso termina.
+            int tiempo=0;
+            while(ini!=1) {
+                Thread.sleep(100);
+                tiempo+=100;
+                if(tiempo>5000) {
+                    //Mensaje de que no se encuentra el usuario
+                    tr.stop();
+                    break;
+                }
+            }
+        } catch (InterruptedException e) {e.printStackTrace();}
+
+        if(ini==1)
+        {
+            toolbar.setVisibility(View.VISIBLE);
+            preferences.edit().putBoolean("sesion", true).commit();
+            HabilitarMenu(preferences.getBoolean("sesion", false));
+            navigationView.getMenu().getItem(0).setChecked(true);
+            txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+            txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
+            fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+            ini=0;
+            tr.stop();
+        }
+    }
+
+    public static String FormatoNombre(String nombre){
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+    }
+    public static void RecuperarDatosDeUsuario(){
+        usr= new Usuario(
+                preferences.getString("idUsuario",""),
+                preferences.getString("idRol",""),
+                preferences.getString("correo",""),
+                preferences.getString("contrasena",""),
+                preferences.getString("nombre",""),
+                preferences.getString("apellidoPaterno",""),
+                preferences.getString("apellidoMaterno",""),
+                preferences.getString("calle",""),
+                preferences.getString("numeroExterior",""),
+                preferences.getString("numeroInterior",""),
+                preferences.getString("entreCalles",""),
+                preferences.getString("colonia",""),
+                preferences.getString("CP",""),
+                preferences.getString("entidad",""),
+                preferences.getString("municipio",""),
+                preferences.getString("telefono","")
+        );
+    }
 }

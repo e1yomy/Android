@@ -8,4 +8,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Te falta disenar esto, sí, lo se, falta la enie.</string>
+
+    <string-array name="municipios">
+        <item>Mulegé</item>
+        <item>Loreto</item>
+        <item>Comondú</item>
+        <item>La Paz</item>
+        <item>Los Cabos</item>
+    </string-array>
 </resources>
