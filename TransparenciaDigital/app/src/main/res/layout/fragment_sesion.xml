@@ -51,7 +51,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
 

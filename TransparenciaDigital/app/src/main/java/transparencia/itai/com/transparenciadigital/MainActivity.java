@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Splash.OnFragmentInteractionListener,
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     static FragmentManager fragmentManager; //Administrador de fragmentos
+    FragmentTransaction fragmentTransaction;
     static boolean sesion=false;
     static Context c; //Variable de Contexto para mostrar Toast
     static Toolbar toolbar;  //Para modificar las opr de titulo
@@ -118,10 +120,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction=fragmentManager.beginTransaction();
         if(!preferences.getBoolean("sesion",false))
         {
-            fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
+            //fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
 
             if(id==R.id.nav_salir) {
                 finish();
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
+            ini=0;
             QuitarSeleccionMenu();
 
             txtNombreUsuario.setText("");
@@ -212,6 +215,43 @@ public class MainActivity extends AppCompatActivity
     {
         misDatos.setEnabled(boo);
         cerrarSesion.setEnabled(boo);
+    }
+    static byte ini=0;
+    public static void IniciarSesion(final String cuenta, final String contra){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    if(conexion.IniciarSesion(cuenta,contra)==1) {
+                        ini=1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        }).start();
+        try
+        {
+            while(ini!=1)
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(ini==1)
+        {
+
+            preferences.edit().putBoolean("sesion", true).commit();
+            HabilitarMenu(preferences.getBoolean("sesion", false));
+            navigationView.getMenu().getItem(0).setChecked(true);
+            txtNombreUsuario.setText("Nombre" + " " + "Apellido" + " " + "Apellido");
+            txtEmailUsuario.setText("alguien@ejemplo.com");
+            txtNoSolicitudes.setText("20" + " " + "solicitudes realizadas");
+            fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+        }
     }
 
 }

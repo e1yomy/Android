@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static transparencia.itai.com.transparenciadigital.MainActivity.HabilitarMenu;
+import static transparencia.itai.com.transparenciadigital.MainActivity.IniciarSesion;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
 import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
@@ -229,25 +231,21 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Conexion conexion= new Conexion();
-                if(conexion.IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString())==1)
-                {
-                    preferences.edit().putBoolean("sesion",true).commit();
-                    HabilitarMenu(preferences.getBoolean("sesion",false));
-                    navigationView.getMenu().getItem(0).setChecked(true);
 
-                    txtNombreUsuario.setText("Nombre"+ " " + "Apellido"+ " "+ "Apellido");
-                    txtEmailUsuario.setText("alguien@ejemplo.com");
-                    txtNoSolicitudes.setText("20"+ " "+ "solicitudes realizadas");
 
-                    fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
-                }
-                else
-                {
-                    Toast.makeText( c, "Cuenta o contrasena incorrecta, intente nuevamente", Toast.LENGTH_SHORT).show();
-                }
+                        try {
+
+                            //MainActivity.fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+
+                            IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString());
+                        } catch (Exception ex) {
+                            String exx = ex.getMessage();
+                            Log.e("Error",ex.getMessage(),ex.getCause());
+
+                        }
 
             }
         });
     }
+
 }

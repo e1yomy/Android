@@ -1,5 +1,7 @@
 package transparencia.itai.com.transparenciadigital;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 
 import java.io.BufferedInputStream;
@@ -28,14 +30,16 @@ public class Conexion {
             conection = (HttpURLConnection) direccion.openConnection();
             respuesta = conection.getResponseCode();
             resul = new StringBuilder();
-            return (respuesta==HttpURLConnection.HTTP_OK)? 1:0;
+            if(respuesta==HttpURLConnection.HTTP_OK)
+                return 1;
+            else
+                return 0;
         }
         catch (Exception ex){
             return 0;
         }
 
     }
-
     public int IniciarSesion(String usuario, String contrasena){
         urlprevia=webService+"valida.php?"+"usu="+usuario+"&pas="+contrasena;
 
@@ -54,17 +58,20 @@ public class Conexion {
         //Else de mensaje de error por falta de red
         return obtenerDatosJson(resul.toString());
     }
-    public int obtenerDatosJson(String response)
-    {
+    public int obtenerDatosJson(String response){
+        int res =0;
         try {
             JSONArray json=new JSONArray(response);
             if (json.length()>0){
-                return 1;
+                res=1;
             }
 
+        }catch (Exception e){
+            Log.e(null,e.getMessage(),e.getCause());
+
         }
-        catch (Exception e){}
-        return  0;
+        return  res;
     }
+    
 
 }
