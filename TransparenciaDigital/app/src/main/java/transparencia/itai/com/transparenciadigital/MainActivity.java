@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     static SharedPreferences preferences;
     static NavigationView navigationView;
     static TextView txtNombreUsuario, txtEmailUsuario,txtNoSolicitudes;
+    static Usuario usr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +96,9 @@ public class MainActivity extends AppCompatActivity
                     if(preferences.getBoolean("sesion",false))
                     {
                         toolbar.setVisibility(View.VISIBLE);
-                        txtNombreUsuario.setText(FormatoNombre(preferences.getString("usuario","Nombre")));
-                        txtEmailUsuario.setText(FormatoNombre(preferences.getString("correo","alguien@example.com")));
+                        txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+                        txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
+                        RecuperarDatosDeUsuario();
                         navigationView.getMenu().getItem(0).setChecked(true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
                     }
@@ -260,8 +262,8 @@ public class MainActivity extends AppCompatActivity
             preferences.edit().putBoolean("sesion", true).commit();
             HabilitarMenu(preferences.getBoolean("sesion", false));
             navigationView.getMenu().getItem(0).setChecked(true);
-            txtNombreUsuario.setText(FormatoNombre(preferences.getString("usuario","Nombre")));
-            txtEmailUsuario.setText(FormatoNombre(preferences.getString("correo","alguien@example.com")));
+            txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+            txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
             fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
             ini=0;
         }
@@ -269,5 +271,25 @@ public class MainActivity extends AppCompatActivity
 
     public static String FormatoNombre(String nombre){
         return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+    }
+    public static void RecuperarDatosDeUsuario(){
+        usr= new Usuario(
+                preferences.getString("idUsuario",""),
+                preferences.getString("idRol",""),
+                preferences.getString("correo",""),
+                preferences.getString("contrasena",""),
+                preferences.getString("nombre",""),
+                preferences.getString("apellidoPaterno",""),
+                preferences.getString("apellidoMaterno",""),
+                preferences.getString("calle",""),
+                preferences.getString("numeroExterior",""),
+                preferences.getString("numeroInterior",""),
+                preferences.getString("entreCalles",""),
+                preferences.getString("colonia",""),
+                preferences.getString("CP",""),
+                preferences.getString("entidad",""),
+                preferences.getString("municipio",""),
+                preferences.getString("telefono","")
+        );
     }
 }

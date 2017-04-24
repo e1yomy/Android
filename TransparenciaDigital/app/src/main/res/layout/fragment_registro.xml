@@ -48,40 +48,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nombre completo de persona fisica" />
-
-            <EditText
-                android:id="@+id/editNombres"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Nombre (s)"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/editPaterno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Apellido paterno"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/editMaterno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Apellido materno"
-                android:inputType="textPersonName" />
-
-            <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="30dp"
                 android:text="Correo electrónico" />
 
             <EditText
@@ -114,6 +83,37 @@
                 android:ems="10"
                 android:hint="Repetir contraseña"
                 android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:text="Nombre completo de persona fisica" />
+
+            <EditText
+                android:id="@+id/editNombres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Nombre (s)"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editPaterno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Apellido paterno"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editMaterno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Apellido materno"
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/textView7"

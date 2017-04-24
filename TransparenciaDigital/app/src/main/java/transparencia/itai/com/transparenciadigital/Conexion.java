@@ -13,7 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static transparencia.itai.com.transparenciadigital.MainActivity.FormatoNombre;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
+import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 /**
  * Created by elyo_ on 23/04/2017.
@@ -72,8 +74,42 @@ public class Conexion {
             String str="";
             if (json.length()>0){
                 res=1;
-                preferences.edit().putString("usuario",json.getJSONObject(0).getString("nombre")+" "+ json.getJSONObject(0).getString("apellidoPaterno")).commit();
+                preferences.edit().putString("headernombreusuario",FormatoNombre(json.getJSONObject(0).getString("nombre"))+" "+ FormatoNombre(json.getJSONObject(0).getString("apellidoPaterno"))).commit();
+                preferences.edit().putString("headercorreo",json.getJSONObject(0).getString("correo")).commit();
+
+                preferences.edit().putString("idUsuario",json.getJSONObject(0).getString("idUsuario")).commit();
+                preferences.edit().putString("idRol",json.getJSONObject(0).getString("idRol")).commit();
                 preferences.edit().putString("correo",json.getJSONObject(0).getString("correo")).commit();
+                preferences.edit().putString("contrasena",json.getJSONObject(0).getString("contrasena")).commit();
+                preferences.edit().putString("nombre",json.getJSONObject(0).getString("nombre")).commit();
+                preferences.edit().putString("apellidoPaterno",json.getJSONObject(0).getString("apellidoPaterno")).commit();
+                preferences.edit().putString("apellidoMaterno",json.getJSONObject(0).getString("apellidoMaterno")).commit();
+                preferences.edit().putString("calle",json.getJSONObject(0).getString("calle")).commit();
+                preferences.edit().putString("numeroExterior",json.getJSONObject(0).getString("numeroExterior")).commit();
+                preferences.edit().putString("numeroInterior",json.getJSONObject(0).getString("numeroInterior")).commit();
+                preferences.edit().putString("entreCalles",json.getJSONObject(0).getString("entreCalles")).commit();
+                preferences.edit().putString("colonia",json.getJSONObject(0).getString("colonia")).commit();
+                preferences.edit().putString("CP",json.getJSONObject(0).getString("CP")).commit();
+                preferences.edit().putString("entidad",json.getJSONObject(0).getString("entidad")).commit();
+                preferences.edit().putString("municipio",json.getJSONObject(0).getString("municipio")).commit();
+                preferences.edit().putString("telefono",json.getJSONObject(0).getString("telefono")).commit();
+                usr=new Usuario(
+                        json.getJSONObject(0).getString("idUsuario"),
+                        json.getJSONObject(0).getString("idRol"),
+                        json.getJSONObject(0).getString("correo"),
+                        json.getJSONObject(0).getString("contrasena"),
+                        json.getJSONObject(0).getString("nombre"),
+                        json.getJSONObject(0).getString("apellidoPaterno"),
+                        json.getJSONObject(0).getString("apellidoMaterno"),
+                        json.getJSONObject(0).getString("calle"),
+                        json.getJSONObject(0).getString("numeroExterior"),
+                        json.getJSONObject(0).getString("numeroInterior"),
+                        json.getJSONObject(0).getString("entreCalles"),
+                        json.getJSONObject(0).getString("colonia"),
+                        json.getJSONObject(0).getString("CP"),
+                        json.getJSONObject(0).getString("entidad"),
+                        json.getJSONObject(0).getString("municipio"),
+                        json.getJSONObject(0).getString("telefono"));
             }
 
         }catch (Exception e){

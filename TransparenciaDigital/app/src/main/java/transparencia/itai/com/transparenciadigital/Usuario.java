@@ -10,6 +10,7 @@ public class Usuario {
 
     String id,
             rol,
+
             correo,
             contrasena,
             nombres,
@@ -24,7 +25,7 @@ public class Usuario {
             entidadFederativa,
             municipio,
             telefono;
-
+    ArrayList<String> datos;
     public Usuario(String id, String rol, String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono){
         this.id= id;
         this.rol= rol;
@@ -42,6 +43,24 @@ public class Usuario {
         this.entidadFederativa= entidadFederativa;
         this.municipio= municipio;
         this.telefono= telefono;
+        this.datos= new ArrayList<>();
+        datos.add(id);
+        datos.add(rol);
+        datos.add(correo);
+        datos.add(contrasena);
+        datos.add(nombres);
+        datos.add(paterno);
+        datos.add(materno);
+        datos.add(calle);
+        datos.add(noExterno);
+        datos.add(noInterno);
+        datos.add(entreCalles);
+        datos.add(colonia);
+        datos.add(cp);
+        datos.add(entidadFederativa);
+        datos.add(municipio);
+        datos.add(telefono);
+
     }
     public Usuario(){
     }

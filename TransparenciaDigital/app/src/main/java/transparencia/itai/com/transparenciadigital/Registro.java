@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 
 /**
@@ -146,6 +147,7 @@ public class Registro extends Fragment  {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //ProgresDialog para actualizar datos en la base de datos
+                        //
                         //Si todo sale bien, continua, caso contrario, muestra mensaje de error y vuelve a la pantalla
                         btnActualizar.hide();
                         btnEditar.show();
@@ -169,12 +171,14 @@ public class Registro extends Fragment  {
     }
 
     public void Llenar(View view){
-        texto.add((EditText) view.findViewById(R.id.editNombres));
-        texto.add((EditText) view.findViewById(R.id.editPaterno));
-        texto.add((EditText) view.findViewById(R.id.editMaterno));
+
+
         texto.add((EditText) view.findViewById(R.id.editEmail));
         texto.add((EditText) view.findViewById(R.id.editContra1));
         texto.add((EditText) view.findViewById(R.id.editContra2));
+        texto.add((EditText) view.findViewById(R.id.editNombres));
+        texto.add((EditText) view.findViewById(R.id.editPaterno));
+        texto.add((EditText) view.findViewById(R.id.editMaterno));
         texto.add((EditText) view.findViewById(R.id.editDomicilioCalle));
         texto.add((EditText) view.findViewById(R.id.editDomicilioExterior));
         texto.add((EditText) view.findViewById(R.id.editDomicilioInterior));
@@ -188,6 +192,12 @@ public class Registro extends Fragment  {
         for(byte i=0;i<texto.size();i++){
             texto.get(i).setEnabled(false);
             final byte finalI = i;
+            if(i<2)
+                texto.get(i).setText(usr.datos.get(i+2));
+            else
+                texto.get(i).setText(usr.datos.get(i+1));
+
+
             texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
