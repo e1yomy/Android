@@ -1,0 +1,4 @@
+Usar listas personalizadas para mostrar la lista de solicitudes con un titulo, fecha y otros datos cortos
+En la barra de herramientas activar un  botón de búsqueda 
+En el drawer poner información del ITAI misión, vision, organigrama, etc.  (pestañas?)
+Sitios de interes, página del ITAL, PNT
