@@ -19,15 +19,18 @@
             android:icon="@drawable/ic_sujeto_obligado"
             android:title="Sujetos Obligados" />
     </group>
+    <item android:title="¿Quiénes somos?">
+        <menu>
+            <item
+                android:id="@+id/nav_quienessomos"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Conócenos"
+                />
 
-
+        </menu>
+    </item>
     <item>
     <menu>
-        <item
-            android:id="@+id/nav_registro"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Registrate"
-            android:visible="false" />
         <item
             android:id="@+id/nav_salir"
             android:icon="@drawable/ic_salir"
