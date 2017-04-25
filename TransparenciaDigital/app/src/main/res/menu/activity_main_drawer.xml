@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_acceso"
             android:icon="@drawable/ic_sol_informacion"
-            android:title="Sol. de informacion" />
+            android:title="Solicitud de informacion" />
         <item
             android:id="@+id/nav_denuncia"
             android:icon="@drawable/ic_incumplimiento"

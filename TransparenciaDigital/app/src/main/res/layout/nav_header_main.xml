@@ -43,7 +43,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@+id/imageView"
                 android:text="Nombre del usuario"
-                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/txtEmailUsuario"
