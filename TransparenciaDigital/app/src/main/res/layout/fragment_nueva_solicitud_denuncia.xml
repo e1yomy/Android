@@ -45,7 +45,7 @@
             <EditText
                 android:id="@+id/editText6"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="188dp"
                 android:ems="10"
                 android:hint="Descripción clara y precisa del incumplimiento denunciado"
                 android:inputType="textMultiLine" />
