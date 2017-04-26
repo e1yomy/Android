@@ -15,6 +15,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
@@ -40,6 +44,7 @@ public class Registro extends Fragment  {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
 
     public Registro() {
         // Required empty public constructor
