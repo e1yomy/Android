@@ -2,3 +2,5 @@ Usar listas personalizadas para mostrar la lista de solicitudes con un titulo, f
 En la barra de herramientas activar un  botón de búsqueda 
 En el drawer poner información del ITAI misión, vision, organigrama, etc.  (pestañas?)
 Sitios de interes, página del ITAL, PNT
+
+mostrar toolbar al entrar a la informacion del itai. ocultarla cuando se llegue al fragment de inicio de sesion 

@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity
         NuevaSolicitudDenuncia.OnFragmentInteractionListener,
         MisSolicitudes.OnFragmentInteractionListener,
         Registro.OnFragmentInteractionListener,
-        SujetosObligados.OnFragmentInteractionListener
+        SujetosObligados.OnFragmentInteractionListener,
+        QuienesSomos.OnFragmentInteractionListener
 
 {
 
@@ -130,9 +131,15 @@ public class MainActivity extends AppCompatActivity
         if(id==R.id.nav_salir) {
             finish();
         }
+        else if(id==R.id.nav_quienessomos){
+            fragmentTransaction.replace(R.id.content_principal,new QuienesSomos()).commit();
+            navigationView.getMenu().getItem(4).setChecked(true);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
+        }
         if(!preferences.getBoolean("sesion",false))
         {
-            //fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
 
         }
         else
@@ -155,13 +162,11 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudDenuncia()).commit();
                 navigationView.getMenu().findItem(id).setChecked(true);
 
-            } else if(id==R.id.nav_registro){
-                fragmentTransaction.replace(R.id.content_principal, new Registro()).commit();
             }
+
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
     }
