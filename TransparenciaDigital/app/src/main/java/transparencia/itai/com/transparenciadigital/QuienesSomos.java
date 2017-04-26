@@ -3,6 +3,7 @@ package transparencia.itai.com.transparenciadigital;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -116,7 +117,7 @@ public class QuienesSomos extends Fragment {
         View view =inflater.inflate(R.layout.fragment_quienes_somos, container, false);
         //tab= new ArrayList<>();
         tabDatos= new ArrayList<>();
-
+        CargarTabs(view);
 
 
         return view;
@@ -126,14 +127,14 @@ public class QuienesSomos extends Fragment {
     {
         tabTitulos=(TabLayout)view.findViewById(R.id.tabTitulos);
         tabTitulos.setTabMode(TabLayout.MODE_SCROLLABLE);
-        LinearLayout layoutPrincipal= (LinearLayout)view.findViewById(R.id.layoutPrincipal);
-        for(int i=0;i<layoutPrincipal.getChildCount();i++)
-            if(layoutPrincipal.getChildAt(i) instanceof ScrollView) {
-                tabDatos.add((ScrollView) layoutPrincipal.getChildAt(i));
-                tabDatos.get(i).setVisibility(View.GONE);
-            }
+        tabTitulos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        tabDatos.add((ScrollView)view.findViewById(R.id.scroll1));
+        tabDatos.add((ScrollView)view.findViewById(R.id.scroll2));
+        tabDatos.add((ScrollView)view.findViewById(R.id.scroll3));
+        tabDatos.add((ScrollView)view.findViewById(R.id.scroll4));
+        tabDatos.add((ScrollView)view.findViewById(R.id.scroll5));
+        tabDatos.add((ScrollView)view.findViewById(R.id.scroll6));
         //for(byte i=0;i<tabTitulos.getTabCount();i++){tab.add(tabTitulos.getTabAt(i));}
-
         tabTitulos.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -150,9 +151,10 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 //mostrar
-                MostrarPestana(tab);
+                //MostrarPestana(tab);
             }
         });
+
     }
     public int MostrarPestana(TabLayout.Tab tab)
     {
