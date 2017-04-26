@@ -134,13 +134,15 @@ public class QuienesSomos extends Fragment {
         tabDatos.add((ScrollView)view.findViewById(R.id.scroll4));
         tabDatos.add((ScrollView)view.findViewById(R.id.scroll5));
         tabDatos.add((ScrollView)view.findViewById(R.id.scroll6));
-        //for(byte i=0;i<tabTitulos.getTabCount();i++){tab.add(tabTitulos.getTabAt(i));}
+        for (byte i=0;i<tabDatos.size();i++)
+            tabDatos.get(i).setVisibility(View.GONE);
+
+        tabDatos.get(0).setVisibility(View.VISIBLE);
         tabTitulos.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //mostrar
                 MostrarPestana(tab);
-
             }
 
             @Override

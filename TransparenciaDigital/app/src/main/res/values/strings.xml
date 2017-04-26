@@ -8,6 +8,42 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Te falta disenar esto, sí, lo se, falta la enie.</string>
+    <string name="quienessomos">¿Quiénes somos?</string>
+    <string name="quienessomostexto">El Instituto es un organismo constitucional autónomo, especializado, imparcial y colegiado, con personalidad jurídica y patrimonio propio, el cual gozará de plena autonomía técnica, de gestión, capacidad para decidir sobre el ejercicio de su presupuesto y determinar su organización interna, responsable de garantizar el cumplimiento del derecho a la transparencia, acceso a la información pública y a la protección de datos personales en posesión de los sujetos obligados. El Instituto no se encuentra subordinado a ninguna autoridad. Las resoluciones del Instituto, en materia de clasificación de información y acceso a la información, serán vinculantes, definitivas e inatacables para todos los sujetos obligados.</string>
+    <string name="articulo32">Artículo 32° Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur</string>
+    <string name="articulo33">Artículo 33° Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur</string>
+    <string name="comoseintegra">¿Cómo se integra?</string>
+    <string name="comoseintegratexto" >El Instituto se integra por:\n\n
+        I. El Consejo General, que es el órgano máximo de gobierno;\n
+        II. Comisionados;\n
+        III. Secretaria Ejecutiva;\n
+        IV. Las unidades administrativas que establezca su Reglamento Interior que mínimamente deberán ser: Jurídica, Capacitación y Difusión, Administración, Control Interno, Tecnologías de la Información y las demás que su Reglamento prevea y\n
+        V.	Las representaciones del Instituto que de manera justificada apruebe el Consejo General.\n\n
+        El Instituto contará además con un Consejo Consultivo, él cual se regirá por las disposiciones de la presente Ley.
+
+
+    </string>
+    <string name="mision">Misión</string>
+    <string name="misiontexto">Garantizar el cumplimiento del derecho humano al acceso a la información pública y protección de datos personales en posesión de los sujetos obligados.</string>
+    <string name="vision">Visión</string>
+    <string name="visiontexto">Ser una institución comprometida con la sociedad Sudcaliforniana, atendiendo en su funcionamiento los principios de certeza, eficacia, imparcialidad, independencia, legalidad, objetividad, transparencia, profesionalismo y máxima publicidad.</string>
+    <string name="objetivo">Objetivo</string>
+    <string name="objetivotexto">Consolidar en Baja California Sur, la cultura por la transparencia, el ejercicio del derecho al acceso a la información pública, la protección de datos personales y la debida rendición de cuentas.</string>
+    <string name="estructuraorganica">Estructura Orgánica</string>
+    <string name="estructuraorganicatexto">Artículo 4°.- Para el ejercicio de sus facultades y el despacho de los asuntos que le competen, el Instituto contará con la siguiente estructura:\n\n
+        I. Consejo General;\n
+        II. Presidencia del Consejo;\n
+        III. Comisionados;\n
+        IV. Secretaría Ejecutiva;\n
+        V. Unidades Administrativas: Administración; Capacitación y Difusión; Jurídica; Tecnologías de la Información.\n\n
+        El demás personal técnico y administrativo, que autorice el Consejo General a propuesta del Comisionado Presidente, de acuerdo a la disponibilidad presupuestaria.\n\n
+
+        Artículo 5°.-El Instituto contará con un Órgano Interno de Control, encargado de la supervisión y vigilancia del uso de los recursos públicos asignados para su funcionamiento; así como el debido desempeño del personal y el cumplimiento de los programas establecidos por el Consejo General;\n\n
+        Artículo 6°.- El Instituto contará con un Consejo Consultivo, con funciones de consulta y asesoría, en la planeación y promoción de las actividades relacionadas con la transparencia y acceso a la información pública, atendiendo a las disposiciones que establece la Ley.\n
+    </string>
+    <string name="reglamentointerior">Reglamento Interior del Instituto de Transparencia, Acceso a la Información Pública y Protección de Datos Personales del Estado de Baja California Sur</string>
+    <string name="consultarestructuraorganica">Puede consultar la estructura orgánica dando click en el siguiente botón .</string>
+    <string name="botonconsultarestructura">Consultar Estructura Orgánica</string>
 
     <string-array name="municipios">
         <item>Mulegé</item>
@@ -16,4 +52,7 @@
         <item>La Paz</item>
         <item>Los Cabos</item>
     </string-array>
+    
+    
+    
 </resources>
