@@ -30,7 +30,7 @@ public class Conexion {
 
     URL direccion=null;
     String urlprevia="";
-    final String webService= "http://pruebastec.890m.com/webservices/";
+    final String webService= "http://pruebastec.890m.com/servicios/";
     String linea="";
     int respuesta=0;
     StringBuilder resul=new StringBuilder();
@@ -63,7 +63,7 @@ public class Conexion {
 
             data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode(usr, "UTF-8");
             data += "&" + URLEncoder.encode("name", "UTF-8") + "="+ URLEncoder.encode(pass, "UTF-8");
-            data += "&" + URLEncoder.encode("contrasenaWS", "UTF-8")+ "=" + URLEncoder.encode("passws", "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode("passws", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class Conexion {
         try{
             //urlprevia=webService+"iniciarsesion.php";
             //direccion = new URL(urlprevia);
-            direccion = new URL("http://192.168.90.96/pruebas/rest/iniciarsesion.php");
+            direccion = new URL("http://pruebastec.890m.com/servicios/iniciarsesion.php");
 
             URLConnection conn= direccion.openConnection();
             conn.setDoOutput(true);
