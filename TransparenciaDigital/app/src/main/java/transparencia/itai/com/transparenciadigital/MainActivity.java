@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
                 try {
                     Conexion conexion = new Conexion();
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
-                    if(conexion.IniciarSesion(cuenta,contra,"")==1) {
+                    if(conexion.IniciarSesion(cuenta,contra)==1) {
 
                         ini=1;
                     }
