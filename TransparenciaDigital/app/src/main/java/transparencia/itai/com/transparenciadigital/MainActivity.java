@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
                 try {
                     Conexion conexion = new Conexion();
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
-                    if(conexion.IniciarSesion(cuenta,contra,"")==1) {
+                    if(conexion.IniciarSesion(cuenta,contra)==1) {
 
                         ini=1;
                     }
@@ -284,8 +284,6 @@ public class MainActivity extends AppCompatActivity
     }
     public static void RecuperarDatosDeUsuario(){
         usr= new Usuario(
-                preferences.getString("idUsuario",""),
-                preferences.getString("idRol",""),
                 preferences.getString("correo",""),
                 preferences.getString("contrasena",""),
                 preferences.getString("nombre",""),
