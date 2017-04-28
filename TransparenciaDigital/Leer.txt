@@ -4,3 +4,4 @@ En el drawer poner información del ITAI misión, vision, organigrama, etc.  (pe
 Sitios de interes, página del ITAL, PNT
 
 mostrar toolbar al entrar a la informacion del itai. ocultarla cuando se llegue al fragment de inicio de sesion 
+Al registrarse, enviar correo al usuario con una clave de confirmación
