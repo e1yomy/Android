@@ -61,7 +61,7 @@ public class Usuario {
     }
     public int GuardarUsuario(String id, String rol, String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono){
         Conexion conexion= new Conexion();
-        int a= conexion.RegistrarUsuario(id,rol,correo,contrasena,nombres,paterno,materno,calle,noExterno,noInterno,entreCalles,colonia,cp,entidadFederativa,municipio,telefono);
+        int a= conexion.RegistrarUsuario(correo,contrasena,nombres,paterno,materno,calle,noExterno,noInterno,entreCalles,colonia,cp,entidadFederativa,municipio,telefono);
 
 
         return 1;
@@ -72,12 +72,6 @@ public class Usuario {
     }
     public void setId(String id) {
             this.id = id;
-        }
-    public String getRol() {
-            return rol;
-        }
-    public void setRol(String rol) {
-            this.rol = rol;
         }
     public String getCorreo() {
             return correo;

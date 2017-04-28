@@ -34,7 +34,7 @@ public class Conexion {
     int respuesta=0;
     StringBuilder resul=new StringBuilder();
     HttpURLConnection conection;
-    String contrasenaWS="patito";
+    final String contrasenaWS="patito";
 
     public ArrayList<String> GetSolicitudes(String usuario){
         urlprevia=webService+"";
@@ -157,8 +157,6 @@ public class Conexion {
                 preferences.edit().putString("municipio",json.getJSONObject(0).getString("municipio")).commit();
                 preferences.edit().putString("telefono",json.getJSONObject(0).getString("telefono")).commit();
                 usr=new Usuario(
-                        json.getJSONObject(0).getString("idUsuario"),
-                        json.getJSONObject(0).getString("idRol"),
                         json.getJSONObject(0).getString("correo"),
                         json.getJSONObject(0).getString("contrasena"),
                         json.getJSONObject(0).getString("nombre"),
@@ -189,7 +187,19 @@ public class Conexion {
             direccion= new URL(urlprevia);
 
             data = URLEncoder.encode("", "UTF-8")+ "=" + URLEncoder.encode(correo, "UTF-8");
-            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(pass, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(contrasena, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(nombres, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(paterno, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(materno, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(calle, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(noExterno, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(noInterno, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(entreCalles, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(colonia, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(cp, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(entidadFederativa, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(municipio, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(telefono, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();

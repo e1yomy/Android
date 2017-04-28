@@ -284,8 +284,6 @@ public class MainActivity extends AppCompatActivity
     }
     public static void RecuperarDatosDeUsuario(){
         usr= new Usuario(
-                preferences.getString("idUsuario",""),
-                preferences.getString("idRol",""),
                 preferences.getString("correo",""),
                 preferences.getString("contrasena",""),
                 preferences.getString("nombre",""),
