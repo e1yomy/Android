@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,10 +15,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -30,19 +26,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static android.content.Context.MEDIA_PROJECTION_SERVICE;
-import static transparencia.itai.com.transparenciadigital.MainActivity.HabilitarMenu;
 import static transparencia.itai.com.transparenciadigital.MainActivity.IniciarSesion;
-import static transparencia.itai.com.transparenciadigital.MainActivity.c;
-import static transparencia.itai.com.transparenciadigital.MainActivity.drawer;
-import static transparencia.itai.com.transparenciadigital.MainActivity.fragmentManager;
-import static transparencia.itai.com.transparenciadigital.MainActivity.navigationView;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
-import static transparencia.itai.com.transparenciadigital.MainActivity.sesion;
 import static transparencia.itai.com.transparenciadigital.MainActivity.toolbar;
-import static transparencia.itai.com.transparenciadigital.MainActivity.txtEmailUsuario;
-import static transparencia.itai.com.transparenciadigital.MainActivity.txtNoSolicitudes;
-import static transparencia.itai.com.transparenciadigital.MainActivity.txtNombreUsuario;
 
 
 
@@ -281,7 +267,9 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
 
                     //MainActivity.fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
 
+                    //Funcion del MainActivity que hace la llamada al inicio de sesion desde un hilo
                     IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString());
+
                 } catch (Exception ex) {
                     String exx = ex.getMessage();
                     Log.e("Error",ex.getMessage(),ex.getCause());

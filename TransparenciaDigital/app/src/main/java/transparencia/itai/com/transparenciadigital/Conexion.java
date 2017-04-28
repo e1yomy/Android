@@ -7,10 +7,15 @@ import org.json.JSONArray;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.FormatoNombre;
@@ -48,6 +53,57 @@ public class Conexion {
         }
 
     }
+    public int IniciarSesion(String usr, String pass,String asdads)
+    {
+        String data = "";
+        try {
+            //data = URLEncoder.encode("usuario", "UTF-8")+ "=" + URLEncoder.encode(usr, "UTF-8");
+            //data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(pass, "UTF-8");
+            //data += "&" + URLEncoder.encode("contrasenaWS", "UTF-8")+ "=" + URLEncoder.encode(passWS, "UTF-8");
+
+            data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode(usr, "UTF-8");
+            data += "&" + URLEncoder.encode("name", "UTF-8") + "="+ URLEncoder.encode(pass, "UTF-8");
+            data += "&" + URLEncoder.encode("contrasenaWS", "UTF-8")+ "=" + URLEncoder.encode("passws", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String text="";
+        BufferedReader reader=null;
+        StringBuilder sb= new StringBuilder();
+        try{
+            //urlprevia=webService+"iniciarsesion.php";
+            //direccion = new URL(urlprevia);
+            direccion = new URL("http://192.168.90.96/pruebas/rest/iniciarsesion.php");
+
+            URLConnection conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            OutputStreamWriter wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String line=null;
+
+            while ((line=reader.readLine())!=null)
+            {
+                sb.append(line);
+            }
+            text=sb.toString();
+        }
+        catch (Exception ex){
+
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return obtenerDatosJson(sb.toString());
+    }
+
     public int IniciarSesion(String usuario, String contrasena){
         urlprevia=webService+"valida.php?"+"usu="+usuario+"&pas="+contrasena;
 
