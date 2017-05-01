@@ -59,7 +59,7 @@ public class Usuario {
     }
     public Usuario(){
     }
-    public int GuardarUsuario(String id, String rol, String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono){
+    public int GuardarUsuario(String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono){
         Conexion conexion= new Conexion();
         int a= conexion.RegistrarUsuario(correo,contrasena,nombres,paterno,materno,calle,noExterno,noInterno,entreCalles,colonia,cp,entidadFederativa,municipio,telefono);
 

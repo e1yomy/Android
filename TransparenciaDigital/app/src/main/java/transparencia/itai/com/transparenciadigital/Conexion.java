@@ -141,7 +141,7 @@ public class Conexion {
                 preferences.edit().putString("headercorreo",json.getJSONObject(0).getString("correo")).commit();
 
                 preferences.edit().putString("idUsuario",json.getJSONObject(0).getString("idUsuario")).commit();
-                preferences.edit().putString("idRol",json.getJSONObject(0).getString("idRol")).commit();
+
                 preferences.edit().putString("correo",json.getJSONObject(0).getString("correo")).commit();
                 preferences.edit().putString("contrasena",json.getJSONObject(0).getString("contrasena")).commit();
                 preferences.edit().putString("nombre",json.getJSONObject(0).getString("nombre")).commit();
