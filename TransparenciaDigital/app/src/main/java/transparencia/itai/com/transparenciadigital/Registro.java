@@ -204,26 +204,32 @@ public class Registro extends Fragment  {
         texto.add((EditText) view.findViewById(R.id.editDomicilioMunicipio));
         texto.add((EditText) view.findViewById(R.id.editTelefono));
 
-        for(byte i=0;i<texto.size();i++){
-            texto.get(i).setEnabled(false);
-            final byte finalI = i;
-            if(i<2)
-                texto.get(i).setText(usr.datos.get(i+2));
-            else
-                texto.get(i).setText(usr.datos.get(i+1));
+        try {
+            for (byte i = 0; i < texto.size(); i++) {
+                texto.get(i).setEnabled(false);
+                final byte finalI = i;
+                if(i!=2)
+                    texto.get(i).setText(usr.datos.get(i));
+                else
+                    texto.get(i).setText(usr.datos.get(i-1));
 
 
-            texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            texto.get(finalI+1).setFocusable(true);
-                            texto.get(finalI+1).requestFocus();
-                        return true;
+                texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            texto.get(finalI + 1).setFocusable(true);
+                            texto.get(finalI + 1).requestFocus();
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            String exx=ex.getMessage();
         }
     }
 

@@ -21,7 +21,6 @@ import android.widget.Toast;
 public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Mapa.OnFragmentInteractionListener,
-        GenerarClaves.OnFragmentInteractionListener,
         ListaHijos.OnFragmentInteractionListener
 
 {
@@ -115,12 +114,12 @@ public class Principal extends AppCompatActivity
                 break;
             case R.id.nav_clavepadre:
                 padre=1;
-                transaction.replace(R.id.content_principal,new GenerarClaves());
+                //transaction.replace(R.id.content_principal,new GenerarClaves());
                 pantalla=3;
                 break;
             case R.id.nav_clavehijo:
                 padre=0;
-                transaction.replace(R.id.content_principal,new GenerarClaves());
+                //transaction.replace(R.id.content_principal,new GenerarClaves());
                 pantalla=4;
                 break;
             case R.id.nav_agregarpadre:
