@@ -29,7 +29,7 @@ public class Conexion {
 
     URL direccion=null;
     String urlprevia="";
-    final String webService= "http://pruebastec.890m.com/webservices/";
+    final String webService= "http://pruebastec.890m.com/servicios/";
     String linea="";
     int respuesta=0;
     StringBuilder resul=new StringBuilder();
