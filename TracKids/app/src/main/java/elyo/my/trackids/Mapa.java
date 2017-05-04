@@ -52,11 +52,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    GoogleMap m;
-    LocationManager locationManager;
-    Location l;
-    boolean gps;
-    LatLng la;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -150,7 +146,12 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         void onFragmentInteraction(Uri uri);
     }
 
-
+    GoogleMap m;
+    LocationManager locationManager;
+    Location l;
+    boolean gps;
+    LatLng la;
+    FloatingActionButton opciones,miUbicacion;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -160,52 +161,32 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                     .findFragmentById(R.id.mapa1);
             mapFragment.getMapAsync(this);
+
+
+
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
             gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
-
-            FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-            fab.setOnClickListener(new View.OnClickListener() {
+            opciones = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+            miUbicacion = (FloatingActionButton) view.findViewById(R.id.floatingActionButton2);
+            BotonOpciones();
+            miUbicacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder alert= new AlertDialog.Builder(c);
-                    alert.setTitle("Opciones");
-                    alert.setItems(R.array.opciones, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //which es el valor del index de la lista de elementos que se muestran en el Dialog
-                            switch (which)
-                            {
-                                case 0:
-                                    break;
-                                case 1:
-                                    break;
-                                case 2:
-                                    break;
-                                case 3:
-                                    DatePickerDialog pick= new DatePickerDialog(c, new DatePickerDialog.OnDateSetListener() {
-                                        @Override
-                                        public void onDateSet(DatePicker v, int year, int month, int dayOfMonth) {
-                                            month++; //meses está de 0 a 11
+                    ActualizarMarcador(l);
 
-                                            //Cuando no haya ningun registro del hijo en la fecha seleccionada, deberá mostrar un Snackz
-                                            //Snackbar.make(view,dayOfMonth+" "+(month+1)+" "+ year,Snackbar.LENGTH_LONG).show();
-
-                                        }
-                                    }, Calendar.getInstance().get(Calendar.YEAR),Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-                                    pick.setTitle("Seleccionar fecha");
-                                    pick.show();
-                                    break;
-
-
-                            }
-
-                        }
-                    });
-                    alert.show();
                 }
             });
-            //if(pantalla==1)fab.setVisibility(View.INVISIBLE);
-            //else fab.setVisibility(View.VISIBLE);
+            if(pantalla==1){
+                opciones.setVisibility(View.INVISIBLE);
+                miUbicacion.setVisibility(View.VISIBLE);
+                //
+            }
+            else {
+                opciones.setVisibility(View.VISIBLE);
+                miUbicacion.setVisibility(View.VISIBLE);
+                //Cargar la ubicacion del hijo seleccionado antes
+
+            }
         }
         catch (Exception ex)
         {
@@ -215,17 +196,53 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         return view;
     }
 
+    private void BotonOpciones() {
+        opciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert= new AlertDialog.Builder(c);
+                alert.setTitle("Opciones");
+                alert.setItems(R.array.opciones, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //which es el valor del index de la lista de elementos que se muestran en el Dialog
+                        switch (which)
+                        {
+                            case 0:
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                DatePickerDialog pick= new DatePickerDialog(c, new DatePickerDialog.OnDateSetListener() {
+                                    @Override
+                                    public void onDateSet(DatePicker v, int year, int month, int dayOfMonth) {
+                                        month++; //meses está de 0 a 11
+
+                                        //Cuando no haya ningun registro del hijo en la fecha seleccionada, deberá mostrar un Snackz
+                                        //Snackbar.make(view,dayOfMonth+" "+(month+1)+" "+ year,Snackbar.LENGTH_LONG).show();
+
+                                    }
+                                }, Calendar.getInstance().get(Calendar.YEAR),Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                                pick.setTitle("Seleccionar fecha");
+                                pick.show();
+                                break;
+
+
+                        }
+
+                    }
+                });
+                alert.show();
+            }
+        });
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         try {
-            m = googleMap;
-            m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            m.getUiSettings().setZoomControlsEnabled(true);
-            m.getUiSettings().setCompassEnabled(true);
-            m.getUiSettings().setAllGesturesEnabled(true);
-            m.getUiSettings().setMyLocationButtonEnabled(true);
-            m.getUiSettings().setMapToolbarEnabled(false);
-            m.setPadding(0, 0, 15, 130);
+            ConfigurarMapa(googleMap);
 
             if (ActivityCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -237,25 +254,48 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            if (gps) {
-                locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
-                locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
-                if (locationManager != null) {
+            if(pantalla==1) {
+                if (gps) {
+                    locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
+                    locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
+                    if (locationManager != null) {
 
-                    l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-                    ActualizarMarcador(l);
+                        l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                        ActualizarMarcador(l);
+                    }
                 }
+            }
+            else
+            {
+
             }
 
         } catch (Exception ex) {
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+    public void ConfigurarMapa(GoogleMap googleMap){
+        m = googleMap;
+        m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        m.getUiSettings().setZoomControlsEnabled(true);
+        m.getUiSettings().setZoomGesturesEnabled(true);
+        m.getUiSettings().setCompassEnabled(true);
+        m.getUiSettings().setScrollGesturesEnabled(true);
+        m.getUiSettings().setMapToolbarEnabled(false);
 
+        m.setPadding(0, 0, 15, 130);
+        m.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                ActualizarMarcador(l);
+                return false;
+            }
+        });
+
+    }
     @Override
     public void onLocationChanged(Location location) {
         ActualizarMarcador(location);
-
     }
     public void ActualizarMarcador(Location lo){
         l=lo;
@@ -267,6 +307,11 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             //m.animateCamera(CameraUpdateFactory.zoomTo(m.getCameraPosition().zoom));
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
         }
+    }
+
+    public void MostrarPosicion()
+    {
+
     }
 
 }

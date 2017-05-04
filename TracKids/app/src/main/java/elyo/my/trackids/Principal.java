@@ -21,7 +21,8 @@ import android.widget.Toast;
 public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Mapa.OnFragmentInteractionListener,
-        ListaHijos.OnFragmentInteractionListener
+        ListaHijos.OnFragmentInteractionListener,
+        MisUbicaciones.OnFragmentInteractionListener
 
 {
 
@@ -103,36 +104,26 @@ public class Principal extends AppCompatActivity
         switch (id)
         {
             case R.id.nav_inicio:
-                transaction.replace(R.id.content_principal,new Mapa());
                 pantalla=1;
+                transaction.replace(R.id.content_principal,new Mapa());
+
                 break;
             case R.id.nav_hijos:
-                transaction.replace(R.id.content_principal,new ListaHijos());
                 pantalla=2;
+                transaction.replace(R.id.content_principal,new ListaHijos());
+                break;
+            case R.id.nav_agregarhijo:
+                pantalla=3;
+                break;
+            case R.id.nav_misubicaciones:
+                pantalla=4;
+                transaction.replace(R.id.content_principal,new MisUbicaciones());
                 break;
             case R.id.nav_salir:
                 break;
-            case R.id.nav_clavepadre:
-                padre=1;
-                //transaction.replace(R.id.content_principal,new GenerarClaves());
-                pantalla=3;
-                break;
-            case R.id.nav_clavehijo:
-                padre=0;
-                //transaction.replace(R.id.content_principal,new GenerarClaves());
-                pantalla=4;
-                break;
-            case R.id.nav_agregarpadre:
-                padre=1;
 
 
-                pantalla=5;
-                break;
-            case R.id.nav_agregarhijo:
-                padre=0;
 
-                pantalla=6;
-                break;
         }
         transaction.commit();
 

@@ -28,6 +28,17 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="14dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:clickable="true"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/ic_menu_mylocation"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/floatingActionButton" />
     </RelativeLayout>
 
 </FrameLayout>
