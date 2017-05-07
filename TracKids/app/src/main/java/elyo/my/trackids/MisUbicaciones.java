@@ -229,13 +229,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                             datos.add(locacion.latitude+"");
                             datos.add(locacion.longitude+"");
                             b.insertRow("mislugares",datos);
-                            //lista1.add(input.getText().toString());
-                            //lista2.add(locacion);
-
                             ActualizarLista();
-
-                            //locacion LatLng
-                            //input.getText().toString(); nombre
                         }
                         else
                         {
@@ -283,7 +277,8 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     public void ActualizarMarcador(int posicion){
             m.clear();
             m.addMarker(new MarkerOptions().position(lista2.get(posicion)).title(lista1.get(posicion)).icon(BitmapDescriptorFactory.defaultMarker()));
-            m.animateCamera(CameraUpdateFactory.newLatLngZoom(lista2.get(posicion),m.getCameraPosition().zoom));
+            m.animateCamera(CameraUpdateFactory.newLatLngZoom(lista2.get(posicion),18));
+        //m.getCameraPosition().zoom
     }
     public void EventosLista(){
         listMisUbicaciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {

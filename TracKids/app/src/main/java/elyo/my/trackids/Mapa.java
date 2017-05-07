@@ -10,33 +10,29 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
+import static elyo.my.trackids.Principal.preferences;
 
 
 /**
@@ -151,6 +147,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     Location l;
     boolean gps;
     LatLng la;
+    String nombre;
     FloatingActionButton opciones,miUbicacion;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -184,6 +181,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             else {
                 opciones.setVisibility(View.VISIBLE);
                 miUbicacion.setVisibility(View.VISIBLE);
+                MostrarPosicion();
                 //Cargar la ubicacion del hijo seleccionado antes
 
             }
@@ -254,20 +252,19 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            if(pantalla==1) {
-                if (gps) {
-                    locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
-                    locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
-                    if (locationManager != null) {
-
-                        l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-                        ActualizarMarcador(l);
-                    }
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
+            locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
+            if (gps) {
+                if (locationManager != null) {
+                    l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
                 }
+            }
+            if(pantalla==1) {
+                ActualizarMarcador(l);
             }
             else
             {
-
+                ////////////Mostrar la ubicacion que se mando antes
             }
 
         } catch (Exception ex) {
@@ -295,22 +292,33 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     }
     @Override
     public void onLocationChanged(Location location) {
+        if(pantalla==1)
         ActualizarMarcador(location);
+        else
+        {
+
+        }
+
     }
     public void ActualizarMarcador(Location lo){
         l=lo;
         if (l != null) {
             la=new LatLng(l.getLatitude(), l.getLongitude());
             m.clear();
-            m.addMarker(new MarkerOptions().position(la).title("Tú").icon(BitmapDescriptorFactory.defaultMarker()));
-            //m.moveCamera(CameraUpdateFactory.newLatLng(la));
-            //m.animateCamera(CameraUpdateFactory.zoomTo(m.getCameraPosition().zoom));
+            MarkerOptions mar=new MarkerOptions().position(la).title("Tú").icon(BitmapDescriptorFactory.defaultMarker());
+            m.addMarker(mar);
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
+
         }
     }
 
     public void MostrarPosicion()
     {
+        la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
+        m.clear();
+        MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker());
+        m.addMarker(mar);
+        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
 
     }
 

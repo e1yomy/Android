@@ -2,6 +2,7 @@ package elyo.my.trackids;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -112,26 +113,37 @@ public class ListaHijos extends Fragment {
 
     ListView lv;
     List<String> lista = new ArrayList<String>();
+    ArrayList<Hijo> listaHijos;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_lista_hijos, container, false);
 
-        lv = (ListView) view.findViewById(R.id.listHijos);
-        lista.add("foo");
-        lista.add("bar");
-        ActualizarLista();
-        ToqueLargo();
+            View view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
 
-        return view;
+            lv = (ListView) view.findViewById(R.id.listHijos);
+            lista.add("foo");
+            lista.add("bar");
+            listaHijos = new ArrayList<Hijo>();
+            listaHijos.add(new Hijo("Eloy", 24.1332822, -110.310106, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Eloy", 24.1388434, -110.314306, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Eloy", 24.1392832, -110.314106, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Eloy", 24.142822, -110.310506, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Eloy", 24.133892, -110.316106, "Wea", "6121972191"));
+            ActualizarLista();
+            ToqueLargo();
+
+            return view;
+
     }
     public void ActualizarLista(){
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                c,
-                android.R.layout.simple_list_item_1,
-                lista );
 
-        lv.setAdapter(arrayAdapter);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista );
+
+        AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos,c);
+        lv.setAdapter(adaptadorLista);
+
+
     }
     private void ToqueLargo() {
 
@@ -147,14 +159,14 @@ public class ListaHijos extends Fragment {
                         alert.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                lista.add("simon");
+                                //lista.add("simon");
                                 ActualizarLista();
                             }
                         });
                        alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
-                               lista.add("nel");
+                               //lista.add("nel");
                                ActualizarLista();
                            }
                        });
@@ -172,7 +184,7 @@ public class ListaHijos extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                    lista.add("Item " + lista.size());
+                    //lista.add("Item " + lista.size());
                     ActualizarLista();
                     }
                     catch(Exception ex)

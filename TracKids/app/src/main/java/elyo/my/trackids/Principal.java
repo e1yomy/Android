@@ -2,6 +2,7 @@ package elyo.my.trackids;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,7 +30,7 @@ public class Principal extends AppCompatActivity
     public static Context c;
     public static byte padre;
     public static byte pantalla=1;
-
+    static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class Principal extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         c=this;
+        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         try{
             navigationView.getMenu().getItem(0).setChecked(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
@@ -106,7 +108,6 @@ public class Principal extends AppCompatActivity
             case R.id.nav_inicio:
                 pantalla=1;
                 transaction.replace(R.id.content_principal,new Mapa());
-
                 break;
             case R.id.nav_hijos:
                 pantalla=2;
