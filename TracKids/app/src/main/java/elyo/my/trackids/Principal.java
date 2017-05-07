@@ -95,14 +95,15 @@ public class Principal extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
-
+    static FragmentManager fragmentManager;
+    FragmentTransaction transaction;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
         switch (id)
         {
             case R.id.nav_inicio:

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,13 +138,8 @@ public class ListaHijos extends Fragment {
 
     }
     public void ActualizarLista(){
-
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista );
-
         AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos,c);
         lv.setAdapter(adaptadorLista);
-
-
     }
     private void ToqueLargo() {
 
@@ -186,6 +182,7 @@ public class ListaHijos extends Fragment {
                     try{
                     //lista.add("Item " + lista.size());
                     ActualizarLista();
+                        Toast.makeText(c, position, Toast.LENGTH_SHORT).show();
                     }
                     catch(Exception ex)
                     {

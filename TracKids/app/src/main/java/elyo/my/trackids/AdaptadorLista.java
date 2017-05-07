@@ -21,13 +21,15 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static elyo.my.trackids.Principal.c;
+import static elyo.my.trackids.Principal.fragmentManager;
 import static elyo.my.trackids.Principal.preferences;
 
 /**
  * Created by elyo_ on 06/05/2017.
  */
 
-public class AdaptadorLista extends BaseAdapter{
+public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentInteractionListener{
     SharedPreferences p ;
     ArrayList<Hijo> hijos;
     Context context;
@@ -67,7 +69,7 @@ public class AdaptadorLista extends BaseAdapter{
                 //Verificar distancia con lugares guardados y en caso de no estar dentro de la distancia, mostrar lo siguiente
                 txtUbicacionHijo.setText(hijos.get(position).latitud+", "+hijos.get(position).longitud);
 
-                Clic(layoutDatos,position);
+                Clic(renglon,position);
                 Llamar(btnLlamar, position);
                 return renglon;
             }
@@ -78,15 +80,15 @@ public class AdaptadorLista extends BaseAdapter{
         return convertView;
     }
 
-    private void Clic(LinearLayout layoutDatos, final int position) {
-
-        layoutDatos.setOnClickListener(new View.OnClickListener() {
+    private void Clic(View renglon, final int position) {
+        renglon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(c, "asd", Toast.LENGTH_SHORT).show();
                 preferences.edit().putString("nombre",hijos.get(position).nombre).commit();
                 preferences.edit().putFloat("lat", (float) hijos.get(position).latitud).commit();
                 preferences.edit().putFloat("lon", (float) hijos.get(position).longitud).commit();
-
+                fragmentManager.beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
             }
         });
     }
@@ -116,4 +118,8 @@ public class AdaptadorLista extends BaseAdapter{
         }
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

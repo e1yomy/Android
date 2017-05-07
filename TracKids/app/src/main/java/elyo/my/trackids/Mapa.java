@@ -23,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -181,7 +182,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             else {
                 opciones.setVisibility(View.VISIBLE);
                 miUbicacion.setVisibility(View.VISIBLE);
-                MostrarPosicion();
                 //Cargar la ubicacion del hijo seleccionado antes
 
             }
@@ -265,6 +265,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             else
             {
                 ////////////Mostrar la ubicacion que se mando antes
+                MostrarPosicion();
             }
 
         } catch (Exception ex) {
@@ -292,8 +293,10 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     }
     @Override
     public void onLocationChanged(Location location) {
-        if(pantalla==1)
-        ActualizarMarcador(location);
+        if(pantalla==1) {
+
+            ActualizarMarcador(location);
+        }
         else
         {
 
@@ -316,9 +319,9 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     {
         la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
         m.clear();
-        MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker());
+        MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         m.addMarker(mar);
-        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
+        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,17));
 
     }
 
