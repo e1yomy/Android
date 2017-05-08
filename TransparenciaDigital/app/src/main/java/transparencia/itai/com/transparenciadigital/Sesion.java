@@ -94,40 +94,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         }
     }
 
-    public String Registrar(String correo, String contrasena, String nombre , String paterno, String materno , String calles,
-                            String numExt, String numint, String entreCalles, String colonia, String CP, String entidad,
-                            String municipio, String telefono){
-        URL url=null;
-        String linea="";
-        int respuesta = 0;
-        StringBuilder resul = null;
 
-
-            try {
-                url=new URL(webService+"registro.php?"+"usu="+correo+"&pas="+contrasena+
-                        "&nom="+nombre+"&paterno="+paterno+"&materno="+materno+ "&calles="+calles+"&numeroExterior="+
-                        numExt+"&numeroInterior="+numint+"&entreCalles="+entreCalles+ "&colonia="+colonia+"&CP="+CP+
-                        "&entidad="+entidad+"&municipio="+municipio+"&telefono="+telefono);
-
-                HttpURLConnection connection =(HttpURLConnection)url.openConnection();
-                respuesta = connection.getResponseCode();
-                resul= new StringBuilder();
-                if (respuesta==HttpURLConnection.HTTP_OK){
-                    InputStream in =new BufferedInputStream(connection.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                    while ((linea=reader.readLine())!=null){
-                         resul.append(linea);
-                    }
-                }
-
-            }
-            catch (Exception ex){
-                String s = ex.getMessage();
-            }
-
-        //Else de mensaje de error por falta de red
-        return resul.toString();
-    }
 
     public int ConexionCorrecta(String url){
         try {

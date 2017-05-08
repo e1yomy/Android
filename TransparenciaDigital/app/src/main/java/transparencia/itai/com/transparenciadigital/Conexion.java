@@ -29,7 +29,7 @@ public class Conexion {
 
     URL direccion=null;
     String urlprevia="";
-    final String webService= "http://pruebastec.890m.com/servicios/";
+    final String webService= "http://pruebastec.890m.com/webservices";
     String linea="";
     int respuesta=0;
     StringBuilder resul=new StringBuilder();
@@ -90,6 +90,9 @@ public class Conexion {
         }
 
     }
+
+
+
     public int IniciarSesion(String usr, String pass){
         String data = "";
         BufferedReader reader=null;
@@ -99,11 +102,11 @@ public class Conexion {
 
         try {
             //Indica url del webservice
-            urlprevia=webService+"iniciarsesion.php";
+            urlprevia=webService+"/valida.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
-            data = URLEncoder.encode("usuario", "UTF-8")+ "=" + URLEncoder.encode(usr, "UTF-8");
-            data += "&" + URLEncoder.encode("contrasena", "UTF-8") + "="+ URLEncoder.encode(pass, "UTF-8");
+            data = URLEncoder.encode("usu", "UTF-8")+ "=" + URLEncoder.encode(usr, "UTF-8");
+            data += "&" + URLEncoder.encode("pas", "UTF-8") + "="+ URLEncoder.encode(pass, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
