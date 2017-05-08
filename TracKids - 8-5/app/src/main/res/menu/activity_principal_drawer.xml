@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/miubicacion" />
+        <item
+            android:id="@+id/nav_hijos"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/hijos" />
+        <item
+            android:id="@+id/nav_agregarhijo"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/addhijo" />
+        <item
+            android:id="@+id/nav_misubicaciones"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/misubicaciones" />
+        <item
+            android:id="@+id/nav_salir"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/salir" />
+
+    </group>
+
+</menu>
