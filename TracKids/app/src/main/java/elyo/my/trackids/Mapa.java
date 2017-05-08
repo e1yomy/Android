@@ -8,7 +8,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -150,6 +154,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     LatLng la;
     String nombre;
     FloatingActionButton opciones,miUbicacion;
+    SeekBar zoom;
+    int zoomlevel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -160,20 +166,14 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
                     .findFragmentById(R.id.mapa1);
             mapFragment.getMapAsync(this);
 
-
-
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
             gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
             opciones = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
             miUbicacion = (FloatingActionButton) view.findViewById(R.id.floatingActionButton2);
+            zoom=(SeekBar)view.findViewById(R.id.seekZoom);
+            Zoom();
             BotonOpciones();
-            miUbicacion.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActualizarMarcador(l);
-
-                }
-            });
+            BotonMiUbicacion();
             if(pantalla==1){
                 opciones.setVisibility(View.INVISIBLE);
                 miUbicacion.setVisibility(View.VISIBLE);
@@ -192,6 +192,46 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         }
 
         return view;
+    }
+
+    private void BotonMiUbicacion() {
+        miUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pantalla==1)
+                {
+                    ActualizarMarcador(l);
+                }
+                else
+                {
+                    m.clear();
+                    ActualizarMarcador(l);
+                    MostrarPosicion();
+                }
+
+            }
+        });
+    }
+
+    private void Zoom() {
+        zoom.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
+                m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target,progress));
+                zoomlevel=progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private void BotonOpciones() {
@@ -237,6 +277,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         try {
@@ -254,6 +295,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             }
             locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
+
             if (gps) {
                 if (locationManager != null) {
                     l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
@@ -265,6 +307,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             else
             {
                 ////////////Mostrar la ubicacion que se mando antes
+                m.clear();
+                ActualizarMarcador(l);
                 MostrarPosicion();
             }
 
@@ -272,56 +316,69 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void ConfigurarMapa(GoogleMap googleMap){
-        m = googleMap;
-        m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        m.getUiSettings().setZoomControlsEnabled(true);
-        m.getUiSettings().setZoomGesturesEnabled(true);
-        m.getUiSettings().setCompassEnabled(true);
-        m.getUiSettings().setScrollGesturesEnabled(true);
-        m.getUiSettings().setMapToolbarEnabled(false);
-
-        m.setPadding(0, 0, 15, 130);
-        m.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                ActualizarMarcador(l);
-                return false;
-            }
-        });
-
+        try {
+            m = googleMap;
+            m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            //m.getUiSettings().setZoomControlsEnabled(true);
+            m.getUiSettings().setZoomGesturesEnabled(true);
+            m.getUiSettings().setCompassEnabled(true);
+            m.getUiSettings().setScrollGesturesEnabled(true);
+            m.getUiSettings().setMapToolbarEnabled(false);
+            m.setPadding(0, 0, 15, 130);
+            //zoom.setProgress(zoomlevel,true);
+            m.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                @Override
+                public boolean onMyLocationButtonClick() {
+                    ActualizarMarcador(l);
+                    return false;
+                }
+            });
+            m.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                @Override
+                public void onCameraChange(CameraPosition cameraPosition) {
+                    zoom.setProgress((int) cameraPosition.zoom,true);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
     @Override
     public void onLocationChanged(Location location) {
         if(pantalla==1) {
-
+            m.clear();
             ActualizarMarcador(location);
         }
         else
         {
-
+            m.clear();
+            ActualizarMarcador(location);
+            MostrarPosicion();
         }
 
     }
+
     public void ActualizarMarcador(Location lo){
         l=lo;
         if (l != null) {
             la=new LatLng(l.getLatitude(), l.getLongitude());
-            m.clear();
             MarkerOptions mar=new MarkerOptions().position(la).title("Tú").icon(BitmapDescriptorFactory.defaultMarker());
             m.addMarker(mar);
-            m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
+            m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
 
         }
     }
 
-    public void MostrarPosicion()
-    {
+    public void MostrarPosicion(){
         la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
-        m.clear();
         MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         m.addMarker(mar);
-        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,17));
+        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
+
 
     }
 
