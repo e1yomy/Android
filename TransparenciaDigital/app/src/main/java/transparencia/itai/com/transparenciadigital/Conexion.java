@@ -36,44 +36,6 @@ public class Conexion {
     HttpURLConnection conection;
     final String contrasenaWS="patito";
 
-    public ArrayList<String> GetSolicitudes(String usuario){
-        urlprevia=webService+"";
-
-        if(ConexionCorrecta(urlprevia)==1);
-        {
-            try {
-                InputStream in = new BufferedInputStream(conection.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                while ((linea = reader.readLine()) != null)
-                    resul.append(linea);
-            }
-            catch (Exception ex){
-                String s = ex.getMessage();
-            }
-        }
-        //Else de mensaje de error por falta de red
-        return ObtenerListaDeSolicitudes(resul.toString());
-
-    }
-    public ArrayList<String> ObtenerListaDeSolicitudes(String response)
-    {
-        ArrayList<String> lista= new ArrayList<>();
-        try{
-            JSONArray json=new JSONArray(response);
-            for(int i=0; i<json.length();i++){
-                //Ya que se agregue el campo titulo a la tabla de solicitudes, se podra hacer uso de esta funcion
-                //lista.add(json.getJSONObject(i).getString("titulo"));
-            }
-        }
-        catch (Exception ex)
-        {
-            String exx=ex.getMessage();
-        }
-
-
-        return  lista;
-    }
-
     public int ConexionCorrecta(String url){
         try {
             direccion= new URL(url);

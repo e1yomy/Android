@@ -3,15 +3,13 @@ package transparencia.itai.com.transparenciadigital;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.webkit.WebView;
 import android.widget.ScrollView;
-import android.widget.TableLayout;
 
 import java.util.ArrayList;
 
@@ -109,6 +107,7 @@ public class QuienesSomos extends Fragment {
 
     TabLayout tabTitulos;
     ArrayList<ScrollView> tabDatos;
+    WebView webView1;
     //ArrayList<TabLayout.Tab> tab;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,6 +116,24 @@ public class QuienesSomos extends Fragment {
         View view =inflater.inflate(R.layout.fragment_quienes_somos, container, false);
         //tab= new ArrayList<>();
         tabDatos= new ArrayList<>();
+        webView1= (WebView)view.findViewById(R.id.webView1);
+        webView1.getSettings().setJavaScriptEnabled(true);
+        /*
+        webView1.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                webView1.loadUrl("javascript:(function() { document.getElementsByTagName('g-header')[0].style.display='none'; })()");
+                webView1.loadUrl("javascript:(function() { document.getElementsByTagName('g-navigation')[0].style.display='none'; })()");
+                webView1.loadUrl("javascript:(function() { document.getElementsByTagName('g-footer')[0].style.display='none'; })()");
+
+            }
+        });
+        */
+        //webView1.loadUrl("http://itaibcs.org.mx/nuestro-instituto/marco-normativo.html");
+
+
+
         CargarTabs(view);
 
 
