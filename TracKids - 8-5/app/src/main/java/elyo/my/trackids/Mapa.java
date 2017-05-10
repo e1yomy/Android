@@ -4,22 +4,17 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +22,6 @@ import android.widget.DatePicker;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,20 +31,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static elyo.my.trackids.Principal.c;
@@ -67,8 +48,7 @@ import static elyo.my.trackids.Principal.preferences;
  * Use the {@link Mapa#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Mapa extends Fragment implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+public class Mapa extends Fragment implements OnMapReadyCallback,LocationListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -137,6 +117,21 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         mListener = null;
     }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -161,9 +156,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     FloatingActionButton opciones,miUbicacion;
     SeekBar zoom;
     int zoomlevel;
-    GoogleApiClient mGoogleApiClient;
-    ArrayList<LatLng> MarkerPoints;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -179,10 +171,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             opciones = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
             miUbicacion = (FloatingActionButton) view.findViewById(R.id.floatingActionButton2);
             zoom=(SeekBar)view.findViewById(R.id.seekZoom);
-            MarkerPoints= new ArrayList<>();
-            MarkerPoints.add(null);
-            MarkerPoints.add(null);
-
             Zoom();
             BotonOpciones();
             BotonMiUbicacion();
@@ -194,6 +182,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             else {
                 opciones.setVisibility(View.VISIBLE);
                 miUbicacion.setVisibility(View.VISIBLE);
+                //Cargar la ubicacion del hijo seleccionado antes
+
             }
         }
         catch (Exception ex)
@@ -208,13 +198,13 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         miUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                m.clear();
                 if(pantalla==1)
                 {
                     ActualizarMarcador(l);
                 }
                 else
                 {
+                    m.clear();
                     ActualizarMarcador(l);
                     MostrarPosicion();
                 }
@@ -227,9 +217,9 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         zoom.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,m.getCameraPosition().zoom));
+                m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target,progress));
                 zoomlevel=progress;
-                m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
-                //m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target,progress));
             }
 
             @Override
@@ -317,6 +307,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             else
             {
                 ////////////Mostrar la ubicacion que se mando antes
+                m.clear();
                 ActualizarMarcador(l);
                 MostrarPosicion();
             }
@@ -329,7 +320,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     public void ConfigurarMapa(GoogleMap googleMap){
         try {
             m = googleMap;
-            m.clear();
             m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             //m.getUiSettings().setZoomControlsEnabled(true);
             m.getUiSettings().setZoomGesturesEnabled(true);
@@ -359,12 +349,13 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
     }
     @Override
     public void onLocationChanged(Location location) {
-        m.clear();
         if(pantalla==1) {
+            m.clear();
             ActualizarMarcador(location);
         }
         else
         {
+            m.clear();
             ActualizarMarcador(location);
             MostrarPosicion();
         }
@@ -378,233 +369,17 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             MarkerOptions mar=new MarkerOptions().position(la).title("Tú").icon(BitmapDescriptorFactory.defaultMarker());
             m.addMarker(mar);
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
-            if(pantalla!=1)
-            {
-                MarkerPoints.set(0,la);
-            }
+
         }
     }
 
     public void MostrarPosicion(){
         la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
-        MarkerPoints.set(1,la);
         MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         m.addMarker(mar);
         m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
 
-        if(MarkerPoints.get(0)!= null&& MarkerPoints.get(1)!=null)
-        {
-            String url= getUrl(MarkerPoints.get(0),MarkerPoints.get(1));
-            FetchUrl fetchUrl = new FetchUrl();
-            fetchUrl.execute(url);
-        }
 
     }
 
-    private String getUrl(LatLng origin, LatLng dest) {
-
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-
-
-        // Sensor enabled
-        String sensor = "sensor=false";
-
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;
-
-        // Output format
-        String output = "json";
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-
-
-        return url;
-    }
-    /**
-     * A method to download json data from url
-     */
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(strUrl);
-
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            // Connecting to url
-            urlConnection.connect();
-
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb = new StringBuffer();
-
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            data = sb.toString();
-            Log.d("downloadUrl", data.toString());
-            br.close();
-
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        } finally {
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
-    // Fetches data from url passed
-    private class FetchUrl extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-
-            // For storing data from web service
-            String data = "";
-
-            try {
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-            // Invokes the thread for parsing the JSON data
-            parserTask.execute(result);
-
-        }
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(c)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                //.addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
-
-            try {
-                jObject = new JSONObject(jsonData[0]);
-                Log.d("ParserTask",jsonData[0].toString());
-                DataParser parser = new DataParser();
-                Log.d("ParserTask", parser.toString());
-
-                // Starts parsing data
-                routes = parser.parse(jObject);
-                Log.d("ParserTask","Executing routes");
-                Log.d("ParserTask",routes.toString());
-
-            } catch (Exception e) {
-                Log.d("ParserTask",e.toString());
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        // Executes in UI thread, after the parsing process
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList<LatLng> points;
-            PolylineOptions lineOptions = null;
-
-            // Traversing through all the routes
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList<>();
-                lineOptions = new PolylineOptions();
-
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
-
-                // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
-                }
-
-                // Adding all the points in the route to LineOptions
-                lineOptions.addAll(points);
-                lineOptions.width(10);
-                lineOptions.color(Color.RED);
-
-                Log.d("onPostExecute","onPostExecute lineoptions decoded");
-
-            }
-
-            // Drawing polyline in the Google Map for the i-th route
-            if(lineOptions != null) {
-                m.addPolyline(lineOptions);
-            }
-            else {
-                Log.d("onPostExecute","without Polylines drawn");
-            }
-        }
-    }
 }
