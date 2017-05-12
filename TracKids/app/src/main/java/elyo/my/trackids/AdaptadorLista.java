@@ -1,13 +1,14 @@
 package elyo.my.trackids;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Map;
 
+import static elyo.my.trackids.ListaHijos.ActualizarLista;
+import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.fragmentManager;
 import static elyo.my.trackids.Principal.preferences;
@@ -91,6 +91,38 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                 fragmentManager.beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
             }
         });
+        renglon.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, v.toString(), Toast.LENGTH_SHORT).show();
+                try{
+                    //lista.add("Item " + lista.size() + " long");
+
+                    AlertDialog.Builder alert= new AlertDialog.Builder(c);
+                    alert.setTitle("Eliminar conexión");
+                    alert.setMessage("Esto evitará que pueda seguir al tanto de los movimientos de "+hijos.get(position).nombre +".");
+                    alert.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            listaHijos.remove(position);
+                            ActualizarLista();
+                        }
+                    });
+                    alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alert.show();
+
+                }
+                catch(Exception ex)
+                {
+
+                }
+                return true;
+            }
+        });
     }
 
     private void Llamar(FloatingActionButton btnLlamar, final int position) {
@@ -101,7 +133,7 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                 public void onClick(View v) {
 
                     Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + "6121972191"));//hijos.get(position).telefono));
+                    intent.setData(Uri.parse("tel:" + hijos.get(position).telefono));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         return;

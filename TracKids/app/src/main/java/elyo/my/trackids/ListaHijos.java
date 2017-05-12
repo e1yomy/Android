@@ -1,19 +1,13 @@
 package elyo.my.trackids;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,9 +106,9 @@ public class ListaHijos extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    ListView lv;
+    static ListView lv;
     List<String> lista = new ArrayList<String>();
-    ArrayList<Hijo> listaHijos;
+    static ArrayList<Hijo> listaHijos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,71 +121,17 @@ public class ListaHijos extends Fragment {
             lista.add("bar");
             listaHijos = new ArrayList<Hijo>();
             listaHijos.add(new Hijo("Eloy", 24.1332822, -110.310106, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Eloy", 24.1388434, -110.314306, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Eloy", 24.1392832, -110.314106, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Eloy", 24.142822, -110.310506, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Eloy", 24.133892, -110.316106, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Erik", 24.1388434, -110.314306, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Ruiz", 24.1392832, -110.314106, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Ulises", 24.142822, -110.310506, "Wea", "6121972191"));
+            listaHijos.add(new Hijo("Denisse", 24.133892, -110.316106, "Wea", "6121972191"));
             ActualizarLista();
-            ToqueLargo();
-
             return view;
 
     }
-    public void ActualizarLista(){
+    static void ActualizarLista(){
         AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos,c);
         lv.setAdapter(adaptadorLista);
-    }
-    private void ToqueLargo() {
-
-            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    try{
-                    //lista.add("Item " + lista.size() + " long");
-
-                        AlertDialog.Builder alert= new AlertDialog.Builder(c);
-                        alert.setTitle("Eliminar conexión");
-                        alert.setMessage("Esto evitará que pueda seguir al tanto de los movimientos del Hijo seleccionado.");
-                        alert.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //lista.add("simon");
-                                ActualizarLista();
-                            }
-                        });
-                       alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               //lista.add("nel");
-                               ActualizarLista();
-                           }
-                       });
-                        alert.show();
-
-                    }
-                    catch(Exception ex)
-                    {
-
-                    }
-                    return true;
-                }
-            });
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try{
-                    //lista.add("Item " + lista.size());
-                    ActualizarLista();
-                        Toast.makeText(c, position, Toast.LENGTH_SHORT).show();
-                    }
-                    catch(Exception ex)
-                    {
-
-                    }
-
-                }
-            });
-
     }
 
 }

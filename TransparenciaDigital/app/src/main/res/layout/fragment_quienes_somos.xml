@@ -67,13 +67,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/quienessomos"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/textView16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/quienessomostexto" />
+                    android:text="@string/quienessomostexto"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView18"
@@ -81,7 +83,8 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:text="@string/articulo32"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textView17"
@@ -89,13 +92,15 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
                     android:text="@string/comoseintegra"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/textView19"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/comoseintegratexto" />
+                    android:text="@string/comoseintegratexto"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView20"
@@ -103,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:text="@string/articulo33"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textView22"
@@ -111,13 +117,15 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
                     android:text="@string/mision"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/textView23"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/misiontexto" />
+                    android:text="@string/misiontexto"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView24"
@@ -125,13 +133,15 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
                     android:text="@string/vision"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/textView25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visiontexto" />
+                    android:text="@string/visiontexto"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView26"
@@ -139,13 +149,15 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
                     android:text="@string/objetivo"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/textView27"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/objetivotexto" />
+                    android:text="@string/objetivotexto"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </ScrollView>
@@ -166,37 +178,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/estructuraorganica"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
-                    android:id="@+id/textView28"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/estructuraorganicatexto" />
+                    android:text="@string/estructuraorganicatexto"
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/textView29"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reglamentointerior"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textView30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
                     android:text="@string/estructuraorganica"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
                 <TextView
-                    android:id="@+id/textView31"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/consultarestructuraorganica" />
+                    android:text="@string/consultarestructuraorganica"
+                    android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnEstructura"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/botonconsultarestructura" />
@@ -216,20 +229,594 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/textView30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    android:paddingBottom="10dp"
+                    android:text="@string/marconormativo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="22sp" />
 
-                <WebView
+                <TextView
+                    android:id="@+id/textView31"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/constitucionpolitica"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView32"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/constitucionpolitica1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/constitucionpolitica2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView34"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/acuerdos"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/acuerdotexto"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/acuerdos1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView37"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/codigo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView38"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/codigo1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView39"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/codigo2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView40"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/criterios"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView41"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/criterios1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView42"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/leyes"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView43"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView44"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView45"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes3"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes4"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView47"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes5"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView48"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes6"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView49"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes7"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView50"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes8"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView51"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes9"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes10"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView53"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes11"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView54"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes12"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView55"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes13"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView56"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes14"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView57"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes15"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView58"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes16"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView59"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/leyes17"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView60"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/lineamientos"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView61"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView62"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView63"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos3"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView64"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos4"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView65"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos5"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView66"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos6"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView67"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/lineamientos7"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView68"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/reglamentos"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView69"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/reglamentos1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView70"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/reglamentos2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView71"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/reglamentos3"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView72"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/reglamentos4"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView73"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/recomendaciones"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView74"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/recomendaciones1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView75"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/normas"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView76"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/normas1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView77"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/normas2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView78"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/normas3"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView79"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/normas4"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView80"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/manuales"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView81"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/manuales1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView82"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/manuales2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView83"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/tratados"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView84"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/tratados1"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView85"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:id="@+id/webView1"/>
-
-
+                    android:paddingTop="3dp"
+                    android:text="@string/tratados2"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="italic" />
             </LinearLayout>
         </ScrollView>
 
@@ -237,7 +824,8 @@
             android:id="@+id/scroll4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp">
+            android:layout_margin="30dp"
+            android:visibility="gone">
 
 
             <LinearLayout
@@ -256,7 +844,8 @@
             android:id="@+id/scroll5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp">
+            android:layout_margin="30dp"
+            android:visibility="gone">
 
 
             <LinearLayout
@@ -276,7 +865,8 @@
             android:id="@+id/scroll6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp">
+            android:layout_margin="30dp"
+            android:visibility="gone">
 
 
             <LinearLayout

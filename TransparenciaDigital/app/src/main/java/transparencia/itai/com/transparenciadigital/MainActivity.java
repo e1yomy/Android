@@ -17,8 +17,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     static NavigationView navigationView;
     static TextView txtNombreUsuario, txtEmailUsuario,txtNoSolicitudes;
     static Usuario usr;
+    static ArrayList<WebView> paginas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,16 +79,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header= navigationView.getHeaderView(0);
-
-        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
-        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
-
-        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
-        c=this;
         try{
             //navigationView.getMenu().getItem(0).setChecked(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
@@ -117,9 +111,72 @@ public class MainActivity extends AppCompatActivity
         {
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View header= navigationView.getHeaderView(0);
+
+        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
+        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
+
+        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+        c=this;
+        /*
+        Thread t= new Thread(new Runnable() {
+            @Override
+            public void run() {
+                paginas.add(new WebView(c));
+                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/quienes-somos.html");
+                paginas.add(new WebView(c));
+                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/estructura-organica.html");
+                paginas.add(new WebView(c));
+                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/marco-normativo.html");
+                paginas.add(new WebView(c));
+                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/directorio.html");
+                paginas.add(new WebView(c));
+                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/servicios.html");
+                paginas.add(new WebView(c));
+                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/calendario-oficial.html");
+                for (byte i=0;i<paginas.size();i++)
+                {
+                    final WebView w=paginas.get(i);
+                    w.getSettings().setJavaScriptEnabled(true);
+                    w.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                    w.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            w.loadUrl("javascript:(function() { " +
+                                    //+"document.getElementById('g-header').style.display='none';"
+                                    //+"document.getElementByClassName('g-grid').style.display='none';"
+                                    //+" document.getElementsByTagName('')[0].style.display='none';" +
+                                    "document.getElementsByClassName('g-offcanvas-toggle')[0].style.display = 'none';" +
+                                    "document.getElementsByClassName('g-flushed')[0].style.display = 'none';" +
+                                    "document.getElementsByClassName('g-container')[0].style.display = 'none';" +
+                                    "var el =document.getElementsByClassName('g-content');" +
+                                    "for(var i = 0; i < el.length; i++){" +
+                                    "if(i!=6)" +
+                                    "{el[i].style.display = 'none';}" +
+                                    "}" +
+                                    "var ele =document.getElementsByClassName('uk-grid');" +
+                                    "for(var i = 0; i < ele.length; i++){ele[i].style.display = 'none';}" +
+                                    "})()");
+                        }
+                    });
+
+                }
+                return;
+
+
+            }
+        });
+        t.start();
+        */
+
 
 
     }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
