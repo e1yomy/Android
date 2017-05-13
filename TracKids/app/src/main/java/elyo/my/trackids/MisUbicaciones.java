@@ -184,7 +184,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     @Override
     public void onMapReady(GoogleMap googleMap) {
         m = googleMap;
-        m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        m.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         m.getUiSettings().setZoomControlsEnabled(true);
         m.getUiSettings().setZoomGesturesEnabled(true);
         m.getUiSettings().setCompassEnabled(true);

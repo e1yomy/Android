@@ -29,14 +29,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -228,8 +229,15 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 zoomlevel=progress;
-                m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
-                //m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target,progress));
+                if(pantalla==1) {
+                    m.animateCamera(CameraUpdateFactory.newLatLngZoom(la, zoomlevel));
+                }
+                else{
+                    //MostrarPosicion();
+                    m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target,progress));
+                    //m.animateCamera(CameraUpdateFactory.newLatLngZoom(la, zoomlevel));
+                }
+                //
             }
 
             @Override
@@ -384,20 +392,44 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             }
         }
     }
-
     public void MostrarPosicion(){
         la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
         MarkerPoints.set(1,la);
-        MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        m.addMarker(mar);
-        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
-
         if(MarkerPoints.get(0)!= null&& MarkerPoints.get(1)!=null)
         {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            m.addMarker(mar);
+            builder.include(MarkerPoints.get(0));
+            builder.include(MarkerPoints.get(1));
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(builder.build(), 100);
+            m.animateCamera(cu);
+            //m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
             String url= getUrl(MarkerPoints.get(0),MarkerPoints.get(1));
             FetchUrl fetchUrl = new FetchUrl();
             fetchUrl.execute(url);
+
         }
+
+    }
+
+    public void MostrarUltimaUbicacionConocidaDeUsuario()
+    {
+        m.clear();
+        la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
+        MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        m.addMarker(mar);
+        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
+    }
+
+    public void MostrarUltimaRutaConocida(){
+        m.clear();
+
+    }
+
+    /// Recibir la fecha como parametro, para ruta de hoy, fecha actual, para otra fecha, resultado del dialogo
+    public void MostrarRutaDeFecha(){
+        m.clear();
 
     }
 
