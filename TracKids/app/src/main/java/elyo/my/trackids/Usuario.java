@@ -5,4 +5,9 @@ package elyo.my.trackids;
  */
 
 public class Usuario {
+    String id;
+    String nombre;
+    String contrasena;
+    String nacimiento;
+    String pin;
 }

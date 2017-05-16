@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,19 +21,22 @@ public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Mapa.OnFragmentInteractionListener,
         ListaHijos.OnFragmentInteractionListener,
-        MisUbicaciones.OnFragmentInteractionListener
+        MisUbicaciones.OnFragmentInteractionListener,
+        Registro.OnFragmentInteractionListener,
+        IniciarSesion.OnFragmentInteractionListener
 
 {
 
     public static Context c;
-    public static byte padre;
     public static byte pantalla=1;
     static SharedPreferences preferences;
+    static int sesion=0; //0: ninguna 1:sesion 2: Facebook
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,11 +48,14 @@ public class Principal extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         c=this;
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+        fragmentManager = getSupportFragmentManager();
         try{
             navigationView.getMenu().getItem(0).setChecked(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new IniciarSesion()).commit();
         }
         catch (Exception ex)
         {
@@ -96,13 +100,13 @@ public class Principal extends AppCompatActivity
 
     }
     static FragmentManager fragmentManager;
-    FragmentTransaction transaction;
+    static FragmentTransaction transaction;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        fragmentManager = getSupportFragmentManager();
+
         transaction = fragmentManager.beginTransaction();
         switch (id)
         {
@@ -133,5 +137,26 @@ public class Principal extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public static void PantallaInicioDeSesion(){
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_principal,new IniciarSesion());
+        transaction.commit();
+    }
+    public static void PantallaMisLugares(){
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_principal,new MisUbicaciones());
+        transaction.commit();
+    }
+    public static void PantallaRegistro(){
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_principal,new Registro());
+        transaction.commit();
+    }
+    public static void PantallaMapa(){
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_principal,new Mapa());
+        transaction.commit();
+    }
+
 
 }

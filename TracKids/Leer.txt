@@ -1,0 +1,1 @@
+Mostrar la pantalla de sesion, donde se pueda ver la sesión activa, y esté el botón de cerrar sesión o de salir con Facebook
