@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -117,6 +121,8 @@ public class QuienesSomos extends Fragment {
     TextView textView30, textView31, textView32, textView33, textView34, textView35, textView36, textView37, textView38, textView39, textView40, textView41, textView42, textView43, textView44, textView45, textView46, textView47, textView48, textView49, textView50, textView51, textView52, textView53, textView54, textView55, textView56, textView57, textView58, textView59, textView60, textView61, textView62, textView63, textView64, textView65, textView66, textView67, textView68, textView69, textView70, textView71, textView72, textView73, textView74, textView75, textView76, textView77, textView78, textView79, textView80, textView81, textView82, textView83, textView84, textView85, textView86;
     List<TextView> c;
     List<String> clink;
+    FloatingActionButton btnIrArriba;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -133,21 +139,6 @@ public class QuienesSomos extends Fragment {
         });
         c=new ArrayList<>();
         clink=new ArrayList<>();
-
-
-        /*
-        webView1.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url)
-            {
-                webView1.loadUrl("javascript:(function() { document.getElementsByTagName('g-header')[0].style.display='none'; })()");
-                webView1.loadUrl("javascript:(function() { document.getElementsByTagName('g-navigation')[0].style.display='none'; })()");
-                webView1.loadUrl("javascript:(function() { document.getElementsByTagName('g-footer')[0].style.display='none'; })()");
-            }
-        });
-        */
-        //webView1.loadUrl("http://itaibcs.org.mx/nuestro-instituto/marco-normativo.html");
-
         CargarTextViewPantalla3(view);
         CargarTabs(view);
 
@@ -228,46 +219,91 @@ public class QuienesSomos extends Fragment {
         c.add(textView70);c.add(textView71);c.add(textView72);c.add(textView74);
         c.add(textView76);c.add(textView77);c.add(textView78);c.add(textView79);
         c.add(textView81);c.add(textView82);c.add(textView84);c.add(textView85);
+
+
+
         for(byte i=0;i<c.size();i++)
         {
+            if(i!=2)
             c.get(i).setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         }
         OcultarTextos();
+        //constitucion politica
         textView31.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
                 textView32.setVisibility(View.VISIBLE);
                 textView33.setVisibility(View.VISIBLE);
-
             }
         });
+        textView32.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Constitucion/CPoliticadelosEstadosUnidosMexicanosDOF29ene16.pdf")));
+            }
+        });
+        textView33.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Constitucion/CPoliticaBCS.pdf")));
+            }
+        });
+
+
+        //acuerdos
         textView34.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
                 textView35.setVisibility(View.VISIBLE);
                 textView36.setVisibility(View.VISIBLE);
-
             }
         });
+        textView36.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/AcuerdoCatalogoSujetosObligados/AcuerdoCatalogodeSujetosObligados.pdf")));
+            }
+        });
+
+        //codigo
         textView37.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
                 textView38.setVisibility(View.VISIBLE);
                 textView39.setVisibility(View.VISIBLE);
-
             }
         });
+        textView38.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/codigo/CProcedimientosCivilesBCS.pdf")));
+            }
+        });
+        textView39.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/codigo/CFF8_170616.pdf")));
+            }
+        });
+
+        //criterios
         textView40.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
                 textView41.setVisibility(View.VISIBLE);
-
             }
         });
+        textView41.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/criterios/Criteriosparaelcobroenlareproduccionocopiadode%20informacionpublica.pdf")));
+            }
+        });
+        //leyes
         textView42.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +327,112 @@ public class QuienesSomos extends Fragment {
                 textView59.setVisibility(View.VISIBLE);
             }
         });
+
+        textView43.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LTransparenciaAccesoBCS26MAY2016.pdf")));
+            }
+        });
+        textView44.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LResponsabilidadesServidoresPublicosBCS20DIC2015.pdf")));
+            }
+        });
+        textView45.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LJusticiaAdministrativaBCS24DIC2008.pdf")));
+            }
+        });
+        textView46.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LRemuneracionesServiciosPublicosBCS20MAR2011.pdf")));
+            }
+        });
+        textView47.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/NOR_01_17_001.pdf")));
+            }
+        });
+        textView48.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LAdquisionesArrendamientosBCS20NOV2014.pdf")));
+            }
+        });
+        textView49.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LPresupuestoControlGasto20NOV2014.pdf")));
+            }
+        });
+        textView50.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LIngresosBCS2016.pdf")));
+            }
+        });
+        textView51.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LDesarrolloInstitucionalBCS.pdf")));
+            }
+        });
+        textView52.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LOrganoFiscalizacionBCS.pdf")));
+            }
+        });
+        textView53.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LDerechosProductosBCS10ABR2016.pdf")));
+            }
+        });
+        textView54.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LSSDOF12nov2015.pdf")));
+            }
+        });
+        textView55.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LFTDOF12JUN2015.pdf")));
+            }
+        });
+        textView56.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/01_LGTAIP.pdf")));
+            }
+        });
+        textView57.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://secfin.bcs.gob.mx/fnz/wp-content/themes/fnz_bcs/assets/images/boletines/2005/18_parte_1.pdf")));
+            }
+        });
+        textView58.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://secfin.bcs.gob.mx/fnz/wp-content/themes/fnz_bcs/assets/images/boletines/2007/58.pdf")));
+            }
+        });
+        textView59.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://secfin.bcs.gob.mx/fnz/wp-content/themes/fnz_bcs/assets/images/boletines/2010/10.pdf")));
+            }
+        });
+
+
+        //lineamientos
         textView60.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,9 +444,53 @@ public class QuienesSomos extends Fragment {
                 textView65.setVisibility(View.VISIBLE);
                 textView66.setVisibility(View.VISIBLE);
                 textView67.setVisibility(View.VISIBLE);
-
             }
         });
+        textView61.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Lineamientosgrales.pdf")));
+            }
+        });
+        textView62.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/lineamientosprotecciondedatospersonales.pdf")));
+            }
+        });
+        textView63.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Lineamientosgralessustanciaciondelprocedimientoderevision.pdf")));
+            }
+        });
+        textView64.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Lineamientosdeusodelastecnologiasdelainformacion.pdf")));
+            }
+        });
+        textView65.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Lineamientos_de_Obligaciones_y_Anexos.pdf")));
+            }
+        });
+        textView66.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Lineamientos_de_Clasificacion_y_Desclasificacion_de_la_informacion.pdf")));
+            }
+        });
+        textView67.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Lineamientos_para_la_Conservacion_de_Archivos.pdf")));
+            }
+        });
+
+
+        //reglamentos
         textView68.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,9 +499,34 @@ public class QuienesSomos extends Fragment {
                 textView70.setVisibility(View.VISIBLE);
                 textView71.setVisibility(View.VISIBLE);
                 textView72.setVisibility(View.VISIBLE);
-
             }
         });
+        textView69.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/RInteriorITAIP2016.pdf")));
+            }
+        });
+        textView70.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/REGLAMENTOINTERIORDETRABAJOITAIBCS.pdf")));
+            }
+        });
+        textView71.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/REGLAMENTODESESIONES.pdf")));
+            }
+        });
+        textView72.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/RInterior_abrogado.pdf")));
+            }
+        });
+
+        //recomendaciones
         textView73.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -323,6 +534,14 @@ public class QuienesSomos extends Fragment {
                 textView74.setVisibility(View.VISIBLE);
             }
         });
+        textView74.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/RECOMENDACIONESGRALESPARALACREACIONDELASUAIDELASENTIDADESGUBERNAMENTALESYDEINTERESPUBLICODELESTADODEBCS.pdf")));
+            }
+        });
+
+        //normas
         textView75.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -331,24 +550,75 @@ public class QuienesSomos extends Fragment {
                 textView77.setVisibility(View.VISIBLE);
                 textView78.setVisibility(View.VISIBLE);
                 textView79.setVisibility(View.VISIBLE);
-
             }
         });
+
+        textView76.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Normasinternasparalaevaluaciondeldesempenio.pdf")));
+            }
+        });
+        textView77.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Normasinternasparalaorganizaciondelosarchivos.pdf")));
+            }
+        });
+        textView78.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/Normasparaelreclutamientodelosservidorespublicos.pdf")));
+            }
+        });
+        textView79.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Normatividad/NormatividaddelContenidoyControldelaCuentaPublicadelEstadodeBajaCaliforniaSur.pdf")));
+            }
+        });
+
+        //manuales
         textView80.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
                 textView81.setVisibility(View.VISIBLE);
                 textView82.setVisibility(View.VISIBLE);
-
             }
         });
+        textView81.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/manual/Manualdeorganizacion.pdf")));
+            }
+        });
+        textView82.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/manual/ManualdeAdministraciondeRemuneraciones.pdf")));
+            }
+        });
+
+        //tratados internacionales
         textView83.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
                 textView84.setVisibility(View.VISIBLE);
                 textView85.setVisibility(View.VISIBLE);
+            }
+        });
+        textView84.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/tratadosinternacionales/D1BIS.pdf")));
+            }
+        });
+        textView85.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/tratadosinternacionales/D47.pdf")));
             }
         });
     }
@@ -361,48 +631,84 @@ public class QuienesSomos extends Fragment {
         }
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void CargarTabs(View view)
     {
-        tabTitulos=(TabLayout)view.findViewById(R.id.tabTitulos);
-        tabTitulos.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabTitulos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        tabDatos.add((ScrollView)view.findViewById(R.id.scroll1));
-        tabDatos.add((ScrollView)view.findViewById(R.id.scroll2));
-        tabDatos.add((ScrollView)view.findViewById(R.id.scroll3));
-        tabDatos.add((ScrollView)view.findViewById(R.id.scroll4));
-        tabDatos.add((ScrollView)view.findViewById(R.id.scroll5));
-        tabDatos.add((ScrollView)view.findViewById(R.id.scroll6));
-        for (byte i=0;i<tabDatos.size();i++)
-            tabDatos.get(i).setVisibility(View.GONE);
+        try {
+            tabTitulos = (TabLayout) view.findViewById(R.id.tabTitulos);
+            btnIrArriba = (FloatingActionButton) view.findViewById(R.id.btnIrArriba);
+            tabTitulos.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabTitulos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            tabDatos.add((ScrollView) view.findViewById(R.id.scroll1));
+            tabDatos.add((ScrollView) view.findViewById(R.id.scroll2));
+            tabDatos.add((ScrollView) view.findViewById(R.id.scroll3));
+            tabDatos.add((ScrollView) view.findViewById(R.id.scroll4));
+            tabDatos.add((ScrollView) view.findViewById(R.id.scroll5));
+            tabDatos.add((ScrollView) view.findViewById(R.id.scroll6));
+            btnIrArriba.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tabDatos.get(pestanaActiva).fullScroll(View.FOCUS_UP);
+                    btnIrArriba.hide();
+                }
+            });
+            for (byte i = 0; i < tabDatos.size(); i++) {
+                try {
+                    final ScrollView s=tabDatos.get(i);
+                    s.setVisibility(View.GONE);
+                    s.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                        @Override
+                        public void onScrollChanged() {
+                            /*
+                            if (s.getChildAt(0).getBottom() <= (s.getHeight() + s.getScrollY())) {
+                                btnIrArriba.show();
+                            }
+                            else
+                            {
+                                btnIrArriba.hide();
+                            }
+                            */
+                        }
+                    });
 
-        tabDatos.get(0).setVisibility(View.VISIBLE);
-
-        tabTitulos.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                //mostrar
-                MostrarPestana(tab);
+                } catch (Exception e) {
+                    String as = e.getMessage();
+                }
             }
+            tabDatos.get(0).setVisibility(View.VISIBLE);
+            pestanaActiva = 0;
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                //Ocultar
-            }
+            tabTitulos.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    //mostrar
+                    MostrarPestana(tab);
+                }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                //mostrar
-                //MostrarPestana(tab);
-            }
-        });
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    //Ocultar
+                }
 
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    //mostrar
+                    //MostrarPestana(tab);
+                }
+            });
+        } catch (Exception e) {
+            String as = e.getMessage();
+        }
     }
+    int pestanaActiva=-1;
     public void MostrarPestana(TabLayout.Tab tab)
     {
         for(int i=0;i<tabTitulos.getTabCount();i++)
         {
-            if(tab.getText()==tabTitulos.getTabAt(i).getText())
+            if(tab.getText()==tabTitulos.getTabAt(i).getText()) {
                 tabDatos.get(i).setVisibility(View.VISIBLE);
+                pestanaActiva=i;
+            }
             else
                 tabDatos.get(i).setVisibility(View.GONE);
         }

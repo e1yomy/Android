@@ -1,6 +1,7 @@
 package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -121,6 +122,9 @@ public class MainActivity extends AppCompatActivity
 
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         c=this;
+
+
+
         /*
         Thread t= new Thread(new Runnable() {
             @Override
@@ -190,10 +194,20 @@ public class MainActivity extends AppCompatActivity
         }
         else if(id==R.id.nav_quienessomos){
             fragmentTransaction.replace(R.id.content_principal,new QuienesSomos()).commit();
-            navigationView.getMenu().getItem(4).setChecked(true);
+            //navigationView.getMenu().getItem(id).setCheckable(true);
+            //navigationView.setCheckedItem(id);
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
+        else if(id==R.id.nav_sitioitai){
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/")));
+            QuitarSeleccionMenu();
+        }
+        else if(id==R.id.nav_sitiopnt){
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.plataformadetransparencia.org.mx/")));
+            QuitarSeleccionMenu();
+        }
+
         if(!preferences.getBoolean("sesion",false))
         {
             fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();

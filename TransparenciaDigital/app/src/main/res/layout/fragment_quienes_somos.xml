@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -252,23 +253,23 @@
                     android:id="@+id/textView32"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/constitucionpolitica1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView33"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/constitucionpolitica2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView34"
@@ -290,12 +291,12 @@
                     android:id="@+id/textView36"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/acuerdos1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView37"
@@ -310,23 +311,23 @@
                     android:id="@+id/textView38"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/codigo1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView39"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/codigo2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView40"
@@ -341,12 +342,12 @@
                     android:id="@+id/textView41"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/criterios1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView42"
@@ -361,188 +362,188 @@
                     android:id="@+id/textView43"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView44"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView45"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes3"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView46"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes4"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView47"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes5"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView48"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes6"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView49"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes7"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView50"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes8"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView51"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes9"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView52"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes10"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView53"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes11"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView54"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes12"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView55"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes13"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView56"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes14"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView57"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes15"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView58"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes16"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView59"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/leyes17"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView60"
@@ -557,78 +558,78 @@
                     android:id="@+id/textView61"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView62"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView63"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos3"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView64"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos4"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView65"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos5"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView66"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos6"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView67"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/lineamientos7"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView68"
@@ -643,45 +644,45 @@
                     android:id="@+id/textView69"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/reglamentos1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView70"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/reglamentos2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView71"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/reglamentos3"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView72"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/reglamentos4"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView73"
@@ -696,12 +697,12 @@
                     android:id="@+id/textView74"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/recomendaciones1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView75"
@@ -716,45 +717,45 @@
                     android:id="@+id/textView76"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/normas1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView77"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/normas2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView78"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/normas3"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView79"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/normas4"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView80"
@@ -769,23 +770,23 @@
                     android:id="@+id/textView81"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/manuales1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView82"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/manuales2"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView83"
@@ -800,12 +801,12 @@
                     android:id="@+id/textView84"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/tratados1"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:textStyle="italic"
-                    android:layout_weight="1" />
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/textView85"
@@ -881,5 +882,20 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnIrArriba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/arrow_up_float" />
 
 </RelativeLayout>

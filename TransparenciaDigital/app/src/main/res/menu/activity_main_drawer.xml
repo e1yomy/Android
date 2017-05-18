@@ -29,6 +29,22 @@
 
         </menu>
     </item>
+    <item android:title="Sitios de Interés">
+        <menu>
+            <item
+                android:id="@+id/nav_sitioitai"
+                android:icon="@mipmap/ic_launcher"
+                android:title="Instituto de Transparencia" />
+            <item
+                android:id="@+id/nav_sitiopnt"
+                android:icon="@drawable/ic_pnt"
+                android:title="PNT" />
+            <item
+                android:id="@+id/nav_sitio"
+                android:icon="@drawable/ic_salir"
+                android:title="Instituto de Transparencia" />
+        </menu>
+    </item>
     <item>
     <menu>
         <item
