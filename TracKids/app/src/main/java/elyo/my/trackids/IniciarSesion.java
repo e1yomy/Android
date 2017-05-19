@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,6 +141,7 @@ public class IniciarSesion extends Fragment {
     public void Botones(final View view)
     {
 
+        try {
         btnEntrar=(Button)view.findViewById(R.id.btnEntrar);
         loginButton = (LoginButton) view.findViewById(R.id.btnFacebook);
 
@@ -168,14 +167,17 @@ public class IniciarSesion extends Fragment {
         });
         BotonFacebook();
 
-        //btnFacebook.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {}});
-
-        txtRegistro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PantallaRegistro();
-            }
-        });
+            txtRegistro.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PantallaRegistro();
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            String e=ex.getMessage();
+        }
 
 
     }
@@ -199,27 +201,28 @@ public class IniciarSesion extends Fragment {
                             public void onCompleted(
                                     JSONObject object,
                                     GraphResponse response) {
-                                // Application code
-                                //response son los datos del usuario
-                                Log.e("GraphResponse", "-------------" + response.toString());
-                                //Toast.makeText(c,response.toString() ,Toast.LENGTH_SHORT).show();
                                 try {
-                                    String emailUsuario=object.getString("email");
-                                    //Servicio web para verificar que el correo esté guardado en la base de datos,
+                                    //Servicio weab para verificar que el correo esté guardado en la base de datos,
                                     // si está guardado manda a la pantalla del mapa
                                     // si no está guardado se mandan los datos a la pantalla de registro para completar el registro
                                     // ///
-                                    Toast.makeText(c,object.getString("first_name") ,Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(c,object.getString("last_name") ,Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(c,object.getString("email") ,Toast.LENGTH_SHORT).show();
+
                                     ///////
-                                    preferences.edit().putString("nombreUsuario",object.getString("first_name"))
+                                    preferences.edit()
+                                            .putString("nombreUsuario",object.getString("first_name"))
                                             .putString("apellidoUsuario",object.getString("last_name"))
                                             .putString("correoUsuario",object.getString("email"))
+
                                             .commit();
-                                    pantalla=1;
+
                                     toolbar.setVisibility(View.VISIBLE);
+
+                                    //si ya esta guardado manda al mapa
+                                    pantalla=1;
+
+                                    //si no esta guardado manda al registro
                                     preferences.edit().putInt("sesion",2).commit();
+                                    PantallaRegistro();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -232,7 +235,7 @@ public class IniciarSesion extends Fragment {
                 //////////
 
                 //Toast.makeText(c,loginResult.toString() ,Toast.LENGTH_SHORT).show();
-                PantallaMapa();
+                //PantallaMapa();
             }
 
             @Override
@@ -243,7 +246,6 @@ public class IniciarSesion extends Fragment {
             @Override
             public void onError(FacebookException error) {
                 Toast.makeText(c,error.getMessage() ,Toast.LENGTH_SHORT).show();
-                Snackbar.make(view,"Error al iniciar sesión",Snackbar.LENGTH_SHORT);
             }
 
         });

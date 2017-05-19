@@ -42,7 +42,7 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
         this.hijos=hijos;
         this.context=context;
         //Cambiar alguien por el preferences (usuarioNombre)
-        c1 = baseDatosHelper.selectLugares("alguien");
+        c1 = baseDatosHelper.selectLugares(preferences.getString("correoUsuario",""));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                     do {
                         l2.setLatitude(c1.getDouble(1));
                         l2.setLongitude(c1.getDouble(2));
-                        if(l1.distanceTo(l2)<20)
+                        if(l1.distanceTo(l2)<=35)
                         {
                             txtUbicacionHijo.setText(c1.getString(0));
                         }

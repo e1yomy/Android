@@ -3,12 +3,14 @@ package elyo.my.trackids;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static elyo.my.trackids.Principal.c;
+import static elyo.my.trackids.Principal.preferences;
 
 
 /**
@@ -175,7 +178,13 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
 
     @Override
     public void onProviderDisabled(String provider) {
-
+        try {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     GoogleMap m;
@@ -184,7 +193,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     @Override
     public void onMapReady(GoogleMap googleMap) {
         m = googleMap;
-        m.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        m.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         m.getUiSettings().setZoomControlsEnabled(true);
         m.getUiSettings().setZoomGesturesEnabled(true);
         m.getUiSettings().setCompassEnabled(true);
@@ -224,7 +233,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                         if(input.getText().toString()!="") {
 
                             List<String> datos=new ArrayList<String>();
-                            datos.add("alguien");
+                            datos.add(preferences.getString("correoUsuario",""));
                             datos.add(input.getText().toString());
                             datos.add(locacion.latitude+"");
                             datos.add(locacion.longitude+"");
@@ -251,7 +260,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     public void ActualizarLista(){
         try{
 
-            Cursor c1 = b.selectLugares("alguien");
+            Cursor c1 = b.selectLugares(preferences.getString("correoUsuario",""));
             if(c1.moveToFirst())
             {
                 lista1.clear();
@@ -276,7 +285,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     }
     public void ActualizarMarcador(int posicion){
             m.clear();
-            m.addMarker(new MarkerOptions().position(lista2.get(posicion)).title(lista1.get(posicion)).icon(BitmapDescriptorFactory.defaultMarker()));
+            m.addMarker(new MarkerOptions().position(lista2.get(posicion)).title(lista1.get(posicion)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerguardargugar)));
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(lista2.get(posicion),18));
         //m.getCameraPosition().zoom
     }

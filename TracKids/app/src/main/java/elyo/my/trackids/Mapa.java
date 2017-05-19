@@ -1,10 +1,14 @@
 package elyo.my.trackids;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -36,8 +41,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static elyo.my.trackids.Principal.PantallaHijos;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
@@ -159,6 +167,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         @Override
         public void onLocationChanged(Location location) {
             try {
+
                 m.clear();
                 if (location != null) {
                     if (pantalla == 1) {
@@ -183,13 +192,26 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             try {
                 m.clear();
                 if (la != null) {
+                    if (locationManager != null) {
+                        if (ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                    }
                     Location a=new Location("a");
                     a.setLatitude(preferences.getFloat("actualLat",0.0f));
                     a.setLongitude(preferences.getFloat("actualLon",0.0f));
                     if (pantalla == 1) {
-                        ActualizarMarcador(a);
+                        ActualizarMarcador(l);
                     } else {
-                        ActualizarMarcador(a);
+                        ActualizarMarcador(l);
                         MostrarPosicion();
                     }
                 }
@@ -211,13 +233,14 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             }
         }
     };
+
     GoogleMap m;
     LocationManager locationManager;
     Location l;
     boolean gps;
     LatLng la;
     String nombre;
-    FloatingActionButton opciones,miUbicacion;
+    FloatingActionButton opciones,miUbicacion, volver;
     SeekBar zoom;
     int zoomlevel;
     GoogleApiClient mGoogleApiClient;
@@ -234,25 +257,29 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             mapFragment.getMapAsync(this);
 
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
-            //gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
+            gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
             opciones = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
             miUbicacion = (FloatingActionButton) view.findViewById(R.id.floatingActionButton2);
+            volver = (FloatingActionButton) view.findViewById(R.id.floatingActionButton3);
             zoom=(SeekBar)view.findViewById(R.id.seekZoom);
             MarkerPoints= new ArrayList<>();
             MarkerPoints.add(null);
             MarkerPoints.add(null);
 
             Zoom();
-            BotonOpciones();
+            BotonOpciones(view);
             BotonMiUbicacion();
+            BotonVolver();
             if(pantalla==1){
-                opciones.setVisibility(View.INVISIBLE);
-                miUbicacion.setVisibility(View.VISIBLE);
+                opciones.hide();
+                miUbicacion.show();
+                volver.hide();
                 //
             }
             else {
-                opciones.setVisibility(View.VISIBLE);
-                miUbicacion.setVisibility(View.VISIBLE);
+                opciones.show();
+                miUbicacion.show();
+                volver.show();
             }
         }
         catch (Exception ex)
@@ -263,10 +290,20 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         return view;
     }
 
+    private void BotonVolver() {
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PantallaHijos();
+            }
+        });
+    }
+
     private void BotonMiUbicacion() {
         miUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
                 m.clear();
                 if(pantalla==1)
                 {
@@ -277,6 +314,11 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                     ActualizarMarcador(l);
                     MostrarPosicion();
                 }
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -286,14 +328,19 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         zoom.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                zoomlevel=progress;
-                if(pantalla==1) {
-                    m.animateCamera(CameraUpdateFactory.newLatLngZoom(la, zoomlevel));
+                try {
+                    zoomlevel = progress;
+                    if (pantalla == 1) {
+                        m.animateCamera(CameraUpdateFactory.newLatLngZoom(la, zoomlevel));
+                    } else {
+                        //MostrarPosicion();
+                        m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target, progress));
+                        //m.animateCamera(CameraUpdateFactory.newLatLngZoom(la, zoomlevel));
+                    }
                 }
-                else{
-                    //MostrarPosicion();
-                    m.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getCameraPosition().target,progress));
-                    //m.animateCamera(CameraUpdateFactory.newLatLngZoom(la, zoomlevel));
+                catch (Exception e)
+                {
+                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 //
             }
@@ -310,7 +357,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         });
     }
 
-    private void BotonOpciones() {
+    private void BotonOpciones(final View view) {
         opciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -335,7 +382,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                                         month++; //meses está de 0 a 11
 
                                         //Cuando no haya ningun registro del hijo en la fecha seleccionada, deberá mostrar un Snackz
-                                        //Snackbar.make(view,dayOfMonth+" "+(month+1)+" "+ year,Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(view,dayOfMonth+" "+(month+1)+" "+ year,Snackbar.LENGTH_LONG).show();
 
                                     }
                                 }, Calendar.getInstance().get(Calendar.YEAR),Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -363,7 +410,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 Toast.makeText(c, "No se tienen los permisos necesarios", Toast.LENGTH_SHORT).show();
                 return;
             }
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, locationListener);
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 10000, 10f, locationListener);
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
 
             //if (gps)
@@ -371,15 +418,18 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 if (locationManager != null) {
                     l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
                 }
+                if (pantalla == 1) {
+                    ActualizarMarcador(l);
+                } else {
+                    ////////////Mostrar la ubicacion que se mando antes
+                    ActualizarMarcador(l);
+                    MostrarPosicion();
+                }
             }
-            if(pantalla==1) {
-                ActualizarMarcador(l);
-            }
-            else
-            {
-                ////////////Mostrar la ubicacion que se mando antes
-                ActualizarMarcador(l);
-                MostrarPosicion();
+            //else
+                {
+            //  startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            // Toast.makeText(c, "GPS no activo", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception ex) {
@@ -391,7 +441,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         try {
             m = googleMap;
             m.clear();
-            m.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            m.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             //m.getUiSettings().setZoomControlsEnabled(true);
             m.getUiSettings().setZoomGesturesEnabled(true);
             m.getUiSettings().setCompassEnabled(true);
@@ -424,9 +474,10 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         if (l != null) {
             la=new LatLng(l.getLatitude(), l.getLongitude());
             preferences.edit().putFloat("actualLat", (float) l.getLatitude()).putFloat("actualLon", (float) l.getLongitude()).commit();
-            MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombreUsuario","Tú")).icon(BitmapDescriptorFactory.defaultMarker());
+            MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombreUsuario","Tú")).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerpadre));
             m.addMarker(mar);
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
+            MostrarMisLugares();
             if(pantalla!=1)
             {
                 MarkerPoints.set(0,la);
@@ -439,7 +490,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             MarkerPoints.set(1, la);
             if (MarkerPoints.get(0) != null && MarkerPoints.get(1) != null) {
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                MarkerOptions mar = new MarkerOptions().position(la).title(preferences.getString("nombre", "Hijo")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                MarkerOptions mar = new MarkerOptions().position(la).title(preferences.getString("nombre", "Hijo"))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerhijo));
                 m.addMarker(mar);
                 builder.include(MarkerPoints.get(0));
                 builder.include(MarkerPoints.get(1));
@@ -480,27 +532,18 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
     }
 
     private String getUrl(LatLng origin, LatLng dest) {
-
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-
-
         // Sensor enabled
         String sensor = "sensor=false";
-
         // Building the parameters to the web service
         String parameters = str_origin + "&" + str_dest + "&" + sensor;
-
         // Output format
         String output = "json";
-
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-
-
         return url;
     }
     /**
@@ -669,5 +712,36 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 Log.d("onPostExecute","without Polylines drawn");
             }
         }
+    }
+
+    BaseDatosHelper b= new BaseDatosHelper(c);
+    public void MostrarMisLugares()
+    {
+        Cursor c= b.selectLugares(preferences.getString("correoUsuario",""));
+        if(c.moveToFirst())
+        {
+            do {
+                m.addMarker(new MarkerOptions()
+                        .position(new LatLng(c.getDouble(1),c.getDouble(2))).title(c.getString(0))
+                        .icon(bitmapSizeByScall()));
+                m.addCircle(new CircleOptions()
+                        .center(new LatLng(c.getDouble(1),c.getDouble(2)))
+                        .radius(30)
+                        .strokeWidth(3.0f)
+                        .strokeColor(R.color.colorPrimaryDark)
+                        .fillColor(R.color.colorAccent)
+                        .clickable(false));
+
+            }while (c.moveToNext());
+        }
+    }
+    public BitmapDescriptor bitmapSizeByScall() {
+        BitmapDescriptor bit;
+        Bitmap bi= BitmapFactory.decodeResource(c.getResources(),R.mipmap.ic_markerlugar);
+        Bitmap bi2 = Bitmap.createScaledBitmap(bi,
+                Math.round(bi.getWidth() * 0.5f),
+                Math.round(bi.getHeight() * 0.5f), false);
+        bit=BitmapDescriptorFactory.fromBitmap(bi2);
+        return bit;
     }
 }

@@ -94,6 +94,8 @@ public class Principal extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.principal, menu);
+        //Servicio servicio = new Servicio(c);
+
         return true;
     }
 
@@ -124,54 +126,75 @@ public class Principal extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        transaction = fragmentManager.beginTransaction();
+
         switch (id)
         {
             case R.id.nav_inicio:
                 pantalla=1;
-                transaction.replace(R.id.content_principal,new Mapa());
+                PantallaMapa();
                 break;
             case R.id.nav_hijos:
                 pantalla=2;
-                transaction.replace(R.id.content_principal,new ListaHijos());
+                PantallaHijos();
                 break;
             case R.id.nav_agregarhijo:
                 pantalla=3;
                 break;
             case R.id.nav_misubicaciones:
                 pantalla=4;
-                transaction.replace(R.id.content_principal,new MisUbicaciones());
+                PantallaMisLugares();
                 break;
             case R.id.nav_salir:
+                finish();
                 break;
 
 
 
         }
-        transaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
     public static void PantallaInicioDeSesion(){
+        toolbar.setVisibility(View.GONE);
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_principal,new IniciarSesion());
         transaction.commit();
     }
     public static void PantallaMisLugares(){
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setTitle("Mis lugares");
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_principal,new MisUbicaciones());
         transaction.commit();
     }
     public static void PantallaRegistro(){
-        transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content_principal,new Registro());
-        transaction.commit();
+        try {
+            toolbar.setVisibility(View.VISIBLE);
+
+            toolbar.setTitle("Registro");
+            transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content_principal, new Registro());
+            transaction.commit();
+        }
+        catch (Exception ex)
+        {
+            String e=ex.getMessage();
+        }
     }
     public static void PantallaMapa(){
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setTitle("Mi mapa");
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_principal,new Mapa());
+        transaction.commit();
+    }
+    public static void PantallaHijos(){
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setTitle("Lista de hijos");
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_principal,new ListaHijos());
         transaction.commit();
     }
 
