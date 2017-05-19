@@ -33,6 +33,7 @@ public class Principal extends AppCompatActivity
     static SharedPreferences preferences;
     static int sesion=0; //0: ninguna 1:sesion 2: Facebook
     static Toolbar toolbar;
+    static Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,26 @@ public class Principal extends AppCompatActivity
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content_principal,new ListaHijos());
         transaction.commit();
+    }
+    public static void ExisteCuenta(final String email, final String contra)
+    {
+
+
+
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ServiciosWeb sw= new ServiciosWeb();
+                if(sw.ExisteCuenta(email,contra)==1);
+                {
+                    preferences.edit().putInt("sesion",1).commit();
+                    toolbar.setVisibility(View.VISIBLE);
+                    pantalla=1;
+                    PantallaMapa();
+                }
+            }
+        });
+        t.start();
     }
 
 

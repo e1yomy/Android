@@ -24,7 +24,7 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static elyo.my.trackids.Principal.PantallaMapa;
+import static elyo.my.trackids.Principal.ExisteCuenta;
 import static elyo.my.trackids.Principal.PantallaRegistro;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
@@ -154,15 +154,7 @@ public class IniciarSesion extends Fragment {
             public void onClick(View v) {
 
                 //Consulta a servicio web de inicio de sesion
-                preferences.edit().putInt("sesion",1).commit();
-                preferences.edit().putString("nombreUsuario","name")
-                        .putString("apellidoUsuario","last_name")
-                        .putString("correoUsuario","email")
-                        .commit();
-
-                toolbar.setVisibility(View.VISIBLE);
-                pantalla=1;
-                PantallaMapa();
+                ExisteCuenta(editUsuario.getText().toString(),editContrasena.getText().toString());
             }
         });
         BotonFacebook();
@@ -181,6 +173,7 @@ public class IniciarSesion extends Fragment {
 
 
     }
+
 
     private void BotonFacebook() {
 
