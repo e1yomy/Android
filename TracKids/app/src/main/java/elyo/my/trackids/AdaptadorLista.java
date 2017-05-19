@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -33,11 +35,14 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
     SharedPreferences p ;
     ArrayList<Hijo> hijos;
     Context context;
+    Cursor c1;
 
 
-    public AdaptadorLista(ArrayList<Hijo> hijos, Context context){
+    public AdaptadorLista(ArrayList<Hijo> hijos, Context context, BaseDatosHelper baseDatosHelper){
         this.hijos=hijos;
         this.context=context;
+        //Cambiar alguien por el preferences (usuarioNombre)
+        c1 = baseDatosHelper.selectLugares("alguien");
     }
 
     @Override
@@ -67,7 +72,26 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                 LinearLayout layoutDatos = (LinearLayout) renglon.findViewById(R.id.layoutDatos);
                 txtNombreHijo.setText(hijos.get(position).nombre);
                 //Verificar distancia con lugares guardados y en caso de no estar dentro de la distancia, mostrar lo siguiente
+
                 txtUbicacionHijo.setText(hijos.get(position).latitud+", "+hijos.get(position).longitud);
+                if(c1.moveToFirst())
+                {
+                    Location l1 = new Location("l1");
+                    l1.setLatitude(hijos.get(position).latitud);
+                    l1.setLongitude(hijos.get(position).longitud);
+                    Location l2 = new Location("l2");
+                    do {
+                        l2.setLatitude(c1.getDouble(1));
+                        l2.setLongitude(c1.getDouble(2));
+                        if(l1.distanceTo(l2)<20)
+                        {
+                            txtUbicacionHijo.setText(c1.getString(0));
+                        }
+
+                    }while (c1.moveToNext());
+
+                }
+
 
                 Clic(renglon,position);
                 Llamar(btnLlamar, position);

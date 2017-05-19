@@ -73,6 +73,8 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
         }
     }
 
+
+
     public boolean eliminarLugar(String usuario, String nombre) {
         try {
             lastQuery = "delete from mislugares where usuario='"+usuario+"' and nombre = '"+nombre+"'";

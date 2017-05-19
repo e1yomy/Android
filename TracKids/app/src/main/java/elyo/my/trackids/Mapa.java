@@ -3,6 +3,7 @@ package elyo.my.trackids;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -68,8 +70,8 @@ import static elyo.my.trackids.Principal.preferences;
  * Use the {@link Mapa#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Mapa extends Fragment implements OnMapReadyCallback,LocationListener,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -153,6 +155,62 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         void onFragmentInteraction(Uri uri);
     }
 
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            try {
+                m.clear();
+                if (location != null) {
+                    if (pantalla == 1) {
+                        ActualizarMarcador(location);
+                    } else {
+                        ActualizarMarcador(location);
+                        MostrarPosicion();
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            try {
+                m.clear();
+                if (la != null) {
+                    Location a=new Location("a");
+                    a.setLatitude(preferences.getFloat("actualLat",0.0f));
+                    a.setLongitude(preferences.getFloat("actualLon",0.0f));
+                    if (pantalla == 1) {
+                        ActualizarMarcador(a);
+                    } else {
+                        ActualizarMarcador(a);
+                        MostrarPosicion();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            try {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
     GoogleMap m;
     LocationManager locationManager;
     Location l;
@@ -176,7 +234,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             mapFragment.getMapAsync(this);
 
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
-            gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
+            //gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
             opciones = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
             miUbicacion = (FloatingActionButton) view.findViewById(R.id.floatingActionButton2);
             zoom=(SeekBar)view.findViewById(R.id.seekZoom);
@@ -302,19 +360,14 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             ConfigurarMapa(googleMap);
 
             if (ActivityCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+                Toast.makeText(c, "No se tienen los permisos necesarios", Toast.LENGTH_SHORT).show();
                 return;
             }
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, (LocationListener) this);
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 10f, locationListener);
             locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
 
-            if (gps) {
+            //if (gps)
+            {
                 if (locationManager != null) {
                     l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
                 }
@@ -365,25 +418,13 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-    @Override
-    public void onLocationChanged(Location location) {
-        m.clear();
-        if(pantalla==1) {
-            ActualizarMarcador(location);
-        }
-        else
-        {
-            ActualizarMarcador(location);
-            MostrarPosicion();
-        }
-
-    }
 
     public void ActualizarMarcador(Location lo){
         l=lo;
         if (l != null) {
             la=new LatLng(l.getLatitude(), l.getLongitude());
-            MarkerOptions mar=new MarkerOptions().position(la).title("Tú").icon(BitmapDescriptorFactory.defaultMarker());
+            preferences.edit().putFloat("actualLat", (float) l.getLatitude()).putFloat("actualLon", (float) l.getLongitude()).commit();
+            MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombreUsuario","Tú")).icon(BitmapDescriptorFactory.defaultMarker());
             m.addMarker(mar);
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
             if(pantalla!=1)
@@ -393,22 +434,27 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
         }
     }
     public void MostrarPosicion(){
-        la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
-        MarkerPoints.set(1,la);
-        if(MarkerPoints.get(0)!= null&& MarkerPoints.get(1)!=null)
-        {
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-            m.addMarker(mar);
-            builder.include(MarkerPoints.get(0));
-            builder.include(MarkerPoints.get(1));
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(builder.build(), 100);
-            m.animateCamera(cu);
-            //m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
-            String url= getUrl(MarkerPoints.get(0),MarkerPoints.get(1));
-            FetchUrl fetchUrl = new FetchUrl();
-            fetchUrl.execute(url);
+        try {
+            la = new LatLng(preferences.getFloat("lat", 0.0f), preferences.getFloat("lon", 0.0f));
+            MarkerPoints.set(1, la);
+            if (MarkerPoints.get(0) != null && MarkerPoints.get(1) != null) {
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                MarkerOptions mar = new MarkerOptions().position(la).title(preferences.getString("nombre", "Hijo")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                m.addMarker(mar);
+                builder.include(MarkerPoints.get(0));
+                builder.include(MarkerPoints.get(1));
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(builder.build(), 100);
+                m.animateCamera(cu);
+                //m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
+                String url = getUrl(MarkerPoints.get(0), MarkerPoints.get(1));
+                FetchUrl fetchUrl = new FetchUrl();
+                fetchUrl.execute(url);
 
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -536,21 +582,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback,LocationListene
                 //.addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     @Override

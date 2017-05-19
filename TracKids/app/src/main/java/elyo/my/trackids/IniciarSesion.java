@@ -23,11 +23,15 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.PantallaRegistro;
 import static elyo.my.trackids.Principal.c;
+import static elyo.my.trackids.Principal.pantalla;
+import static elyo.my.trackids.Principal.preferences;
+import static elyo.my.trackids.Principal.toolbar;
 
 
 /**
@@ -124,6 +128,7 @@ public class IniciarSesion extends Fragment {
     TextView txtRegistro;
     EditText editUsuario, editContrasena;
     View view;
+    LoginButton loginButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -137,7 +142,7 @@ public class IniciarSesion extends Fragment {
     CallbackManager callBackManager;
     public void Botones(final View view)
     {
-        final LoginButton loginButton;
+
         btnEntrar=(Button)view.findViewById(R.id.btnEntrar);
         loginButton = (LoginButton) view.findViewById(R.id.btnFacebook);
 
@@ -148,9 +153,34 @@ public class IniciarSesion extends Fragment {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Consulta a servicio web de inicio de sesion
+                preferences.edit().putInt("sesion",1).commit();
+                preferences.edit().putString("nombreUsuario","name")
+                        .putString("apellidoUsuario","last_name")
+                        .putString("correoUsuario","email")
+                        .commit();
+
+                toolbar.setVisibility(View.VISIBLE);
+                pantalla=1;
                 PantallaMapa();
             }
         });
+        BotonFacebook();
+
+        //btnFacebook.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {}});
+
+        txtRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PantallaRegistro();
+            }
+        });
+
+
+    }
+
+    private void BotonFacebook() {
 
         callBackManager= CallbackManager.Factory.create();
         loginButton.setReadPermissions("email");
@@ -172,7 +202,27 @@ public class IniciarSesion extends Fragment {
                                 // Application code
                                 //response son los datos del usuario
                                 Log.e("GraphResponse", "-------------" + response.toString());
-
+                                //Toast.makeText(c,response.toString() ,Toast.LENGTH_SHORT).show();
+                                try {
+                                    String emailUsuario=object.getString("email");
+                                    //Servicio web para verificar que el correo esté guardado en la base de datos,
+                                    // si está guardado manda a la pantalla del mapa
+                                    // si no está guardado se mandan los datos a la pantalla de registro para completar el registro
+                                    // ///
+                                    Toast.makeText(c,object.getString("first_name") ,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(c,object.getString("last_name") ,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(c,object.getString("email") ,Toast.LENGTH_SHORT).show();
+                                    ///////
+                                    preferences.edit().putString("nombreUsuario",object.getString("first_name"))
+                                            .putString("apellidoUsuario",object.getString("last_name"))
+                                            .putString("correoUsuario",object.getString("email"))
+                                            .commit();
+                                    pantalla=1;
+                                    toolbar.setVisibility(View.VISIBLE);
+                                    preferences.edit().putInt("sesion",2).commit();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                 Bundle parameters = new Bundle();
@@ -181,7 +231,7 @@ public class IniciarSesion extends Fragment {
                 request.executeAsync();
                 //////////
 
-                Toast.makeText(c,loginResult.toString() ,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(c,loginResult.toString() ,Toast.LENGTH_SHORT).show();
                 PantallaMapa();
             }
 
@@ -197,18 +247,8 @@ public class IniciarSesion extends Fragment {
             }
 
         });
-
-        //btnFacebook.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {}});
-
-        txtRegistro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PantallaRegistro();
-            }
-        });
-
-
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

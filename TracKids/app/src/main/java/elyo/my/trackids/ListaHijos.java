@@ -109,7 +109,7 @@ public class ListaHijos extends Fragment {
     static ListView lv;
     List<String> lista = new ArrayList<String>();
     static ArrayList<Hijo> listaHijos;
-
+    static BaseDatosHelper b;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,6 +117,7 @@ public class ListaHijos extends Fragment {
             View view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
 
             lv = (ListView) view.findViewById(R.id.listHijos);
+            b= new BaseDatosHelper(c);
             lista.add("foo");
             lista.add("bar");
             listaHijos = new ArrayList<Hijo>();
@@ -130,7 +131,7 @@ public class ListaHijos extends Fragment {
 
     }
     static void ActualizarLista(){
-        AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos,c);
+        AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos,c,b);
         lv.setAdapter(adaptadorLista);
     }
 

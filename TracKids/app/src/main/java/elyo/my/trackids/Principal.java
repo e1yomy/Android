@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class Principal extends AppCompatActivity
@@ -31,13 +32,14 @@ public class Principal extends AppCompatActivity
     public static byte pantalla=1;
     static SharedPreferences preferences;
     static int sesion=0; //0: ninguna 1:sesion 2: Facebook
+    static Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -54,8 +56,23 @@ public class Principal extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         try{
             navigationView.getMenu().getItem(0).setChecked(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new IniciarSesion()).commit();
+
+            preferences.edit().putInt("sesion",0).commit();
+            if(preferences.getInt("sesion",0)!=0)
+            {
+                toolbar.setVisibility(View.VISIBLE);
+                //txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+                //txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
+                //RecuperarDatosDeUsuario();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
+            }
+            else
+            {
+                toolbar.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new IniciarSesion()).commit();
+
+            }
+
         }
         catch (Exception ex)
         {
