@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static elyo.my.trackids.Principal.c;
-import static elyo.my.trackids.Principal.preferences;
+import static elyo.my.trackids.Principal.usuario;
 
 
 /**
@@ -233,7 +233,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                         if(input.getText().toString()!="") {
 
                             List<String> datos=new ArrayList<String>();
-                            datos.add(preferences.getString("correoUsuario",""));
+                            datos.add(usuario.usuario);
                             datos.add(input.getText().toString());
                             datos.add(locacion.latitude+"");
                             datos.add(locacion.longitude+"");
@@ -260,27 +260,27 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     public void ActualizarLista(){
         try{
 
-            Cursor c1 = b.selectLugares(preferences.getString("correoUsuario",""));
+            Cursor c1 = b.selectLugares(usuario.usuario);
+            lista1.clear();
+            lista2.clear();
             if(c1.moveToFirst())
             {
-                lista1.clear();
-                lista2.clear();
                 do{
                     lista1.add(c1.getString(0));
                     lista2.add(new LatLng(c1.getDouble(1),c1.getDouble(2)));
                 }while (c1.moveToNext());
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                        c,
-                        android.R.layout.simple_list_item_1,
-                        lista1 );
-
-                listMisUbicaciones.setAdapter(arrayAdapter);
             }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                    c,
+                    android.R.layout.simple_list_item_1,
+                    lista1 );
+
+            listMisUbicaciones.setAdapter(arrayAdapter);
 
 
         }
         catch (Exception ec){
-
+            String s= ec.getMessage();
         }
     }
     public void ActualizarMarcador(int posicion){
@@ -307,7 +307,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        b.eliminarLugar("alguien",lista1.get(position));
+                        b.eliminarLugar(usuario.usuario,lista1.get(position));
                         m.clear();
                         ActualizarLista();
                     }
