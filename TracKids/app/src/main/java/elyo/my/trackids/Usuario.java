@@ -5,6 +5,7 @@ package elyo.my.trackids;
  */
 
 public class Usuario {
+
     String id;
     String usuario;
     String nombres;

@@ -16,6 +16,8 @@ import com.facebook.login.LoginManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static elyo.my.trackids.Principal.ExisteCuenta;
+import static elyo.my.trackids.Principal.GuardarCuenta;
 import static elyo.my.trackids.Principal.PantallaInicioDeSesion;
 import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.c;
@@ -140,18 +142,22 @@ public class Registro extends Fragment {
         if(preferences.getInt("sesion",-1)==2)
         {
             //Cargar los datos en los campos, dejando los campos de contraseña de solo lectura
-            editNombres.setText(preferences.getString("nombreUsuario",""));
-            editApellidos.setText(preferences.getString("apellidoUsuario",""));
-            editEmail.setText(preferences.getString("correoUsuario",""));
-            editNombres.setEnabled(false);
-            editApellidos.setEnabled(false);
-            editEmail.setEnabled(false);
+            String nombre = preferences.getString("nombreUsuario","");
+            String apellido =preferences.getString("apellidoUsuario","");
+            String email=preferences.getString("correoUsuario","");
+            String contra= preferences.getString("contrasenaUsuario","1324567890");
+            editNombres.setText(nombre);
+            editApellidos.setText(apellido);
+            editEmail.setText(email);
+            editNombres.setEnabled(nombre.isEmpty());
+            editApellidos.setEnabled(apellido.isEmpty());
+            editEmail.setEnabled(email.isEmpty());
             editContra1.setEnabled(false);
             editContra2.setEnabled(false);
+            editContra1.setText(contra);
+            editContra2.setText(contra);
             editTelefono.setEnabled(true);
-            editContra1.setText("12345678");
-            editContra2.setText("12345678");
-            //btnVolver.hide();
+
         }
         else
         {
@@ -171,6 +177,7 @@ public class Registro extends Fragment {
                 @Override
                 public void onClick(View v) {
                     LoginManager.getInstance().logOut();
+                    preferences.edit().putInt("sesion", 0).commit();
                     PantallaInicioDeSesion();
                 }
             });
@@ -188,32 +195,50 @@ public class Registro extends Fragment {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (byte i=0;i<campos.size();i++)
-                {
-                    if (campos.get(i).getText().toString().isEmpty()) {
-                        Toast.makeText(c, "Verificar que los campos estén completos", Toast.LENGTH_SHORT).show();
-                        return;
+                try {
+                    for (byte i = 0; i < campos.size(); i++) {
+                        if (campos.get(i).getText().toString().isEmpty()) {
+                            Toast.makeText(c, "Verificar que los campos estén completos", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                     }
-                }
-                if(preferences.getInt("sesion",-1)!=2) {
-                    if(editContra1.getText().toString().equals(editContra2.getText().toString()))
-                    {
-                        //Guardar usuario
-                        preferences.edit().putInt("sesion",0).commit();
-                        Toast.makeText(c, editContra1.getText().toString(), Toast.LENGTH_SHORT).show();
-                        Toast.makeText(c, "Cuenta creada.\nAhora puedes iniciar sesión", Toast.LENGTH_SHORT).show();
-                        PantallaInicioDeSesion();
+                    if (editContra1.getText().toString().equals(editContra2.getText().toString())) {
+                        //if (preferences.getInt("sesion", -1) != 2)
+                        {
+                            GuardarCuenta(campos.get(0).getText().toString(),campos.get(1).getText().toString(),campos.get(2).getText().toString(),campos.get(3).getText().toString(),campos.get(5).getText().toString());
+                            Thread.sleep(500);
+
+                            if (preferences.getInt("sesion", -1) == 2) {
+                                pantalla = 1;
+                                //cargarDatos De usuario en preferences
+                                ExisteCuenta(campos.get(2).getText().toString(),preferences.getString("contrasenaUsuario",""));
+                                PantallaMapa();
+                            }
+                            else {
+                                if (preferences.getBoolean("exito", false))
+                                {
+                                    preferences.edit().putInt("sesion", 0).commit();
+                                    Toast.makeText(c, editContra1.getText().toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(c, "Cuenta creada.\nAhora puedes iniciar sesión", Toast.LENGTH_SHORT).show();
+                                    PantallaInicioDeSesion();
+                                }
+                                else
+                                {
+                                    /////
+                                    Toast.makeText(c, "Algo ha salido mál, intenta nuevamente en unos minutos.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+
                     }
 
+                    ////
                 }
-                else
+                catch (Exception ex)
                 {
-                    //Guardar usuario sin contraseña
-                    pantalla=1;
-                    //cargarDatos De usuario en preferences
-                    PantallaMapa();
+                    String s = ex.getMessage();
                 }
-                ////
 
             }
         });

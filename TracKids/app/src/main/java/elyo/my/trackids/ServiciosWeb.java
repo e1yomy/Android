@@ -61,6 +61,7 @@ public class ServiciosWeb {
                         .putString("nombresUsuario",json.getJSONObject(0).getString("nombres"))
                         .putString("apellidosUsuario",json.getJSONObject(0).getString("apellidos"))
                         .putString("telefonoUsuario",json.getJSONObject(0).getString("telefono"))
+                        .putString("contrasenaUsuario",json.getJSONObject(0).getString("contrasena"))
                         .commit();
                 usuario =new Usuario(
                         json.getJSONObject(0).getString("idUs"),
@@ -87,6 +88,39 @@ public class ServiciosWeb {
                 e.printStackTrace();
             }
         }
-        return 1;
+        return 0;
+    }
+
+    public int GuardarCuenta(String nombres, String apellidos, String correo, String contrasena, String telefono) {
+        try {
+            //Indica url del webservice
+            urlprevia = webService + "/registroUsuarios.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data =        URLEncoder.encode("usu", "UTF-8") + "=" + URLEncoder.encode(correo, "UTF-8");
+            data += "&"+  URLEncoder.encode("nom", "UTF-8") + "=" + URLEncoder.encode(nombres, "UTF-8");
+            data += "&" + URLEncoder.encode("ape", "UTF-8") + "=" + URLEncoder.encode(apellidos, "UTF-8");
+            data += "&" + URLEncoder.encode("tel", "UTF-8") + "=" + URLEncoder.encode(telefono, "UTF-8");
+            data += "&" + URLEncoder.encode("pas", "UTF-8") + "=" + URLEncoder.encode(contrasena, "UTF-8");
+
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn = direccion.openConnection();
+            conn.setDoOutput(true);
+            wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea = reader.readLine()) != null)
+                sb.append(linea);
+
+            return 1;
+        } catch (Exception ex) {
+            String s= ex.getMessage();
+                    return 0;
+        }
     }
 }
+

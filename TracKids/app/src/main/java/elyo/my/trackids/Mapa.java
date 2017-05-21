@@ -68,6 +68,7 @@ import static elyo.my.trackids.Principal.PantallaHijos;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
+import static elyo.my.trackids.Principal.usuario;
 
 
 /**
@@ -474,7 +475,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         if (l != null) {
             la=new LatLng(l.getLatitude(), l.getLongitude());
             preferences.edit().putFloat("actualLat", (float) l.getLatitude()).putFloat("actualLon", (float) l.getLongitude()).commit();
-            MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombreUsuario","Tú")).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerpadre));
+            MarkerOptions mar=new MarkerOptions().position(la).title(usuario.nombres).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerpadre));
             m.addMarker(mar);
             m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
             MostrarMisLugares();

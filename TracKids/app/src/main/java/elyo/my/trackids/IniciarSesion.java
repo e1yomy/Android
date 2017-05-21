@@ -21,15 +21,16 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import static elyo.my.trackids.Principal.ExisteCuenta;
+import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.PantallaRegistro;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
 import static elyo.my.trackids.Principal.toolbar;
+import static elyo.my.trackids.Principal.usuario;
 
 
 /**
@@ -154,7 +155,21 @@ public class IniciarSesion extends Fragment {
             public void onClick(View v) {
 
                 //Consulta a servicio web de inicio de sesion
-                ExisteCuenta(editUsuario.getText().toString(),editContrasena.getText().toString());
+                try {
+                    ExisteCuenta(editUsuario.getText().toString(), editContrasena.getText().toString());
+
+                    Thread.sleep(500);
+                    if (preferences.getBoolean("existe", false)) {
+                        preferences.edit().putInt("sesion", 1).commit();
+                        toolbar.setVisibility(View.VISIBLE);
+                        pantalla = 1;
+                        PantallaMapa();
+                    } else {
+                        Toast.makeText(c, "Nombre de usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         BotonFacebook();
@@ -195,40 +210,53 @@ public class IniciarSesion extends Fragment {
                                     JSONObject object,
                                     GraphResponse response) {
                                 try {
-                                    //Servicio weab para verificar que el correo esté guardado en la base de datos,
-                                    // si está guardado manda a la pantalla del mapa
-                                    // si no está guardado se mandan los datos a la pantalla de registro para completar el registro
-                                    // ///
+                                    try {
+                                        ExisteCuenta(object.getString("email"),object.getString("id"));
+                                        Thread.sleep(500);
+                                        if (preferences.getBoolean("existe", false)) {
 
-                                    ///////
-                                    preferences.edit()
-                                            .putString("nombreUsuario",object.getString("first_name"))
-                                            .putString("apellidoUsuario",object.getString("last_name"))
-                                            .putString("correoUsuario",object.getString("email"))
-
-                                            .commit();
-
-                                    toolbar.setVisibility(View.VISIBLE);
-
+                                            preferences.edit()
+                                                    .putString("correoUsuario", object.getString("email"))
+                                                    .putString("nombresUsuario", object.getString("first_name"))
+                                                    .putString("apellidosUsuario", object.getString("last_name"))
+                                                    .putString("telefonoUsuario", "6121214236")
+                                                    .putString("contrasenaUsuario",object.getString("id"))
+                                                    .commit();
+                                            preferences.edit().putInt("sesion", 2).commit();
+                                            usuario= new Usuario(preferences.getString("idUsuario",""),object.getString("email"),object.getString("first_name"),object.getString("last_name"),"6121214236","1234567890");
+                                            toolbar.setVisibility(View.VISIBLE);
+                                            pantalla = 1;
+                                            PantallaMapa();
+                                        } else {
+                                            preferences.edit().putInt("sesion", 2).commit();
+                                            preferences.edit()
+                                                    .putString("idUsuario", object.getString("id"))
+                                                    .putString("correoUsuario", object.getString("email"))
+                                                    .putString("nombresUsuario", object.getString("first_name"))
+                                                    .putString("apellidosUsuario", object.getString("last_name"))
+                                                    .putString("telefonoUsuario", "6121214236")
+                                                    .putString("contrasenaUsuario", object.getString("id"))
+                                                    .commit();
+                                            PantallaRegistro();
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                     //si ya esta guardado manda al mapa
-                                    pantalla=1;
-
                                     //si no esta guardado manda al registro
-                                    preferences.edit().putInt("sesion",2).commit();
-                                    PantallaRegistro();
-                                } catch (JSONException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                         });
+                /////Si este bloque no está, no se manda hacia otroas pantallas
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,name,link,gender,birthday,email,first_name,last_name,location,locale,timezone");
                 request.setParameters(parameters);
                 request.executeAsync();
                 //////////
 
-                //Toast.makeText(c,loginResult.toString() ,Toast.LENGTH_SHORT).show();
-                //PantallaMapa();
+
             }
 
             @Override
