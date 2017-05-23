@@ -16,6 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.ListaSujetosObligados;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 
 
@@ -112,6 +114,7 @@ public class SujetosObligados extends Fragment {
 
     int nivel=-1;
     ArrayList<ListView> listas= new ArrayList<>();
+    List<String> lista = new ArrayList<>();
     FloatingActionButton btnVolverSO;
     TextView txtTituloSO;
     @Override
@@ -125,11 +128,34 @@ public class SujetosObligados extends Fragment {
         btnVolverSO=(FloatingActionButton)view.findViewById(R.id.btnVolverSO);
         txtTituloSO= (TextView)view.findViewById(R.id.txtTituloSO);
         Clics();
+        CargarSujetos();
         ActualizarPantalla(++nivel);
 
         return view;
     }
-    List<String> lista = new ArrayList<String>();
+
+    private void CargarSujetos() {
+        try {
+            ListaSujetosObligados();
+            Thread.sleep(500);
+            if(nombresSO.size()>0) {
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, nombresSO);
+                listas.get(0).setAdapter(arrayAdapter);
+            }
+            else
+            {
+                txtTituloSO.setText("Listado de Sujetos Obligados" +
+                        "\n\n" +
+                        "No se ha encontrado un listado.\n" +
+                        "Revise su coneción e intente nuevamente.");
+            }
+        }
+        catch (Exception ex)
+        {
+            String a=ex.getMessage()+" "+ex.getLocalizedMessage();
+        }
+    }
+
     private void Clics() {
         lista.add("item1");
         lista.add("item2");

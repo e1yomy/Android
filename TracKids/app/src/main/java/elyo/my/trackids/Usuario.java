@@ -12,17 +12,19 @@ public class Usuario {
     String apellidos;
     String telefono;
     String contrasena;
+    String pin;
     public Usuario(){
 
     }
-    public Usuario(String a,String b, String c, String d, String e, String f)
+    public Usuario(String id,String usuario, String nombres, String apellidos, String telefono, String contrasena, String pin)
     {
-        id=a;
-        usuario=b;
-        nombres=c;
-        apellidos=d;
-        telefono=e;
-        contrasena=f;
+        this.id=id;
+        this.usuario=usuario;
+        this.nombres=nombres;
+        this.apellidos=apellidos;
+        this.telefono=telefono;
+        this.contrasena=contrasena;
+        this.pin=pin;
     }
 
 

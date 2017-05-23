@@ -44,7 +44,9 @@
     <string name="registro">Registro</string>
     <string name="ajustes">Ajustes</string>
     <string name="misdatos">Mis datos</string>
+    <string name="pin">Pin</string>
     <string name="cerrarsesion">Cerrar sesion</string>
+    <string name="usuario">Usuario</string>
 
     <string-array name="opciones">
         <item>Ubicación actual</item>

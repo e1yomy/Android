@@ -223,7 +223,7 @@ public class IniciarSesion extends Fragment {
                                                     .putString("contrasenaUsuario",object.getString("id"))
                                                     .commit();
                                             preferences.edit().putInt("sesion", 2).commit();
-                                            usuario= new Usuario(preferences.getString("idUsuario",""),object.getString("email"),object.getString("first_name"),object.getString("last_name"),"6121214236","1234567890");
+                                            usuario= new Usuario(preferences.getString("idUsuario",""),object.getString("email"),object.getString("first_name"),object.getString("last_name"),"6121214236","1234567890",preferences.getString("pinUsuario",""));
                                             toolbar.setVisibility(View.VISIBLE);
                                             pantalla = 1;
                                             PantallaMapa();

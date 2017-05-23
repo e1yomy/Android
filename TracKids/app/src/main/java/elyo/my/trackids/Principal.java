@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +39,8 @@ public class Principal extends AppCompatActivity
     static int sesion=0; //0: ninguna 1:sesion 2: Facebook
     static Toolbar toolbar;
     static Usuario usuario;
+    public static Handler responseHandler=null;
+    static ProgressDialog p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +62,10 @@ public class Principal extends AppCompatActivity
         c=this;
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         fragmentManager = getSupportFragmentManager();
+        p=new ProgressDialog(c);
         try{
             navigationView.getMenu().getItem(0).setChecked(true);
 
-            //preferences.edit().putInt("sesion",0).commit();
             if(preferences.getInt("sesion",0)!=0)
             {
                 toolbar.setVisibility(View.VISIBLE);
@@ -77,6 +81,20 @@ public class Principal extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new IniciarSesion()).commit();
 
             }
+            responseHandler= new Handler(){
+                public void handleMessage(Message msg)
+                {
+                    super.handleMessage(msg);
+                    try
+                    {
+                        p.dismiss();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            };
 
         }
         catch (Exception ex)
@@ -163,6 +181,7 @@ public class Principal extends AppCompatActivity
                     PantallaHijos();
                     break;
                 case R.id.nav_agregarhijo:
+                    PantallaAgregarHijo();
                     pantalla=3;
                     break;
                 case R.id.nav_misubicaciones:
@@ -193,7 +212,6 @@ public class Principal extends AppCompatActivity
     public static void PantallaRegistro(){
         try {
             toolbar.setVisibility(View.VISIBLE);
-
             toolbar.setTitle("Registro");
             transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.content_principal, new Registro());
@@ -218,18 +236,45 @@ public class Principal extends AppCompatActivity
         transaction.replace(R.id.content_principal,new ListaHijos());
         transaction.commit();
     }
-    public static void GuardarCuenta(final String nombres, final String apellidos, final String correo, final String contrasena, final String telefono)
+    public static void PantallaAgregarHijo(){
+        try {
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar.setTitle("Agregar hijo");
+            transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content_principal, new IngresarClaves());
+            transaction.commit();
+        }
+        catch (Exception ex)
+        {
+            String s=ex.getMessage();
+        }
+    }
+
+
+
+
+    public static void Mensaje(){
+        p.setIndeterminate(true);
+        p.setCancelable(false);
+        p.setCanceledOnTouchOutside(false);
+        p.setTitle("Espere");
+        p.setMessage("Verificando sus credenciales");
+        p.show();
+    }
+    public static void GuardarCuenta(final String nombres, final String apellidos, final String correo, final String contrasena, final String telefono, final String pin)
     {
         preferences.edit().putBoolean("exito",false).commit();
+        Mensaje();
         Thread t =new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+
                     ServiciosWeb sw = new ServiciosWeb();
-                    if (sw.GuardarCuenta(nombres, apellidos, correo, contrasena, telefono) == 1) {
+                    if (sw.GuardarCuenta(nombres, apellidos, correo, contrasena, telefono,pin) == 1) {
                         preferences.edit().putBoolean("exito", true).commit();
                     }
-
+                    responseHandler.sendEmptyMessage(0);
                 }
                 catch (Exception ex)
                 {
@@ -242,13 +287,6 @@ public class Principal extends AppCompatActivity
 
     public static void ExisteCuenta(final String email, final String contra)
     {
-        ProgressDialog p = new ProgressDialog(c);
-        p.setIndeterminate(true);
-        p.setCancelable(false);
-        p.setCanceledOnTouchOutside(false);
-        p.setTitle("Espere");
-        p.setMessage("Verificando sus credenciales");
-        p.show();
         preferences.edit().putBoolean("procesoFinalizado",false).commit();
         preferences.edit().putBoolean("existe", false).commit();
         Thread t =new Thread(new Runnable() {
@@ -271,7 +309,7 @@ public class Principal extends AppCompatActivity
         while (true)
         {
             if(preferences.getBoolean("procesoFinalizado",false)) {
-                p.dismiss();
+                //p.dismiss();
                 return;
             }
         }
@@ -284,8 +322,30 @@ public class Principal extends AppCompatActivity
                 preferences.getString("nombresUsuario", ""),
                 preferences.getString("apellidosUsuario", ""),
                 preferences.getString("telefonoUsuario", ""),
-                preferences.getString("contrasenaUsuario", "")
+                preferences.getString("contrasenaUsuario", ""),
+                preferences.getString("pinUsuario", "")
         );
     }
+    public static void AgregarHijo(final String email,final String pin)
+    {
+        preferences.edit().putBoolean("existe", false).commit();
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
 
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if (sw.ExisteUsuario(email, pin) == 1) {
+                        preferences.edit().putBoolean("existe", true).commit();
+                    }
+                    preferences.edit().putBoolean("procesoFinalizado",true).commit();
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+                }
+            }
+        });
+        t.start();
+    }
 }

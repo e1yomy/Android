@@ -18,15 +18,12 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.IniciarSesion;
+import static transparencia.itai.com.transparenciadigital.MainActivity.Registro;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.toolbar;
 
@@ -215,11 +212,27 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         btnRegistro1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editCuenta.setText("");
-                editContrasena.setText("");
-                layoutInicioSesion.setVisibility(View.VISIBLE);
-                layoutRegistro1.setVisibility(View.GONE);
+                //editCuenta.setText("");
+                //editContrasena.setText("");
+                //layoutInicioSesion.setVisibility(View.VISIBLE);
+                //layoutRegistro1.setVisibility(View.GONE);
+
                 preferences.edit().putBoolean("sesion",false);
+                Registro(textos.get(3).getText().toString(),
+                        textos.get(4).getText().toString(),
+                        textos.get(0).getText().toString(),
+                        textos.get(1).getText().toString(),
+                        textos.get(2).getText().toString(),
+                        textos.get(6).getText().toString(),
+                        textos.get(7).getText().toString(),
+                        textos.get(8).getText().toString(),
+                        textos.get(9).getText().toString(),
+                        textos.get(10).getText().toString(),
+                        textos.get(11).getText().toString(),
+                        textos.get(12).getText().toString(),
+                        textos.get(13).getText().toString(),
+                        textos.get(14).getText().toString()
+                        );
                 btnVolverRegistro.hide();
                 LimpiarCampos();
 

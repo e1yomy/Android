@@ -116,7 +116,7 @@ public class Registro extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    EditText editNombres,editApellidos,editEmail,editContra1,editContra2, editTelefono;
+    EditText editNombres,editApellidos,editEmail,editContra1,editContra2, editTelefono,editPin;
     List<EditText> campos;
     FloatingActionButton btnVolver,btnRegistrar;
     @Override
@@ -131,12 +131,14 @@ public class Registro extends Fragment {
         editContra1=(EditText)view.findViewById(R.id.editContra1);
         editContra2=(EditText)view.findViewById(R.id.editContra2);
         editTelefono=(EditText)view.findViewById(R.id.editTelefono);
+        editPin=(EditText)view.findViewById(R.id.editPin);
         campos.add(editNombres);
         campos.add(editApellidos);
         campos.add(editEmail);
         campos.add(editContra1);
         campos.add(editContra2);
         campos.add( editTelefono);
+        campos.add( editPin);
         Regresar(view);
         TerminarRegistro(view);
         if(preferences.getInt("sesion",-1)==2)
@@ -157,6 +159,7 @@ public class Registro extends Fragment {
             editContra1.setText(contra);
             editContra2.setText(contra);
             editTelefono.setEnabled(true);
+            editPin.setEnabled(true);
 
         }
         else
@@ -205,7 +208,7 @@ public class Registro extends Fragment {
                     if (editContra1.getText().toString().equals(editContra2.getText().toString())) {
                         //if (preferences.getInt("sesion", -1) != 2)
                         {
-                            GuardarCuenta(campos.get(0).getText().toString(),campos.get(1).getText().toString(),campos.get(2).getText().toString(),campos.get(3).getText().toString(),campos.get(5).getText().toString());
+                            GuardarCuenta(campos.get(0).getText().toString(),campos.get(1).getText().toString(),campos.get(2).getText().toString(),campos.get(3).getText().toString(),campos.get(5).getText().toString(),campos.get(6).getText().toString());
                             Thread.sleep(500);
 
                             if (preferences.getInt("sesion", -1) == 2) {

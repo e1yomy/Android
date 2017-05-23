@@ -108,6 +108,19 @@
                     android:inputType="phone"
                     android:paddingTop="10dp"
                     android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/editPin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/pin"
+                    android:inputType="number"
+                    android:paddingTop="10dp"
+                    android:textSize="20sp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

@@ -62,6 +62,7 @@ public class ServiciosWeb {
                         .putString("apellidosUsuario",json.getJSONObject(0).getString("apellidos"))
                         .putString("telefonoUsuario",json.getJSONObject(0).getString("telefono"))
                         .putString("contrasenaUsuario",json.getJSONObject(0).getString("contrasena"))
+                        .putString("pinUsuario",json.getJSONObject(0).getString("pin"))
                         .commit();
                 usuario =new Usuario(
                         json.getJSONObject(0).getString("idUs"),
@@ -69,7 +70,8 @@ public class ServiciosWeb {
                         json.getJSONObject(0).getString("nombres"),
                         json.getJSONObject(0).getString("apellidos"),
                         json.getJSONObject(0).getString("telefono"),
-                        json.getJSONObject(0).getString("contrasena"));
+                        json.getJSONObject(0).getString("contrasena"),
+                        json.getJSONObject(0).getString("pin"));
                 return 1;
             }
             else
@@ -91,7 +93,7 @@ public class ServiciosWeb {
         return 0;
     }
 
-    public int GuardarCuenta(String nombres, String apellidos, String correo, String contrasena, String telefono) {
+    public int GuardarCuenta(String nombres, String apellidos, String correo, String contrasena, String telefono, String pin) {
         try {
             //Indica url del webservice
             urlprevia = webService + "/registroUsuarios.php";
@@ -102,6 +104,7 @@ public class ServiciosWeb {
             data += "&" + URLEncoder.encode("ape", "UTF-8") + "=" + URLEncoder.encode(apellidos, "UTF-8");
             data += "&" + URLEncoder.encode("tel", "UTF-8") + "=" + URLEncoder.encode(telefono, "UTF-8");
             data += "&" + URLEncoder.encode("pas", "UTF-8") + "=" + URLEncoder.encode(contrasena, "UTF-8");
+            data += "&" + URLEncoder.encode("pin", "UTF-8") + "=" + URLEncoder.encode(pin, "UTF-8");
 
             data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
@@ -121,6 +124,82 @@ public class ServiciosWeb {
             String s= ex.getMessage();
                     return 0;
         }
+    }
+
+    public int ExisteUsuario(String email, String pin) {
+
+        try {
+            //Indica url del webservice
+            urlprevia=webService+"/conexion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data = URLEncoder.encode("usu", "UTF-8")+ "=" + URLEncoder.encode(email, "UTF-8");
+            data += "&" + URLEncoder.encode("pin", "UTF-8") + "="+ URLEncoder.encode(pin, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+            JSONArray json=new JSONArray(sb.toString());
+            if (json.length()>0)
+            {
+                return CrearConexion(usuario.id,json.getJSONObject(0).getString("idUs"));
+                //return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        } catch (Exception ex){
+            String e=ex.getMessage();
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    private int CrearConexion(String id, String idUs) {
+        try {
+            //Indica url del webservice
+            urlprevia = webService + "/conexion2.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data =        URLEncoder.encode("padre", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&"+  URLEncoder.encode("hijo", "UTF-8") + "=" + URLEncoder.encode(idUs, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn = direccion.openConnection();
+            conn.setDoOutput(true);
+            wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea = reader.readLine()) != null)
+                sb.append(linea);
+
+            return 1;
+        } catch (Exception ex) {
+            String s= ex.getMessage();
+            return 0;
+        }
+
     }
 }
 

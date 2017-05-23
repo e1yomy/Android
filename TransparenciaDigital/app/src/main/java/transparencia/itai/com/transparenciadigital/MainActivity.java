@@ -350,6 +350,34 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public static void Registro( final String correo, final String contrasena, final String nombres, final String paterno, final String materno, final String calle, final String noExterno, final String noInterno, final String entreCalles, final String colonia, final String cp, final String entidadFederativa, final String municipio, final String telefono)
+    {
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.RegistrarUsuario( correo, contrasena, nombres, paterno, materno, calle, noExterno, noInterno, entreCalles, colonia, cp, entidadFederativa, municipio, telefono)==1) {
+                        ini=1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+        if(ini==1)
+        {
+            fragmentManager.beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
+            Toast.makeText(c, "Usuario creado, ahora puedes iniciar sesión", Toast.LENGTH_SHORT).show();
+            ini=0;
+            tr.stop();
+        }
+    }
+
     public static String FormatoNombre(String nombre){
         return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
     }
@@ -371,4 +399,28 @@ public class MainActivity extends AppCompatActivity
                 preferences.getString("telefono","")
         );
     }
+
+    public static void ListaSujetosObligados(){
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.ListarSujetos()==1) {
+
+                        ini=1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
+
 }
