@@ -18,7 +18,7 @@ import static elyo.my.trackids.Principal.usuario;
  */
 
 public class ServiciosWeb {
-    String webService="http://pruebastec.890m.com/servicios";
+    String webService="http://pruebastec.890m.com/servicios/";
     String urlprevia="";
     URL direccion=null;
     String linea="";
@@ -33,7 +33,7 @@ public class ServiciosWeb {
     {
         try {
             //Indica url del webservice
-            urlprevia=webService+"/inicio.php";
+            urlprevia=webService+"inicio.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
             data = URLEncoder.encode("usu", "UTF-8")+ "=" + URLEncoder.encode(email, "UTF-8");
@@ -65,7 +65,6 @@ public class ServiciosWeb {
                         .putString("pinUsuario",json.getJSONObject(0).getString("pin"))
                         .commit();
                 usuario =new Usuario(
-                        json.getJSONObject(0).getString("idUs"),
                         json.getJSONObject(0).getString("nomUs"),
                         json.getJSONObject(0).getString("nombres"),
                         json.getJSONObject(0).getString("apellidos"),
@@ -96,7 +95,7 @@ public class ServiciosWeb {
     public int GuardarCuenta(String nombres, String apellidos, String correo, String contrasena, String telefono, String pin) {
         try {
             //Indica url del webservice
-            urlprevia = webService + "/registroUsuarios.php";
+            urlprevia = webService + "registroUsuarios.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
             data =        URLEncoder.encode("usu", "UTF-8") + "=" + URLEncoder.encode(correo, "UTF-8");
@@ -130,7 +129,7 @@ public class ServiciosWeb {
 
         try {
             //Indica url del webservice
-            urlprevia=webService+"/conexion.php";
+            urlprevia=webService+"conexion.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
             data = URLEncoder.encode("usu", "UTF-8")+ "=" + URLEncoder.encode(email, "UTF-8");
@@ -151,7 +150,7 @@ public class ServiciosWeb {
             JSONArray json=new JSONArray(sb.toString());
             if (json.length()>0)
             {
-                return CrearConexion(usuario.id,json.getJSONObject(0).getString("idUs"));
+                return CrearConexion(preferences.getString("idUsuario",""),json.getJSONObject(0).getString("idUs"));
                 //return 1;
             }
             else
@@ -176,7 +175,7 @@ public class ServiciosWeb {
     private int CrearConexion(String id, String idUs) {
         try {
             //Indica url del webservice
-            urlprevia = webService + "/conexion2.php";
+            urlprevia = webService + "conexion2.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
             data =        URLEncoder.encode("padre", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
@@ -200,6 +199,11 @@ public class ServiciosWeb {
             return 0;
         }
 
+    }
+
+    private int EliminarCuenta(String emil, String con)
+    {
+        return 1;
     }
 }
 

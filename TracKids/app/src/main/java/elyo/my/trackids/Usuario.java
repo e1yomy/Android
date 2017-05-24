@@ -6,7 +6,6 @@ package elyo.my.trackids;
 
 public class Usuario {
 
-    String id;
     String usuario;
     String nombres;
     String apellidos;
@@ -16,9 +15,8 @@ public class Usuario {
     public Usuario(){
 
     }
-    public Usuario(String id,String usuario, String nombres, String apellidos, String telefono, String contrasena, String pin)
+    public Usuario(String usuario, String nombres, String apellidos, String telefono, String contrasena, String pin)
     {
-        this.id=id;
         this.usuario=usuario;
         this.nombres=nombres;
         this.apellidos=apellidos;

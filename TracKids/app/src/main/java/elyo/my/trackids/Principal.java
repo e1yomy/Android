@@ -317,7 +317,6 @@ public class Principal extends AppCompatActivity
 
     public void CargarUsuario() {
         usuario = new Usuario(
-                preferences.getString("idUsuario",""),
                 preferences.getString("correoUsuario", ""),
                 preferences.getString("nombresUsuario", ""),
                 preferences.getString("apellidosUsuario", ""),
