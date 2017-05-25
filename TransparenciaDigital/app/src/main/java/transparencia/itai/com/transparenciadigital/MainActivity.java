@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity
         MisSolicitudes.OnFragmentInteractionListener,
         Registro.OnFragmentInteractionListener,
         SujetosObligados.OnFragmentInteractionListener,
-        QuienesSomos.OnFragmentInteractionListener
+        QuienesSomos.OnFragmentInteractionListener,
+        Mapa.OnFragmentInteractionListener
 
 {
 
@@ -207,6 +208,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.plataformadetransparencia.org.mx/")));
             QuitarSeleccionMenu();
         }
+        else if (id == R.id.nav_mapa) {
+            //Mostrar mapa con direccion y telefono
+            fragmentTransaction.replace(R.id.content_principal, new Mapa()).commit();
+            navigationView.getMenu().findItem(id).setChecked(true);
+        }
 
         if(!preferences.getBoolean("sesion",false))
         {
@@ -232,8 +238,8 @@ public class MainActivity extends AppCompatActivity
                 //Solicitar recurso de revision
                 fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudDenuncia()).commit();
                 navigationView.getMenu().findItem(id).setChecked(true);
-
             }
+
 
 
         }

@@ -23,9 +23,13 @@
         <menu>
             <item
                 android:id="@+id/nav_quienessomos"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Conócenos"
+                android:icon="@mipmap/ic_launcher"
+                android:title="Instituto de Transparencia"
                 />
+            <item
+                android:id="@+id/nav_mapa"
+                android:icon="@drawable/ic_ubicacion"
+                android:title="Encuéntranos" />
 
         </menu>
     </item>
@@ -39,10 +43,6 @@
                 android:id="@+id/nav_sitiopnt"
                 android:icon="@drawable/ic_pnt"
                 android:title="PNT" />
-            <item
-                android:id="@+id/nav_sitio"
-                android:icon="@drawable/ic_salir"
-                android:title="Instituto de Transparencia" />
         </menu>
     </item>
     <item>

@@ -1,19 +1,21 @@
 <resources>
     <string name="app_name">Transparencia Digital</string>
-
+    <string name="apiMapas">AIzaSyCXbQ2nOh4wc5aCwvY-ROcY_SwUnUuoUYQ</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Ajustes</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="itai">ITAI</string>
+    <string name="itai1">Instituto de Transparencia y Acceso a la Información Pública del. Estado de Baja California Sur</string>
     <string name="hello_blank_fragment">Te falta disenar esto, sí, lo se, falta la enie.</string>
     <string name="quienessomos">¿Quiénes somos?</string>
     <string name="quienessomostexto">El Instituto es un organismo constitucional autónomo, especializado, imparcial y colegiado, con personalidad jurídica y patrimonio propio, el cual gozará de plena autonomía técnica, de gestión, capacidad para decidir sobre el ejercicio de su presupuesto y determinar su organización interna, responsable de garantizar el cumplimiento del derecho a la transparencia, acceso a la información pública y a la protección de datos personales en posesión de los sujetos obligados. El Instituto no se encuentra subordinado a ninguna autoridad. Las resoluciones del Instituto, en materia de clasificación de información y acceso a la información, serán vinculantes, definitivas e inatacables para todos los sujetos obligados.</string>
     <string name="articulo32">Artículo 32° Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur</string>
     <string name="articulo33">Artículo 33° Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur</string>
     <string name="comoseintegra">¿Cómo se integra?</string>
-    <string name="comoseintegratexto" >El Instituto se integra por:\n\n
+    <string name="comoseintegratexto">El Instituto se integra por:\n\n
         I. El Consejo General, que es el órgano máximo de gobierno;\n
         II. Comisionados;\n
         III. Secretaria Ejecutiva;\n
@@ -108,7 +110,6 @@
         <item>La Paz</item>
         <item>Los Cabos</item>
     </string-array>
-    
-    
-    
+
+
 </resources>
