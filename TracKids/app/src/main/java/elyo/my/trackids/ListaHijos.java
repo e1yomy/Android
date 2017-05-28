@@ -8,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static elyo.my.trackids.Principal.ListaDeHijos;
 import static elyo.my.trackids.Principal.c;
+import static elyo.my.trackids.Principal.preferences;
 
 
 /**
@@ -121,18 +124,22 @@ public class ListaHijos extends Fragment {
             lista.add("foo");
             lista.add("bar");
             listaHijos = new ArrayList<Hijo>();
-            listaHijos.add(new Hijo("Eloy", 24.1332822, -110.310106, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Erik", 24.1388434, -110.314306, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Ruiz", 24.1392832, -110.314106, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Ulises", 24.142822, -110.310506, "Wea", "6121972191"));
-            listaHijos.add(new Hijo("Denisse", 24.133892, -110.316106, "Wea", "6121972191"));
+
             ActualizarLista();
             return view;
 
     }
     static void ActualizarLista(){
-        AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos,c,b);
-        lv.setAdapter(adaptadorLista);
+        try {
+            ListaDeHijos(preferences.getString("idUsuario", ""));
+            Thread.sleep(1000);
+            AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos, c, b);
+            lv.setAdapter(adaptadorLista);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

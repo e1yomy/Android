@@ -1,6 +1,7 @@
 package elyo.my.trackids;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.preferences;
 import static elyo.my.trackids.Principal.usuario;
 
@@ -29,8 +31,8 @@ public class ServiciosWeb {
     URLConnection conn;
     OutputStreamWriter wr;
     int res=0;
-    public int ExisteCuenta(String email,String con)
-    {
+    double lat,lan;
+    public int ExisteCuenta(String email,String con){
         try {
             //Indica url del webservice
             urlprevia=webService+"inicio.php";
@@ -41,6 +43,7 @@ public class ServiciosWeb {
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
+
             conn.setDoOutput(true);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
@@ -118,10 +121,68 @@ public class ServiciosWeb {
             while ((linea = reader.readLine()) != null)
                 sb.append(linea);
 
+
             return 1;
         } catch (Exception ex) {
             String s= ex.getMessage();
                     return 0;
+        }
+    }
+    public int CrearRegistroUltimaUbicacion(String id) {
+        try {
+            //Indica url del webservice
+            urlprevia = webService + "crearDatosUltimaUbicacion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data =        URLEncoder.encode("idUs", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("latitud", "UTF-8") + "=" + URLEncoder.encode("0", "UTF-8");
+            data += "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode("0", "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn = direccion.openConnection();
+            conn.setDoOutput(true);
+            wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea = reader.readLine()) != null)
+                sb.append(linea);
+
+            return 1;
+        } catch (Exception ex) {
+            String s= ex.getMessage();
+            return 0;
+        }
+    }
+    public int ActualizarRegistroUltimaUbicacion(String id, double lat, double lan) {
+        try {
+            //Indica url del webservice
+            urlprevia = webService + "actualizarUltimaUbicacion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data =        URLEncoder.encode("idUs", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            data +=       URLEncoder.encode("latitutd", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8");
+            data +=       URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lan), "UTF-8");
+
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn = direccion.openConnection();
+            conn.setDoOutput(true);
+            wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea = reader.readLine()) != null)
+                sb.append(linea);
+
+            return 1;
+        } catch (Exception ex) {
+            String s= ex.getMessage();
+            return 0;
         }
     }
 
@@ -204,6 +265,130 @@ public class ServiciosWeb {
     private int EliminarCuenta(String emil, String con)
     {
         return 1;
+    }
+
+    protected int CargarUbicacion(String id, double lat, double lon, String fecha) {
+        try {
+            //Indica url del webservice
+            urlprevia = webService + "ubicacion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data = URLEncoder.encode("idUs", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("latitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8");
+            data += "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lon), "UTF-8");
+            data += "&" + URLEncoder.encode("fecha", "UTF-8") + "=" + URLEncoder.encode(fecha, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn = direccion.openConnection();
+            conn.setDoOutput(true);
+            wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea = reader.readLine()) != null)
+                sb.append(linea);
+
+            return 1;
+        } catch (Exception ex) {
+            String s = ex.getMessage();
+            return 0;
+        }
+    }
+    protected int ListaDeHijos(String id)
+    {
+
+        try {
+            //Indica url del webservice
+            urlprevia=webService+"listarHijos.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data = URLEncoder.encode("idUs", "UTF-8")+ "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+            JSONArray json=new JSONArray(sb.toString());
+            if (json.length()>0)
+            {
+                    listaHijos.clear();
+                JSONObject j;
+                for(int i=0;i<json.length();i++)
+                {
+                    j = json.getJSONObject(i);
+                    UltimaUbicacionHijo(j.getString("idUs"));
+                    listaHijos.add(new Hijo(j.getString("idUs"),j.getString("nombres"),lat,lan,j.getString("telefono")));
+                }
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        } catch (Exception ex){
+            String e=ex.getMessage();
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+    private void UltimaUbicacionHijo(String id){
+        try {
+            //Indica url del webservice
+            urlprevia=webService+"ultimaUbicacion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            linea="";
+            sb=new StringBuilder();
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+            JSONArray json=new JSONArray(sb.toString());
+            if (json.length()>0)
+            {
+                lat = json.getJSONObject(0).getDouble("latitud");
+                lan = json.getJSONObject(0).getDouble("longitud");
+            }
+
+        } catch (Exception ex){
+            String e=ex.getMessage();
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

@@ -16,6 +16,7 @@ import com.facebook.login.LoginManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static elyo.my.trackids.Principal.CrearRegistroUltimaUbicacion;
 import static elyo.my.trackids.Principal.ExisteCuenta;
 import static elyo.my.trackids.Principal.GuardarCuenta;
 import static elyo.my.trackids.Principal.PantallaInicioDeSesion;
@@ -141,7 +142,7 @@ public class Registro extends Fragment {
         campos.add( editPin);
         Regresar(view);
         TerminarRegistro(view);
-        if(preferences.getInt("sesion",-1)==2)
+        if(preferences.getInt("sesion",-1)==3)
         {
             //Cargar los datos en los campos, dejando los campos de contraseña de solo lectura
             String nombre = preferences.getString("nombreUsuario","");
@@ -211,11 +212,14 @@ public class Registro extends Fragment {
                             GuardarCuenta(campos.get(0).getText().toString(),campos.get(1).getText().toString(),campos.get(2).getText().toString(),campos.get(3).getText().toString(),campos.get(5).getText().toString(),campos.get(6).getText().toString());
                             Thread.sleep(500);
 
-                            if (preferences.getInt("sesion", -1) == 2) {
+                            if (preferences.getInt("sesion", -1) == 3) {
                                 pantalla = 1;
                                 //cargarDatos De usuario en preferences
                                 ExisteCuenta(campos.get(2).getText().toString(),preferences.getString("contrasenaUsuario",""));
+                                preferences.edit().putInt("sesion", 2).commit();
+                                CrearRegistroUltimaUbicacion();
                                 PantallaMapa();
+
                             }
                             else {
                                 if (preferences.getBoolean("exito", false))
@@ -223,6 +227,8 @@ public class Registro extends Fragment {
                                     preferences.edit().putInt("sesion", 0).commit();
                                     Toast.makeText(c, editContra1.getText().toString(), Toast.LENGTH_SHORT).show();
                                     Toast.makeText(c, "Cuenta creada.\nAhora puedes iniciar sesión", Toast.LENGTH_SHORT).show();
+                                    ExisteCuenta(campos.get(2).getText().toString(),campos.get(3).getText().toString());
+                                    CrearRegistroUltimaUbicacion();
                                     PantallaInicioDeSesion();
                                 }
                                 else

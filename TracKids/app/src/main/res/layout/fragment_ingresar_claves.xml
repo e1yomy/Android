@@ -49,9 +49,8 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-                tools:text="@string/pin" />
+                android:text="@string/pin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
 
             <EditText
                 android:id="@+id/editPin"

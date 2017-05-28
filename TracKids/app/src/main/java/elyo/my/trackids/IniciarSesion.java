@@ -160,9 +160,9 @@ public class IniciarSesion extends Fragment {
 
                     Thread.sleep(500);
                     if (preferences.getBoolean("existe", false)) {
-                        preferences.edit().putInt("sesion", 1).commit();
                         toolbar.setVisibility(View.VISIBLE);
                         pantalla = 1;
+                        preferences.edit().putInt("sesion", 1).commit();
                         PantallaMapa();
                     } else {
                         Toast.makeText(c, "Nombre de usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
@@ -228,7 +228,7 @@ public class IniciarSesion extends Fragment {
                                             pantalla = 1;
                                             PantallaMapa();
                                         } else {
-                                            preferences.edit().putInt("sesion", 2).commit();
+                                            preferences.edit().putInt("sesion", 3).commit();
                                             preferences.edit()
                                                     .putString("idUsuario", object.getString("id"))
                                                     .putString("correoUsuario", object.getString("email"))

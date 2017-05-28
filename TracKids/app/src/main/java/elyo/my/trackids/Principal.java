@@ -29,7 +29,8 @@ public class Principal extends AppCompatActivity
         ListaHijos.OnFragmentInteractionListener,
         MisUbicaciones.OnFragmentInteractionListener,
         Registro.OnFragmentInteractionListener,
-        IniciarSesion.OnFragmentInteractionListener
+        IniciarSesion.OnFragmentInteractionListener,
+        IngresarClaves.OnFragmentInteractionListener
 
 {
 
@@ -41,7 +42,7 @@ public class Principal extends AppCompatActivity
     static Usuario usuario;
     public static Handler responseHandler=null;
     static ProgressDialog p;
-
+    Servicio servicio ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,8 @@ public class Principal extends AppCompatActivity
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         fragmentManager = getSupportFragmentManager();
         p=new ProgressDialog(c);
+        servicio= new Servicio(c);
+
         try{
             navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -119,7 +122,7 @@ public class Principal extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.principal, menu);
-        //Servicio servicio = new Servicio(c);
+
 
         return true;
     }
@@ -199,6 +202,7 @@ public class Principal extends AppCompatActivity
     public static void PantallaInicioDeSesion(){
         toolbar.setVisibility(View.GONE);
         transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new IniciarSesion());
         transaction.commit();
     }
@@ -206,6 +210,7 @@ public class Principal extends AppCompatActivity
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setTitle("Mis lugares");
         transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new MisUbicaciones());
         transaction.commit();
     }
@@ -214,6 +219,7 @@ public class Principal extends AppCompatActivity
             toolbar.setVisibility(View.VISIBLE);
             toolbar.setTitle("Registro");
             transaction = fragmentManager.beginTransaction();
+            transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
             transaction.replace(R.id.content_principal, new Registro());
             transaction.commit();
         }
@@ -226,6 +232,7 @@ public class Principal extends AppCompatActivity
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setTitle("Mi mapa");
         transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new Mapa());
         transaction.commit();
     }
@@ -233,6 +240,7 @@ public class Principal extends AppCompatActivity
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setTitle("Lista de hijos");
         transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new ListaHijos());
         transaction.commit();
     }
@@ -241,6 +249,7 @@ public class Principal extends AppCompatActivity
             toolbar.setVisibility(View.VISIBLE);
             toolbar.setTitle("Agregar hijo");
             transaction = fragmentManager.beginTransaction();
+            transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
             transaction.replace(R.id.content_principal, new IngresarClaves());
             transaction.commit();
         }
@@ -261,28 +270,26 @@ public class Principal extends AppCompatActivity
         p.setMessage("Verificando sus credenciales");
         p.show();
     }
-    public static void GuardarCuenta(final String nombres, final String apellidos, final String correo, final String contrasena, final String telefono, final String pin)
-    {
-        preferences.edit().putBoolean("exito",false).commit();
+    public static void GuardarCuenta(final String nombres, final String apellidos, final String correo, final String contrasena, final String telefono, final String pin) {
+        preferences.edit().putBoolean("exito", false).commit();
         Mensaje();
-        Thread t =new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
 
                     ServiciosWeb sw = new ServiciosWeb();
-                    if (sw.GuardarCuenta(nombres, apellidos, correo, contrasena, telefono,pin) == 1) {
+                    if (sw.GuardarCuenta(nombres, apellidos, correo, contrasena, telefono, pin) == 1) {
                         preferences.edit().putBoolean("exito", true).commit();
                     }
                     responseHandler.sendEmptyMessage(0);
-                }
-                catch (Exception ex)
-                {
-                    String s=ex.getMessage();
+                } catch (Exception ex) {
+                    String s = ex.getMessage();
                 }
             }
         });
         t.start();
+
     }
 
     public static void ExisteCuenta(final String email, final String contra)
@@ -314,6 +321,27 @@ public class Principal extends AppCompatActivity
             }
         }
     }
+    public static void CrearRegistroUltimaUbicacion(){
+        preferences.edit().putBoolean("exito",false).commit();
+        Mensaje();
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if (sw.CrearRegistroUltimaUbicacion(preferences.getString("idUsuario","-1")) == 1) {
+                        preferences.edit().putBoolean("exito", true).commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+                }
+            }
+        });
+        t.start();
+    }
 
     public void CargarUsuario() {
         usuario = new Usuario(
@@ -338,6 +366,78 @@ public class Principal extends AppCompatActivity
                         preferences.edit().putBoolean("existe", true).commit();
                     }
                     preferences.edit().putBoolean("procesoFinalizado",true).commit();
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+                }
+            }
+        });
+        t.start();
+    }
+    public static void CargarUbicacion(final String id, final double lat, final double lan, final String fecha)
+    {
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if (sw.CargarUbicacion(id,lat,lan,fecha) == 1) {
+                    }
+                    preferences.edit().putBoolean("procesoFinalizado",true).commit();
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+
+                }
+                try {
+                    this.finalize();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
+        t.start();
+    }
+    public static void CargarUltimaUbicacion(final String id, final double lat, final double lan)
+    {
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if (sw.ActualizarRegistroUltimaUbicacion(id,lat,lan) == 1) {
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+
+                }
+                try {
+                    this.finalize();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
+        t.start();
+    }
+
+    public static void ListaDeHijos(final String id)
+    {
+        preferences.edit().putBoolean("existe", false).commit();
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if (sw.ListaDeHijos(id) == 1) {
+                        preferences.edit().putBoolean("existe", true).commit();
+                    }
                 }
                 catch (Exception ex)
                 {

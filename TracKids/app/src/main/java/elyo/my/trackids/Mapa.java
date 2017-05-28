@@ -473,7 +473,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
     public void ActualizarMarcador(Location lo){
         l=lo;
         if (l != null) {
-            la=new LatLng(l.getLatitude(), l.getLongitude());
+            //la=new LatLng(l.getLatitude(), l.getLongitude());
+            la= new LatLng(Double.valueOf(preferences.getFloat("actualLat",0.0f)),Double.valueOf(preferences.getFloat("actualLon",0.0f)));
             preferences.edit().putFloat("actualLat", (float) l.getLatitude()).putFloat("actualLon", (float) l.getLongitude()).commit();
             MarkerOptions mar=new MarkerOptions().position(la).title(usuario.nombres).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerpadre));
             m.addMarker(mar);
