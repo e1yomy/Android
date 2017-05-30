@@ -163,8 +163,8 @@ public class ServiciosWeb {
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
             data =        URLEncoder.encode("idUs", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-            data +=       URLEncoder.encode("latitutd", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8");
-            data +=       URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lan), "UTF-8");
+            data += "&" + URLEncoder.encode("latitutd", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8");
+            data += "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lan), "UTF-8");
 
             data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
@@ -355,7 +355,9 @@ public class ServiciosWeb {
             urlprevia=webService+"ultimaUbicacion.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
-            data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode(id, "UTF-8");
+            //data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode(id, "UTF-8");
+            String consulta = "select latitud, longitud from `ubicaciones` where idUs = "+id+" order by idUb DESC LIMIT 1";
+            data = URLEncoder.encode("consulta", "UTF-8")+ "=" + URLEncoder.encode(consulta, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();

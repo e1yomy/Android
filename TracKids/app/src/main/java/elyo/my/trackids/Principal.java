@@ -364,6 +364,7 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.ExisteUsuario(email, pin) == 1) {
                         preferences.edit().putBoolean("existe", true).commit();
+                        PantallaHijos();
                     }
                     preferences.edit().putBoolean("procesoFinalizado",true).commit();
                 }

@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import static elyo.my.trackids.Principal.AgregarHijo;
-import static elyo.my.trackids.Principal.PantallaHijos;
-import static elyo.my.trackids.Principal.preferences;
 
 
  /**
@@ -137,9 +135,7 @@ public class IngresarClaves extends Fragment {
                  try {
                      AgregarHijo(editUsuario.getText().toString(), editPin.getText().toString());
                      Thread.sleep(500);
-                     if (preferences.getBoolean("existe", false)) {
-                         PantallaHijos();
-                     }
+
                  } catch (Exception ex) {
                      String s=ex.getMessage();
                  }
