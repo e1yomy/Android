@@ -29,6 +29,14 @@
             android:value="@string/facebook_app_id"/>
 
         <service android:name=".Servicio"/>
+        <receiver android:name="ReceiverCall" >
+            <intent-filter>
+                <action android:name="elyo.my.trackids.Servicio" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

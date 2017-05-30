@@ -126,14 +126,22 @@ public class Principal extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
-        //menuPuntos=menu;
-        pin=menu.findItem(R.id.nav_pin);
-        correo=menu.findItem(R.id.nav_correo);
-        correo.setEnabled(false);
-        pin.setEnabled(false);
-        correo.setTitle("Usuario: "+usuario.usuario);
-        pin.setTitle("Pin: "+usuario.pin);
+        try {
+            getMenuInflater().inflate(R.menu.principal, menu);
+            //menuPuntos=menu;
+            pin = menu.findItem(R.id.nav_pin);
+            correo = menu.findItem(R.id.nav_correo);
+            correo.setEnabled(false);
+            pin.setEnabled(false);
+            if (preferences.getInt("sesion", 0) != 0) {
+                correo.setTitle("Usuario: " + usuario.usuario);
+                pin.setTitle("Pin: " + usuario.pin);
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         return true;
     }
 

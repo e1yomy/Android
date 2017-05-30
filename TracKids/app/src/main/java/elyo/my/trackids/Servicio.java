@@ -40,7 +40,7 @@ public class Servicio extends Service {
             //a.setLatitude(preferences.getFloat("actualLat",0.0f));
             if(preferences.getInt("sesion",0)!=0) {
                 try {
-                    android.os.Debug.waitForDebugger();
+                    //android.os.Debug.waitForDebugger();
                     gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
                     while (!gps) {
                         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -108,7 +108,7 @@ public class Servicio extends Service {
     public Servicio(){}
     public Servicio(Context context) {
         super();
-        android.os.Debug.waitForDebugger();
+        //android.os.Debug.waitForDebugger();
         c = context;
         try {
             if (ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -142,7 +142,7 @@ public class Servicio extends Service {
     @Override
     public void onCreate() {
         // The service is being created
-        android.os.Debug.waitForDebugger();
+        //android.os.Debug.waitForDebugger();
     }
 
     @Override
@@ -178,6 +178,11 @@ public class Servicio extends Service {
     public void onDestroy() {
         // The service is no longer used and is being destroyed
         try{
+            android.os.Debug.waitForDebugger();
+            Intent intent = new Intent("elyo.my.trackids.Servicio");
+            //intent.putExtra("yourvalue", "torestore");
+            sendBroadcast(intent);
+
         gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
         while(!gps)
         {
@@ -193,7 +198,7 @@ public class Servicio extends Service {
     private void CargarUbicacionDe(String id) {
         //Mandar ubicacion a la base de datos
         try {
-            android.os.Debug.waitForDebugger();
+            //android.os.Debug.waitForDebugger();
             ServiciosWeb s = new ServiciosWeb();
             Calendar ca= Calendar.getInstance();
             fecha= ca.get(Calendar.YEAR)+"-"+
