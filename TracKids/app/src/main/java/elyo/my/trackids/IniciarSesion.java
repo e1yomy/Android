@@ -27,7 +27,9 @@ import static elyo.my.trackids.Principal.ExisteCuenta;
 import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.PantallaRegistro;
 import static elyo.my.trackids.Principal.c;
+import static elyo.my.trackids.Principal.correo;
 import static elyo.my.trackids.Principal.pantalla;
+import static elyo.my.trackids.Principal.pin;
 import static elyo.my.trackids.Principal.preferences;
 import static elyo.my.trackids.Principal.toolbar;
 import static elyo.my.trackids.Principal.usuario;
@@ -163,6 +165,8 @@ public class IniciarSesion extends Fragment {
                         toolbar.setVisibility(View.VISIBLE);
                         pantalla = 1;
                         preferences.edit().putInt("sesion", 1).commit();
+                        correo.setTitle("Usuario: "+usuario.usuario);
+                        pin.setTitle("Pin: "+usuario.pin);
                         PantallaMapa();
                     } else {
                         Toast.makeText(c, "Nombre de usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
@@ -226,6 +230,8 @@ public class IniciarSesion extends Fragment {
                                             usuario= new Usuario(object.getString("email"),object.getString("first_name"),object.getString("last_name"),"6121214236","1234567890",preferences.getString("pinUsuario",""));
                                             toolbar.setVisibility(View.VISIBLE);
                                             pantalla = 1;
+                                            correo.setTitle("Usuario: "+usuario.usuario);
+                                            pin.setTitle("Pin: "+usuario.pin);
                                             PantallaMapa();
                                         } else {
                                             preferences.edit().putInt("sesion", 3).commit();

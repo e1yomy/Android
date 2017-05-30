@@ -43,6 +43,8 @@ public class Principal extends AppCompatActivity
     public static Handler responseHandler=null;
     static ProgressDialog p;
     Servicio servicio ;
+    Menu menuPuntos;
+    static MenuItem pin, correo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +76,10 @@ public class Principal extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 //txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
                 //txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
-                if(preferences.getInt("sesion",0)!=0)
+                if(preferences.getInt("sesion",0)!=0) {
                     CargarUsuario();
+
+                }
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
             }
             else
@@ -104,6 +108,7 @@ public class Principal extends AppCompatActivity
         {
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
 
@@ -122,8 +127,13 @@ public class Principal extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.principal, menu);
-
-
+        //menuPuntos=menu;
+        pin=menu.findItem(R.id.nav_pin);
+        correo=menu.findItem(R.id.nav_correo);
+        correo.setEnabled(false);
+        pin.setEnabled(false);
+        correo.setTitle("Usuario: "+usuario.usuario);
+        pin.setTitle("Pin: "+usuario.pin);
         return true;
     }
 
@@ -135,11 +145,6 @@ public class Principal extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
-            case R.id.nav_ajustes:
-
-                break;
-            case R.id.nav_misdatos:
-                break;
             case R.id.nav_cerrarsesion:
                 try {
                     preferences.edit().putInt("sesion", 0).commit();
@@ -352,6 +357,7 @@ public class Principal extends AppCompatActivity
                 preferences.getString("contrasenaUsuario", ""),
                 preferences.getString("pinUsuario", "")
         );
+
     }
     public static void AgregarHijo(final String email,final String pin)
     {
