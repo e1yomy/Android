@@ -45,6 +45,7 @@ public class Principal extends AppCompatActivity
     Servicio servicio ;
     Menu menuPuntos;
     static MenuItem pin, correo;
+    static NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,7 @@ public class Principal extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         c=this;
@@ -214,12 +215,18 @@ public class Principal extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    private static void QuitarSeleccionMenu() {
+        for(byte i=0;i<navigationView.getMenu().size();i++){
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+    }
     public static void PantallaInicioDeSesion(){
         toolbar.setVisibility(View.GONE);
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new IniciarSesion());
         transaction.commit();
+        QuitarSeleccionMenu();
     }
     public static void PantallaMisLugares(){
         toolbar.setVisibility(View.VISIBLE);
@@ -228,6 +235,8 @@ public class Principal extends AppCompatActivity
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new MisUbicaciones());
         transaction.commit();
+        QuitarSeleccionMenu();
+        navigationView.getMenu().findItem(R.id.nav_misubicaciones).setChecked(true);
     }
     public static void PantallaRegistro(){
         try {
@@ -237,6 +246,7 @@ public class Principal extends AppCompatActivity
             transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
             transaction.replace(R.id.content_principal, new Registro());
             transaction.commit();
+            QuitarSeleccionMenu();
         }
         catch (Exception ex)
         {
@@ -250,6 +260,8 @@ public class Principal extends AppCompatActivity
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new Mapa());
         transaction.commit();
+        QuitarSeleccionMenu();
+        navigationView.getMenu().findItem(R.id.nav_inicio).setChecked(true);
     }
     public static void PantallaHijos(){
         toolbar.setVisibility(View.VISIBLE);
@@ -258,6 +270,8 @@ public class Principal extends AppCompatActivity
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new ListaHijos());
         transaction.commit();
+        QuitarSeleccionMenu();
+        navigationView.getMenu().findItem(R.id.nav_hijos).setChecked(true);
     }
     public static void PantallaAgregarHijo(){
         try {
@@ -267,6 +281,8 @@ public class Principal extends AppCompatActivity
             transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
             transaction.replace(R.id.content_principal, new IngresarClaves());
             transaction.commit();
+            QuitarSeleccionMenu();
+            navigationView.getMenu().findItem(R.id.nav_agregarhijo).setChecked(true);
         }
         catch (Exception ex)
         {

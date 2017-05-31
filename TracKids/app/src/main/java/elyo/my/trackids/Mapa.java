@@ -494,7 +494,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
     }
     public void MostrarPosicion(){
         try {
-            la=new LatLng(listaHijos.get(index).latitud,listaHijos.get(index).longitud);
+            la=new LatLng(Double.parseDouble(listaHijos.get(index).latitud),Double.parseDouble(listaHijos.get(index).longitud));
             MarkerPoints.set(1, la);
             if (MarkerPoints.get(0) != null && MarkerPoints.get(1) != null) {
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -525,7 +525,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
     public void MostrarUltimaUbicacionConocidaDeHijo()
     {
         m.clear();
-        la=new LatLng(listaHijos.get(index).latitud,listaHijos.get(index).longitud);
+        la=new LatLng(Double.parseDouble(listaHijos.get(index).latitud),Double.parseDouble(listaHijos.get(index).longitud));
         MarkerOptions mar=new MarkerOptions().position(la).title(listaHijos.get(index).nombre).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerhijo));
         m.addMarker(mar);
         m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));

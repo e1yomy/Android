@@ -7,10 +7,10 @@ package elyo.my.trackids;
 public class Hijo {
     String id;
     String nombre;
-    double latitud;
-    double longitud;
+    String latitud;
+    String longitud;
     String telefono;
-    public Hijo(String id,String nombre, double latitud, double longitud, String telefono)
+    public Hijo(String id,String nombre, String latitud, String longitud, String telefono)
     {
         this.id=id;
         this.nombre = nombre;

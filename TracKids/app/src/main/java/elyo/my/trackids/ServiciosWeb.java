@@ -37,8 +37,10 @@ public class ServiciosWeb {
     int res=0;
     double lat,lan;
     static List<LatLng> puntos= new ArrayList<>();
-    public int ExisteCuenta(String email,String con){
+    public int ExisteCuenta(String  email,String con){
         try {
+            email=Crypto.Encriptar(email);
+            con=Crypto.MD5(con);
             //Indica url del webservice
             urlprevia=webService+"inicio.php";
             direccion = new URL(urlprevia);
@@ -64,20 +66,20 @@ public class ServiciosWeb {
             {
 
                 preferences.edit()
-                        .putString("idUsuario",json.getJSONObject(0).getString("idUs"))
-                        .putString("correoUsuario",json.getJSONObject(0).getString("nomUs"))
-                        .putString("nombresUsuario",json.getJSONObject(0).getString("nombres"))
-                        .putString("apellidosUsuario",json.getJSONObject(0).getString("apellidos"))
-                        .putString("telefonoUsuario",json.getJSONObject(0).getString("telefono"))
-                        .putString("contrasenaUsuario",json.getJSONObject(0).getString("contrasena"))
-                        .putString("pinUsuario",json.getJSONObject(0).getString("pin"))
+                        .putString("idUsuario", json.getJSONObject(0).getString("idUs"))
+                        .putString("correoUsuario", Crypto.Desencriptar(json.getJSONObject(0).getString("nomUs")))
+                        .putString("nombresUsuario", Crypto.Desencriptar(json.getJSONObject(0).getString("nombres")))
+                        .putString("apellidosUsuario", Crypto.Desencriptar(json.getJSONObject(0).getString("apellidos")))
+                        .putString("telefonoUsuario", Crypto.Desencriptar(json.getJSONObject(0).getString("telefono")))
+                        .putString("contrasenaUsuario", Crypto.Desencriptar(json.getJSONObject(0).getString("contrasena")))
+                        .putString("pinUsuario", json.getJSONObject(0).getString("pin"))
                         .commit();
                 usuario =new Usuario(
-                        json.getJSONObject(0).getString("nomUs"),
-                        json.getJSONObject(0).getString("nombres"),
-                        json.getJSONObject(0).getString("apellidos"),
-                        json.getJSONObject(0).getString("telefono"),
-                        json.getJSONObject(0).getString("contrasena"),
+                        Crypto.Desencriptar(json.getJSONObject(0).getString("nomUs")),
+                        Crypto.Desencriptar(json.getJSONObject(0).getString("nombres")),
+                        Crypto.Desencriptar(json.getJSONObject(0).getString("apellidos")),
+                        Crypto.Desencriptar(json.getJSONObject(0).getString("telefono")),
+                        Crypto.Desencriptar(json.getJSONObject(0).getString("contrasena")),
                         json.getJSONObject(0).getString("pin"));
                 return 1;
             }
@@ -102,6 +104,11 @@ public class ServiciosWeb {
 
     public int GuardarCuenta(String nombres, String apellidos, String correo, String contrasena, String telefono, String pin) {
         try {
+            nombres=Crypto.Encriptar(nombres);
+            apellidos=Crypto.Encriptar(apellidos);
+            correo=Crypto.Encriptar(correo);
+            contrasena= Crypto.MD5(contrasena);
+            telefono=Crypto.Encriptar(telefono);
             //Indica url del webservice
             urlprevia = webService + "registroUsuarios.php";
             direccion = new URL(urlprevia);
@@ -192,8 +199,8 @@ public class ServiciosWeb {
     }
 
     public int ExisteUsuario(String email, String pin) {
-
         try {
+            email=Crypto.Encriptar(email);
             //Indica url del webservice
             urlprevia=webService+"conexion.php";
             direccion = new URL(urlprevia);
@@ -217,7 +224,6 @@ public class ServiciosWeb {
             if (json.length()>0)
             {
                 return CrearConexion(preferences.getString("idUsuario",""),json.getJSONObject(0).getString("idUs"));
-                //return 1;
             }
             else
             {
@@ -272,15 +278,17 @@ public class ServiciosWeb {
         return 1;
     }
 
-    protected int CargarUbicacion(String id, double lat, double lon, String fecha) {
+    protected int CargarUbicacion(String id, double la, double lo, String fecha) {
         try {
+            String lat= Crypto.Encriptar(String.valueOf(la));
+            String lon=Crypto.Encriptar(String.valueOf(lo));
             //Indica url del webservice
             urlprevia = webService + "ubicacion.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
             data = URLEncoder.encode("idUs", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-            data += "&" + URLEncoder.encode("latitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8");
-            data += "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lon), "UTF-8");
+            data += "&" + URLEncoder.encode("latitud", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8");
+            data += "&" + URLEncoder.encode("longitud", "UTF-8") + "=" + URLEncoder.encode(lon, "UTF-8");
             data += "&" + URLEncoder.encode("fecha", "UTF-8") + "=" + URLEncoder.encode(fecha, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
@@ -332,7 +340,7 @@ public class ServiciosWeb {
                 {
                     j = json.getJSONObject(i);
                     UltimaUbicacionHijo(j.getString("idUs"));
-                    listaHijos.add(new Hijo(j.getString("idUs"),j.getString("nombres"),lat,lan,j.getString("telefono")));
+                    listaHijos.add(new Hijo(j.getString("idUs"),Crypto.Desencriptar(j.getString("nombres")),String.valueOf(lat),String.valueOf(lan),Crypto.Desencriptar(j.getString("telefono"))));
                 }
                 return 1;
             }
@@ -381,8 +389,8 @@ public class ServiciosWeb {
             JSONArray json=new JSONArray(sb.toString());
             if (json.length()>0)
             {
-                lat = json.getJSONObject(0).getDouble("latitud");
-                lan = json.getJSONObject(0).getDouble("longitud");
+                lat = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(0).getString("latitud")));
+                lan = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(0).getString("longitud")));
             }
 
         } catch (Exception ex){
@@ -425,8 +433,8 @@ public class ServiciosWeb {
             JSONArray json=new JSONArray(sb.toString());
             for(int i=0;i<json.length();i++)
             {
-                lat = json.getJSONObject(i).getDouble("latitud");
-                lan = json.getJSONObject(i).getDouble("longitud");
+                lat = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(i).getString("latitud")));
+                lan = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(i).getString("longitud")));
                 puntos.add(new LatLng(lat,lan));
             }
 

@@ -38,7 +38,7 @@ public class Servicio extends Service {
         public void onLocationChanged(Location location) {
             //Guardar ubicacion en base de datos
             //a.setLatitude(preferences.getFloat("actualLat",0.0f));
-            if(preferences.getInt("sesion",0)!=0) {
+            if(preferences.getInt("sesion",0)==1||preferences.getInt("sesion",0)==2) {
                 try {
                     //android.os.Debug.waitForDebugger();
                     gps = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);

@@ -78,8 +78,8 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                 if(c1.moveToFirst())
                 {
                     Location l1 = new Location("l1");
-                    l1.setLatitude(hijos.get(position).latitud);
-                    l1.setLongitude(hijos.get(position).longitud);
+                    l1.setLatitude(Double.parseDouble(hijos.get(position).latitud));
+                    l1.setLongitude(Double.parseDouble(hijos.get(position).longitud));
                     Location l2 = new Location("l2");
                     do {
                         l2.setLatitude(c1.getDouble(1));
@@ -113,8 +113,8 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                 preferences.edit()
                         .putString("idHijo",hijos.get(position).id)
                         .putString("nombre",hijos.get(position).nombre)
-                        .putFloat("lat", (float) hijos.get(position).latitud)
-                        .putFloat("lon", (float) hijos.get(position).longitud)
+                        .putFloat("lat", Float.parseFloat(hijos.get(position).latitud))
+                        .putFloat("lon", Float.parseFloat(hijos.get(position).longitud))
                         .commit();
                 index=position;
                 fragmentManager.beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
