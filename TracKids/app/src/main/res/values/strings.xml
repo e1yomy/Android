@@ -51,8 +51,10 @@
     <string-array name="opciones">
         <item>Ubicación actual</item>
         <item>Última ruta conocida</item>
+        <!--
         <item>Ruta de hoy</item>
         <item>Ruta de fecha</item>
+        -->
 
     </string-array>
 </resources>

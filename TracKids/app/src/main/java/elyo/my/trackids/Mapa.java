@@ -498,8 +498,11 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             MarkerPoints.set(1, la);
             if (MarkerPoints.get(0) != null && MarkerPoints.get(1) != null) {
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                MarkerOptions mar = new MarkerOptions().position(la).title(listaHijos.get(index).nombre)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerhijo));
+                MarkerOptions mar = new MarkerOptions()
+                        .position(la)
+                        .title(listaHijos.get(index).nombre)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerhijo))
+                        ;
                 m.addMarker(mar);
                 builder.include(MarkerPoints.get(0));
                 builder.include(MarkerPoints.get(1));
