@@ -1,5 +1,7 @@
 package elyo.my.trackids;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +12,8 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.preferences;
@@ -32,6 +36,7 @@ public class ServiciosWeb {
     OutputStreamWriter wr;
     int res=0;
     double lat,lan;
+    static List<LatLng> puntos= new ArrayList<>();
     public int ExisteCuenta(String email,String con){
         try {
             //Indica url del webservice
@@ -382,6 +387,53 @@ public class ServiciosWeb {
 
         } catch (Exception ex){
             String e=ex.getMessage();
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected int UltimasUbicacionesHijo(String id){
+        try {
+            //Indica url del webservice
+            puntos.clear();
+            urlprevia=webService+"ultimaUbicacion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            String consulta = "select latitud, longitud from `ubicaciones` where idUs = "+id+" order by idUb ASC LIMIT 10";
+            data = URLEncoder.encode("consulta", "UTF-8")+ "=" + URLEncoder.encode(consulta, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            linea="";
+            sb=new StringBuilder();
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+            JSONArray json=new JSONArray(sb.toString());
+            for(int i=0;i<json.length();i++)
+            {
+                lat = json.getJSONObject(i).getDouble("latitud");
+                lan = json.getJSONObject(i).getDouble("longitud");
+                puntos.add(new LatLng(lat,lan));
+            }
+
+            return 1;
+        } catch (Exception ex){
+            String e=ex.getMessage();
+            return 0;
         }
         finally{
             try {

@@ -461,4 +461,25 @@ public class Principal extends AppCompatActivity
         });
         t.start();
     }
+    public static void UltimaRutaConocida(final String id)
+    {
+        preferences.edit().putBoolean("existe", false).commit();
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if(sw.UltimasUbicacionesHijo(id)==1)
+                    {
+                        preferences.edit().putBoolean("existe", true).commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+                }
+            }
+        });
+        t.start();
+    }
 }

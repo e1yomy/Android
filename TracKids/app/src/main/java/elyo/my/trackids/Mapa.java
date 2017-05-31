@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
@@ -64,11 +65,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static elyo.my.trackids.ListaHijos.index;
+import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.PantallaHijos;
+import static elyo.my.trackids.Principal.UltimaRutaConocida;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
 import static elyo.my.trackids.Principal.usuario;
+import static elyo.my.trackids.ServiciosWeb.puntos;
 
 
 /**
@@ -371,6 +376,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                         switch (which)
                         {
                             case 0:
+                                MostrarUltimaUbicacionConocidaDeHijo();
                                 break;
                             case 1:
                                 break;
@@ -488,11 +494,11 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
     }
     public void MostrarPosicion(){
         try {
-            la = new LatLng(preferences.getFloat("lat", 0.0f), preferences.getFloat("lon", 0.0f));
+            la=new LatLng(listaHijos.get(index).latitud,listaHijos.get(index).longitud);
             MarkerPoints.set(1, la);
             if (MarkerPoints.get(0) != null && MarkerPoints.get(1) != null) {
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                MarkerOptions mar = new MarkerOptions().position(la).title(preferences.getString("nombre", "Hijo"))
+                MarkerOptions mar = new MarkerOptions().position(la).title(listaHijos.get(index).nombre)
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerhijo));
                 m.addMarker(mar);
                 builder.include(MarkerPoints.get(0));
@@ -513,17 +519,43 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
 
     }
 
-    public void MostrarUltimaUbicacionConocidaDeUsuario()
+    public void MostrarUltimaUbicacionConocidaDeHijo()
     {
         m.clear();
-        la=new LatLng(preferences.getFloat("lat",0.0f),preferences.getFloat("lon",0.0f));
-        MarkerOptions mar=new MarkerOptions().position(la).title(preferences.getString("nombre","nombre")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        la=new LatLng(listaHijos.get(index).latitud,listaHijos.get(index).longitud);
+        MarkerOptions mar=new MarkerOptions().position(la).title(listaHijos.get(index).nombre).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_markerhijo));
         m.addMarker(mar);
         m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
     }
-
+//mMutablePolyline = map.addPolyline(new PolylineOptions()
+//                .color(color)
+//                .width(mWidthBar.getProgress())
+//            .clickable(mClickabilityCheckbox.isChecked())
+//            .add(MELBOURNE, ADELAIDE, PERTH, DARWIN));
     public void MostrarUltimaRutaConocida(){
-        m.clear();
+        try {
+            m.clear();
+            UltimaRutaConocida(listaHijos.get(index).id);
+            Thread.sleep(500);
+            if(preferences.getBoolean("existe",false))
+            {
+                 PolylineOptions p=new PolylineOptions()
+                    .color(Color.BLACK)
+                    .width(3);
+
+                        //.add());
+                for(int i=1;i<puntos.size();i++)
+                {
+                    p.add(puntos.get(i));
+                }
+                Polyline mMutablePolyline = m.addPolyline(p);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
     }
 

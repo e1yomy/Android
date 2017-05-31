@@ -113,6 +113,7 @@ public class ListaHijos extends Fragment {
     List<String> lista = new ArrayList<String>();
     static ArrayList<Hijo> listaHijos;
     static BaseDatosHelper b;
+    static int index=-1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,6 +132,7 @@ public class ListaHijos extends Fragment {
     }
     static void ActualizarLista(){
         try {
+            listaHijos.clear();
             ListaDeHijos(preferences.getString("idUsuario", ""));
             Thread.sleep(1000);
             AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos, c, b);

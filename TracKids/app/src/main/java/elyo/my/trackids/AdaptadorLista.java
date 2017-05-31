@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import static elyo.my.trackids.ListaHijos.ActualizarLista;
+import static elyo.my.trackids.ListaHijos.index;
 import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.fragmentManager;
@@ -105,13 +106,17 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
     }
 
     private void Clic(View renglon, final int position) {
+        index=position;
         renglon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(c, "asd", Toast.LENGTH_SHORT).show();
-                preferences.edit().putString("nombre",hijos.get(position).nombre).commit();
-                preferences.edit().putFloat("lat", (float) hijos.get(position).latitud).commit();
-                preferences.edit().putFloat("lon", (float) hijos.get(position).longitud).commit();
+                //Toast.makeText(c, "asd", Toast.LENGTH_SHORT).show();
+                preferences.edit()
+                        .putString("idHijo",hijos.get(position).id)
+                        .putString("nombre",hijos.get(position).nombre)
+                        .putFloat("lat", (float) hijos.get(position).latitud)
+                        .putFloat("lon", (float) hijos.get(position).longitud)
+                        .commit();
                 fragmentManager.beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
             }
         });

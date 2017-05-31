@@ -9,7 +9,6 @@ public class Hijo {
     String nombre;
     double latitud;
     double longitud;
-    String lugar;
     String telefono;
     public Hijo(String id,String nombre, double latitud, double longitud, String telefono)
     {
