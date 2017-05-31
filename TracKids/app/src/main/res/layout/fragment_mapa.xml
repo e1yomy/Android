@@ -18,7 +18,7 @@
             android:clickable="true"
             android:visibility="visible"
             app:fabSize="normal"
-            app:srcCompat="@mipmap/ic_icon_opciones"
+            app:srcCompat="@mipmap/ic_opciones"
             android:layout_above="@+id/seekZoom"
             android:layout_alignLeft="@+id/floatingActionButton2"
             android:layout_alignStart="@+id/floatingActionButton2" />

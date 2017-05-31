@@ -106,7 +106,6 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
     }
 
     private void Clic(View renglon, final int position) {
-        index=position;
         renglon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +116,7 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                         .putFloat("lat", (float) hijos.get(position).latitud)
                         .putFloat("lon", (float) hijos.get(position).longitud)
                         .commit();
+                index=position;
                 fragmentManager.beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
             }
         });

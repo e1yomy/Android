@@ -48,7 +48,6 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
@@ -379,6 +378,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                                 MostrarUltimaUbicacionConocidaDeHijo();
                                 break;
                             case 1:
+                                MostrarUltimaRutaConocida();
                                 break;
                             case 2:
                                 break;
@@ -514,7 +514,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         }
         catch (Exception e)
         {
-            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -527,11 +527,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         m.addMarker(mar);
         m.animateCamera(CameraUpdateFactory.newLatLngZoom(la,zoomlevel));
     }
-//mMutablePolyline = map.addPolyline(new PolylineOptions()
-//                .color(color)
-//                .width(mWidthBar.getProgress())
-//            .clickable(mClickabilityCheckbox.isChecked())
-//            .add(MELBOURNE, ADELAIDE, PERTH, DARWIN));
+
     public void MostrarUltimaRutaConocida(){
         try {
             m.clear();
@@ -542,13 +538,12 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                  PolylineOptions p=new PolylineOptions()
                     .color(Color.BLACK)
                     .width(3);
-
-                        //.add());
                 for(int i=1;i<puntos.size();i++)
                 {
                     p.add(puntos.get(i));
                 }
-                Polyline mMutablePolyline = m.addPolyline(p);
+                //Polyline mMutablePolyline = m.addPolyline(p);
+                m.addPolyline(p);
             }
 
         }

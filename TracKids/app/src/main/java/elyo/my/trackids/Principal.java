@@ -106,7 +106,7 @@ public class Principal extends AppCompatActivity
         }
         catch (Exception ex)
         {
-            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -205,8 +205,10 @@ public class Principal extends AppCompatActivity
                     PantallaMisLugares();
                     break;
             }
-            if(id==R.id.nav_salir)
+            if(id==R.id.nav_salir) {
+                pantalla=1;
                 finish();
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -326,13 +328,6 @@ public class Principal extends AppCompatActivity
             }
         });
         t.start();
-        while (true)
-        {
-            if(preferences.getBoolean("procesoFinalizado",false)) {
-                //p.dismiss();
-                return;
-            }
-        }
     }
     public static void CrearRegistroUltimaUbicacion(){
         preferences.edit().putBoolean("exito",false).commit();

@@ -213,7 +213,7 @@ public class Servicio extends Service {
         }
         catch (Exception ex)
         {
-            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

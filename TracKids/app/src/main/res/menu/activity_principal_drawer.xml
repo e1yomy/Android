@@ -4,23 +4,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_inicio"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_inicio"
             android:title="@string/miubicacion" />
         <item
             android:id="@+id/nav_hijos"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_opciones"
             android:title="@string/hijos" />
         <item
             android:id="@+id/nav_agregarhijo"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_markerhijo"
             android:title="@string/addhijo" />
         <item
             android:id="@+id/nav_misubicaciones"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_markerguardargugar"
             android:title="@string/misubicaciones" />
         <item
             android:id="@+id/nav_salir"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_salir"
             android:title="@string/salir" />
 
     </group>

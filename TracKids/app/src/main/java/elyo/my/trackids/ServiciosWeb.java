@@ -404,7 +404,7 @@ public class ServiciosWeb {
             urlprevia=webService+"ultimaUbicacion.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
-            String consulta = "select latitud, longitud from `ubicaciones` where idUs = "+id+" order by idUb ASC LIMIT 10";
+            String consulta = "select latitud, longitud from `ubicaciones` where idUs = "+id+" order by idUb ASC LIMIT 30";
             data = URLEncoder.encode("consulta", "UTF-8")+ "=" + URLEncoder.encode(consulta, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST

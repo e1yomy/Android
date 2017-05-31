@@ -121,6 +121,7 @@ public class ListaHijos extends Fragment {
             View view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
 
             lv = (ListView) view.findViewById(R.id.listHijos);
+
             b= new BaseDatosHelper(c);
             lista.add("foo");
             lista.add("bar");
