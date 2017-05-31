@@ -72,6 +72,7 @@ import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
 import static elyo.my.trackids.Principal.usuario;
+import static elyo.my.trackids.ServiciosWeb.fechaPuntos;
 import static elyo.my.trackids.ServiciosWeb.puntos;
 
 
@@ -541,9 +542,15 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                  PolylineOptions p=new PolylineOptions()
                     .color(Color.BLACK)
                     .width(3);
-                for(int i=1;i<puntos.size();i++)
-                {
+
+                for(int i=1;i<puntos.size();i++) {
                     p.add(puntos.get(i));
+                    m.addMarker(new MarkerOptions()
+                            .position(puntos.get(i))
+                            .title(listaHijos.get(index).nombre)
+                            .icon(bitmapSizeByScall()))
+                            .setSnippet(fechaPuntos.get(i))
+                    ;
                 }
                 //Polyline mMutablePolyline = m.addPolyline(p);
                 m.addPolyline(p);

@@ -37,6 +37,7 @@ public class ServiciosWeb {
     int res=0;
     double lat,lan;
     static List<LatLng> puntos= new ArrayList<>();
+    static List<String> fechaPuntos= new ArrayList<>();
     public int ExisteCuenta(String  email,String con){
         try {
             email=Crypto.Encriptar(email);
@@ -409,10 +410,11 @@ public class ServiciosWeb {
         try {
             //Indica url del webservice
             puntos.clear();
+            fechaPuntos.clear();
             urlprevia=webService+"ultimaUbicacion.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
-            String consulta = "select latitud, longitud from `ubicaciones` where idUs = "+id+" order by idUb ASC LIMIT 30";
+            String consulta = "select latitud, longitud, fecha from `ubicaciones` where idUs = "+id+" order by idUb ASC LIMIT 30";
             data = URLEncoder.encode("consulta", "UTF-8")+ "=" + URLEncoder.encode(consulta, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
@@ -436,6 +438,7 @@ public class ServiciosWeb {
                 lat = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(i).getString("latitud")));
                 lan = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(i).getString("longitud")));
                 puntos.add(new LatLng(lat,lan));
+                fechaPuntos.add(json.getJSONObject(i).getString("fecha").split(" ")[1]);
             }
 
             return 1;
