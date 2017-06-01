@@ -136,7 +136,6 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                         public void onClick(DialogInterface dialog, int which) {
                             try {
                                 EliminarHijo(preferences.getString("idUsuario", ""), listaHijos.get(position).id);
-                                listaHijos.remove(position);
                                 ActualizarLista();
                             }
                             catch (Exception e)

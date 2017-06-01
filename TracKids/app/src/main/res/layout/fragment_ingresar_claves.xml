@@ -36,14 +36,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/usuario"
-                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                />
 
             <EditText
                 android:id="@+id/editUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:digits="1234567890qwertyuiopasdfghjklzxcvbnm@-_=+.#!$%.,"/>
 
             <TextView
                 android:id="@+id/textView2"
@@ -57,7 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:digits="1234567890"/>
         </LinearLayout>
     </RelativeLayout>
 
