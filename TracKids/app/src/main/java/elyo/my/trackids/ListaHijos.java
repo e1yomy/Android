@@ -3,12 +3,12 @@ package elyo.my.trackids;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,34 +114,36 @@ public class ListaHijos extends Fragment {
     static ArrayList<Hijo> listaHijos;
     static BaseDatosHelper b;
     static int index=-1;
+    static View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-            View view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
+             view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
 
             lv = (ListView) view.findViewById(R.id.listHijos);
 
             b= new BaseDatosHelper(c);
-            lista.add("foo");
-            lista.add("bar");
             listaHijos = new ArrayList<Hijo>();
 
             ActualizarLista();
             return view;
 
     }
-    static void ActualizarLista(){
+     static void ActualizarLista(){
         try {
             listaHijos.clear();
             ListaDeHijos(preferences.getString("idUsuario", ""));
             Thread.sleep(1000);
             AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos, c, b);
             lv.setAdapter(adaptadorLista);
+            if(listaHijos.size()==0)
+                Snackbar.make(view,"No se han encontrado conexiones. Agrega a alguien e intenta nuevamente.",Snackbar.LENGTH_SHORT).show();
         }
         catch (Exception ex)
         {
-            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
         }
     }
 

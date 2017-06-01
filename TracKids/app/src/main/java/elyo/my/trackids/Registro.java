@@ -4,12 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
@@ -21,7 +21,6 @@ import static elyo.my.trackids.Principal.ExisteCuenta;
 import static elyo.my.trackids.Principal.GuardarCuenta;
 import static elyo.my.trackids.Principal.PantallaInicioDeSesion;
 import static elyo.my.trackids.Principal.PantallaMapa;
-import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
 
@@ -120,11 +119,12 @@ public class Registro extends Fragment {
     EditText editNombres,editApellidos,editEmail,editContra1,editContra2, editTelefono,editPin;
     List<EditText> campos;
     FloatingActionButton btnVolver,btnRegistrar;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_registro, container, false);
+        view=inflater.inflate(R.layout.fragment_registro, container, false);
         campos= new ArrayList<>();
         editNombres=(EditText)view.findViewById(R.id.editNombres);
         editApellidos=(EditText)view.findViewById(R.id.editApellidos);
@@ -193,7 +193,7 @@ public class Registro extends Fragment {
     }
 
 
-    private void TerminarRegistro(View view) {
+    private void TerminarRegistro(final View view) {
         try{
         btnRegistrar=(FloatingActionButton)view.findViewById(R.id.btnFinalizarRegistro);
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +202,7 @@ public class Registro extends Fragment {
                 try {
                     for (byte i = 0; i < campos.size(); i++) {
                         if (campos.get(i).getText().toString().isEmpty()) {
-                            Toast.makeText(c, "Verificar que los campos estén completos", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view,"Verificar que los campos estén completos.",Snackbar.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -225,8 +225,7 @@ public class Registro extends Fragment {
                                 if (preferences.getBoolean("exito", false))
                                 {
                                     preferences.edit().putInt("sesion", 0).commit();
-                                    Toast.makeText(c, editContra1.getText().toString(), Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(c, "Cuenta creada.\nAhora puedes iniciar sesión", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(view,"Cuenta creada, ahora puedes iniciar sesion.",Snackbar.LENGTH_SHORT).show();
                                     ExisteCuenta(campos.get(2).getText().toString(),campos.get(3).getText().toString());
                                     CrearRegistroUltimaUbicacion();
                                     PantallaInicioDeSesion();
@@ -234,7 +233,7 @@ public class Registro extends Fragment {
                                 else
                                 {
                                     /////
-                                    Toast.makeText(c, "Algo ha salido mál, intenta nuevamente en unos minutos.", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -246,7 +245,7 @@ public class Registro extends Fragment {
                 }
                 catch (Exception ex)
                 {
-                    String s = ex.getMessage();
+                    //String s = ex.getMessage();
                 }
 
             }
@@ -254,7 +253,7 @@ public class Registro extends Fragment {
         }
         catch (Exception ex)
         {
-            String e=ex.getMessage();
+            //String e=ex.getMessage();
         }
     }
 }

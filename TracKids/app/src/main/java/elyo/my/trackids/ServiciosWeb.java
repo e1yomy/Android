@@ -414,7 +414,7 @@ public class ServiciosWeb {
             urlprevia=webService+"ultimaUbicacion.php";
             direccion = new URL(urlprevia);
             //Datos a enviar en POST
-            String consulta = "select latitud, longitud, fecha from `ubicaciones` where idUs = "+id+" order by idUb ASC LIMIT 30";
+            String consulta = "select latitud, longitud, fecha from `ubicaciones` where idUs = "+id+" order by idUb DESC LIMIT 30";
             data = URLEncoder.encode("consulta", "UTF-8")+ "=" + URLEncoder.encode(consulta, "UTF-8");
             data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
             //Abrir conexion y envio de datos via POST
@@ -440,6 +440,99 @@ public class ServiciosWeb {
                 puntos.add(new LatLng(lat,lan));
                 fechaPuntos.add(json.getJSONObject(i).getString("fecha").split(" ")[1]);
             }
+
+            return 1;
+        } catch (Exception ex){
+            String e=ex.getMessage();
+            return 0;
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected int MostrarRutaFecha(String id, String fecha){
+        try {
+            //Indica url del webservice
+            puntos.clear();
+            fechaPuntos.clear();
+            urlprevia=webService+"ultimaUbicacion.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            String consulta = "select latitud, longitud, fecha from `ubicaciones` where idUs = "+id+" and fecha like '"+fecha+"%' order by idUb ASC";
+            data = URLEncoder.encode("consulta", "UTF-8")+ "=" + URLEncoder.encode(consulta, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            linea="";
+            sb=new StringBuilder();
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+            JSONArray json=new JSONArray(sb.toString());
+            if (json.length()==0)
+                return 0;
+            for(int i=0;i<json.length();i++)
+            {
+                lat = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(i).getString("latitud")));
+                lan = Double.parseDouble(Crypto.Desencriptar(json.getJSONObject(i).getString("longitud")));
+                puntos.add(new LatLng(lat,lan));
+                fechaPuntos.add(json.getJSONObject(i).getString("fecha").split(" ")[1]);
+            }
+
+            return 1;
+        } catch (Exception ex){
+            String e=ex.getMessage();
+            return 0;
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    protected int EliminarHijo(String padre, String hijo){
+        try {
+            //Indica url del webservice
+            puntos.clear();
+            fechaPuntos.clear();
+            urlprevia=webService+"eliminarHijo.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+
+            data = URLEncoder.encode("idUs", "UTF-8")+ "=" + URLEncoder.encode(padre, "UTF-8");
+            data += "&" + URLEncoder.encode("idHijo", "UTF-8")+ "=" + URLEncoder.encode(hijo, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8")+ "=" + URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            linea="";
+            sb=new StringBuilder();
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+
 
             return 1;
         } catch (Exception ex){

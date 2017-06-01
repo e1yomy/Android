@@ -24,8 +24,9 @@ import java.util.ArrayList;
 import static elyo.my.trackids.ListaHijos.ActualizarLista;
 import static elyo.my.trackids.ListaHijos.index;
 import static elyo.my.trackids.ListaHijos.listaHijos;
+import static elyo.my.trackids.Principal.EliminarHijo;
+import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.c;
-import static elyo.my.trackids.Principal.fragmentManager;
 import static elyo.my.trackids.Principal.preferences;
 
 /**
@@ -99,7 +100,7 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                 return renglon;
             }
             catch (Exception ex){
-                Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
         return convertView;
@@ -117,13 +118,13 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                         .putFloat("lon", Float.parseFloat(hijos.get(position).longitud))
                         .commit();
                 index=position;
-                fragmentManager.beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
+                PantallaMapa();
             }
         });
         renglon.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(context, v.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, v.toString(), Toast.LENGTH_SHORT).show();
                 try{
                     //lista.add("Item " + lista.size() + " long");
 
@@ -133,8 +134,15 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                     alert.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            listaHijos.remove(position);
-                            ActualizarLista();
+                            try {
+                                EliminarHijo(preferences.getString("idUsuario", ""), listaHijos.get(position).id);
+                                listaHijos.remove(position);
+                                ActualizarLista();
+                            }
+                            catch (Exception e)
+                            {
+                                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                     alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

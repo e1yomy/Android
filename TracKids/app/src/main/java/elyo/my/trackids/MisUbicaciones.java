@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -137,12 +138,12 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
     List<String> lista1;
     List<LatLng> lista2;
     BaseDatosHelper b;
-
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mis_ubicaciones, container, false);
+        view = inflater.inflate(R.layout.fragment_mis_ubicaciones, container, false);
         LinearLayout misubicacionescontenedor = (LinearLayout) view.findViewById(R.id.misubicacionescontenedor);
         int altura = misubicacionescontenedor.getHeight() / 2;
         listMisUbicaciones = (ListView) view.findViewById(R.id.listMisUbicaciones);
@@ -242,7 +243,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                         }
                         else
                         {
-                            Toast.makeText(c, "La ubicación no se ha guardado.\nHay que asignar un nombre.", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view,"La ubicación no se ha guardado. Hay que asignar un nombre.",Snackbar.LENGTH_SHORT).show();
                         }
 
                     }
@@ -276,11 +277,12 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                     lista1 );
 
             listMisUbicaciones.setAdapter(arrayAdapter);
-
+            if (lista1.size()==0)
+                Snackbar.make(view,"No se han encontrado ubicaciones. Recomendamos guardar tantas como le sea útil.",Snackbar.LENGTH_SHORT).show();
 
         }
         catch (Exception ec){
-            String s= ec.getMessage();
+            //String s= ec.getMessage();
         }
     }
     public void ActualizarMarcador(int posicion){
@@ -299,7 +301,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
         });
         listMisUbicaciones.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 AlertDialog.Builder alert= new AlertDialog.Builder(c);
                 alert.setTitle("Eliminar ubicación");
                 alert.setMessage("¿Está seguro que desea eliminar \'"+lista1.get(position)+"\'?");
@@ -307,6 +309,7 @@ public class MisUbicaciones extends Fragment implements OnMapReadyCallback, Loca
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        Snackbar.make(view,lista1.get(position)+" eliminada.",Snackbar.LENGTH_SHORT).show();
                         b.eliminarLugar(usuario.usuario,lista1.get(position));
                         m.clear();
                         ActualizarLista();

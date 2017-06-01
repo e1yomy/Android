@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import static elyo.my.trackids.Principal.ExisteCuenta;
 import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.PantallaRegistro;
-import static elyo.my.trackids.Principal.c;
 import static elyo.my.trackids.Principal.correo;
 import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.pin;
@@ -169,7 +168,8 @@ public class IniciarSesion extends Fragment {
                         pin.setTitle("Pin: "+usuario.pin);
                         PantallaMapa();
                     } else {
-                        Toast.makeText(c, "Nombre de usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(c, "Usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view,"Usuario o contraseña incorrectos.",Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -272,7 +272,8 @@ public class IniciarSesion extends Fragment {
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(c,error.getMessage() ,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(c,error.getMessage() ,Toast.LENGTH_SHORT).show();
+                Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
             }
 
         });

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -58,8 +57,8 @@ public class Servicio extends Service {
                     l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
                     lat = l.getLatitude();
                     lan = l.getLongitude();
-                    Toast.makeText(Principal.c, "" + lat, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(Principal.c, "" + lan, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Principal.c, "" + lat, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Principal.c, "" + lan, Toast.LENGTH_SHORT).show();
                     preferences.edit()
                             .putFloat("actualLat", (float) lat)
                             .putFloat("actualLon", (float) lan)
@@ -67,7 +66,7 @@ public class Servicio extends Service {
                     CargarUbicacionDe(preferences.getString("idUsuario", ""));
                     CargarUltimaUbicacion(preferences.getString("idUsuario", ""),lat,lan);
                 } catch (Exception ex) {
-                    Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -88,7 +87,7 @@ public class Servicio extends Service {
             }
             catch (Exception e)
             {
-                Toast.makeText(Principal.c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Principal.c, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -100,7 +99,7 @@ public class Servicio extends Service {
             }
             catch (Exception e)
             {
-                Toast.makeText(Principal.c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Principal.c, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -131,11 +130,11 @@ public class Servicio extends Service {
 
             lat = (preferences.getFloat("actualLat", 0.0f));
             lan = (preferences.getFloat("actualLon", 0.0f));
-            Toast.makeText(Principal.c, "" + lat, Toast.LENGTH_SHORT).show();
-            Toast.makeText(Principal.c, "" + lan, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Principal.c, "" + lat, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Principal.c, "" + lan, Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
-            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -170,8 +169,8 @@ public class Servicio extends Service {
         // after onUnbind() has already been called
         lat = (preferences.getFloat("actualLat", 0.0f));
         lan = (preferences.getFloat("actualLon", 0.0f));
-        Toast.makeText(Principal.c, "" + lat, Toast.LENGTH_SHORT).show();
-        Toast.makeText(Principal.c, "" + lan, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(Principal.c, "" + lat, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(Principal.c, "" + lan, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -191,7 +190,7 @@ public class Servicio extends Service {
     }
         catch (Exception ex)
     {
-        Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
     }
     String fecha="";

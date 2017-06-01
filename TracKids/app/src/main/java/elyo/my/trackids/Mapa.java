@@ -66,6 +66,7 @@ import java.util.List;
 import static android.content.Context.LOCATION_SERVICE;
 import static elyo.my.trackids.ListaHijos.index;
 import static elyo.my.trackids.ListaHijos.listaHijos;
+import static elyo.my.trackids.Principal.MostrarRutaDeFecha;
 import static elyo.my.trackids.Principal.PantallaHijos;
 import static elyo.my.trackids.Principal.UltimaRutaConocida;
 import static elyo.my.trackids.Principal.c;
@@ -173,18 +174,19 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         @Override
         public void onLocationChanged(Location location) {
             try {
-
-                m.clear();
-                if (location != null) {
-                    if (pantalla == 1) {
-                        ActualizarMarcador(location);
-                    } else {
-                        ActualizarMarcador(location);
-                        MostrarPosicion();
+                if (opcionSeleccionada == 0) {
+                    m.clear();
+                    if (location != null) {
+                        if (pantalla == 1) {
+                            ActualizarMarcador(location);
+                        } else {
+                            ActualizarMarcador(location);
+                            MostrarPosicion();
+                        }
                     }
                 }
-            } catch (Exception e) {
-                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch(Exception e){
+                    //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -196,35 +198,37 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         @Override
         public void onProviderEnabled(String provider) {
             try {
-                m.clear();
-                if (la != null) {
-                    if (locationManager != null) {
-                        if (ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
+                if(opcionSeleccionada==0) {
+                    m.clear();
+                    if (la != null) {
+                        if (locationManager != null) {
+                            if (ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(c, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                // TODO: Consider calling
+                                //    ActivityCompat#requestPermissions
+                                // here to request the missing permissions, and then overriding
+                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                //                                          int[] grantResults)
+                                // to handle the case where the user grants the permission. See the documentation
+                                // for ActivityCompat#requestPermissions for more details.
+                                return;
+                            }
+                            l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
                         }
-                        l = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-                    }
-                    Location a=new Location("a");
-                    a.setLatitude(preferences.getFloat("actualLat",0.0f));
-                    a.setLongitude(preferences.getFloat("actualLon",0.0f));
-                    if (pantalla == 1) {
-                        ActualizarMarcador(l);
-                    } else {
-                        ActualizarMarcador(l);
-                        MostrarPosicion();
+                        Location a = new Location("a");
+                        a.setLatitude(preferences.getFloat("actualLat", 0.0f));
+                        a.setLongitude(preferences.getFloat("actualLon", 0.0f));
+                        if (pantalla == 1) {
+                            ActualizarMarcador(l);
+                        } else {
+                            ActualizarMarcador(l);
+                            MostrarPosicion();
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
-                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -235,7 +239,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             }
             catch (Exception e)
             {
-                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -251,12 +255,14 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
     int zoomlevel;
     GoogleApiClient mGoogleApiClient;
     ArrayList<LatLng> MarkerPoints;
-
+    int opcionSeleccionada=0;
+    static String fecha="";
+    static View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view=inflater.inflate(R.layout.fragment_mapa, container, false);
+         view=inflater.inflate(R.layout.fragment_mapa, container, false);
         try {
             SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                     .findFragmentById(R.id.mapa1);
@@ -290,7 +296,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         }
         catch (Exception ex)
         {
-            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
         }
 
         return view;
@@ -317,13 +323,31 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 }
                 else
                 {
-                    ActualizarMarcador(l);
-                    MostrarPosicion();
+                    switch (opcionSeleccionada)
+                    {
+                        case 0:
+                            //MostrarUltimaUbicacionConocidaDeHijo();
+                            ActualizarMarcador(l);
+                            MostrarPosicion();
+                            break;
+                        case 1:
+                            MostrarUltimaRutaConocida();
+                            break;
+                        case 2:
+                            MostrarRutaFecha(fecha);
+                            break;
+                        case 3:
+                            MostrarRutaFecha(fecha);
+                            break;
+                    }
+
+
                 }
                 }
                 catch (Exception e)
                 {
-                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view,"Algo ha salido mal, verifique su conexión a Internet.",Snackbar.LENGTH_SHORT).show();
                 }
 
             }
@@ -346,7 +370,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 }
                 catch (Exception e)
                 {
-                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 //
             }
@@ -373,24 +397,31 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //which es el valor del index de la lista de elementos que se muestran en el Dialog
+                        opcionSeleccionada=which;
                         switch (which)
                         {
                             case 0:
-                                MostrarUltimaUbicacionConocidaDeHijo();
+                                //MostrarUltimaUbicacionConocidaDeHijo();
+                                m.clear();
+                                ActualizarMarcador(l);
+                                MostrarPosicion();
                                 break;
                             case 1:
                                 MostrarUltimaRutaConocida();
                                 break;
                             case 2:
+                                fecha=Calendar.getInstance().get(Calendar.YEAR)+"-"+getPaddedNumber((Calendar.getInstance().get(Calendar.MONTH)+1))+"-"+getPaddedNumber(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                                MostrarRutaFecha(fecha);
+
                                 break;
                             case 3:
                                 DatePickerDialog pick= new DatePickerDialog(c, new DatePickerDialog.OnDateSetListener() {
                                     @Override
                                     public void onDateSet(DatePicker v, int year, int month, int dayOfMonth) {
                                         month++; //meses está de 0 a 11
+                                        fecha=year+"-"+getPaddedNumber(month)+"-"+getPaddedNumber(dayOfMonth);
+                                        MostrarRutaFecha(fecha);
 
-                                        //Cuando no haya ningun registro del hijo en la fecha seleccionada, deberá mostrar un Snackz
-                                        Snackbar.make(view,dayOfMonth+" "+(month+1)+" "+ year,Snackbar.LENGTH_LONG).show();
 
                                     }
                                 }, Calendar.getInstance().get(Calendar.YEAR),Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -406,6 +437,9 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 alert.show();
             }
         });
+    }
+    private String getPaddedNumber(int number) {
+        return String.format("%02d", number);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -441,7 +475,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             }
 
         } catch (Exception ex) {
-            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -473,7 +507,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         }
         catch (Exception ex)
         {
-            Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -539,35 +574,56 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             Thread.sleep(500);
             if(preferences.getBoolean("existe",false))
             {
-                 PolylineOptions p=new PolylineOptions()
-                    .color(Color.BLACK)
-                    .width(3);
-
-                for(int i=1;i<puntos.size();i++) {
-                    p.add(puntos.get(i));
-                    m.addMarker(new MarkerOptions()
-                            .position(puntos.get(i))
-                            .title(listaHijos.get(index).nombre)
-                            .icon(bitmapSizeByScall()))
-                            .setSnippet(fechaPuntos.get(i))
-                    ;
-                }
-                //Polyline mMutablePolyline = m.addPolyline(p);
-                m.addPolyline(p);
+                DibujarRuta();
             }
 
         }
         catch (Exception ex)
         {
-            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
+        }
+
+    }
+    public void MostrarRutaFecha(String fecha){
+        try {
+            m.clear();
+            MostrarRutaDeFecha(listaHijos.get(index).id,fecha);
+            Thread.sleep(500);
+            if(preferences.getBoolean("existe",false))
+            {
+                DibujarRuta();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
         }
 
     }
 
-    /// Recibir la fecha como parametro, para ruta de hoy, fecha actual, para otra fecha, resultado del dialogo
-    public void MostrarRutaDeFecha(){
-        m.clear();
+    private void DibujarRuta() {
 
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        PolylineOptions p=new PolylineOptions()
+                .color(Color.BLACK)
+                .width(3);
+
+        for(int i=1;i<puntos.size();i++) {
+            p.add(puntos.get(i));
+            builder.include(puntos.get(i));
+            m.addMarker(new MarkerOptions()
+                    .position(puntos.get(i))
+                    .title(listaHijos.get(index).nombre)
+                    .icon(bitmapSizeByScall()))
+                    .setSnippet(fechaPuntos.get(i))
+            ;
+        }
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(builder.build(), 100);
+        m.animateCamera(cu);
+        m.addPolyline(p);
     }
 
     private String getUrl(LatLng origin, LatLng dest) {

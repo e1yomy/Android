@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -46,6 +47,7 @@ public class Principal extends AppCompatActivity
     Menu menuPuntos;
     static MenuItem pin, correo;
     static NavigationView navigationView;
+    static View parentLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class Principal extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        parentLayout = findViewById(R.id.content_principal);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -483,6 +486,55 @@ public class Principal extends AppCompatActivity
                     if(sw.UltimasUbicacionesHijo(id)==1)
                     {
                         preferences.edit().putBoolean("existe", true).commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+                }
+            }
+        });
+        t.start();
+    }
+    public static void MostrarRutaDeFecha(final String id, final String fecha)
+    {
+        preferences.edit().putBoolean("existe", false).commit();
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if(sw.MostrarRutaFecha(id,fecha)==1)
+                    {
+                        preferences.edit().putBoolean("existe", true).commit();
+                    }
+                    else
+                    {
+                        Snackbar.make(parentLayout,"No hay registros para esta fecha.",Snackbar.LENGTH_LONG).show();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s=ex.getMessage();
+                }
+            }
+        });
+        t.start();
+    }
+    public static void EliminarHijo(final String padre, final String hijo)
+    {
+        Thread t =new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServiciosWeb sw = new ServiciosWeb();
+                    if(sw.EliminarHijo(padre,hijo)==1)
+                    {
+                        Snackbar.make(parentLayout,"Conexión eliminada.",Snackbar.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+
                     }
                 }
                 catch (Exception ex)

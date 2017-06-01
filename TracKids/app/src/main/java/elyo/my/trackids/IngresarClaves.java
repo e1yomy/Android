@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,15 +108,15 @@ public class IngresarClaves extends Fragment {
     }
 
 
-
-    EditText editUsuario,editPin;
+     View view;
+     EditText editUsuario,editPin;
      FloatingActionButton btnAgregarHijo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         try {
-            View view = inflater.inflate(R.layout.fragment_ingresar_claves, container, false);
+            view = inflater.inflate(R.layout.fragment_ingresar_claves, container, false);
             editPin = (EditText) view.findViewById(R.id.editPin);
             editUsuario = (EditText) view.findViewById(R.id.editUsuario);
             btnAgregarHijo = (FloatingActionButton) view.findViewById(R.id.btnAgregarHijo);
@@ -125,7 +126,7 @@ public class IngresarClaves extends Fragment {
         }
         catch (Exception ex)
         {
-            String s=ex.getMessage();
+            Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
         }
         return null;
     }
@@ -140,8 +141,12 @@ public class IngresarClaves extends Fragment {
                      if (preferences.getBoolean("existe", false)) {
                          PantallaHijos();
                      }
+                     else
+                     {
+                         Snackbar.make(view,"Usuario o Pin incorrectos.",Snackbar.LENGTH_SHORT).show();
+                     }
                  } catch (Exception ex) {
-                     String s=ex.getMessage();
+                     Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                  }
              }
          });
