@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textEmailAddress"
-                android:digits="1234567890qwertyuiopasdfghjklzxcvbnm@-_=+.#!$%.,"/>
+                />
 
             <TextView
                 android:id="@+id/textView2"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:digits="1234567890"/>
+                />
         </LinearLayout>
     </RelativeLayout>
 

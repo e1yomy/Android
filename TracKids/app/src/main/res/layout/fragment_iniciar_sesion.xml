@@ -54,7 +54,7 @@
                 android:inputType="textEmailAddress"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:digits="1234567890qwertyuiopasdfghjklzxcvbnm@-_=+.#!$%.,"/>
+                />
 
             <TextView
                 android:id="@+id/textView4"
@@ -78,7 +78,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:digits="qwertyuiopasdfghjklzxcvbnm1234567890/*-+@!%$#"/>
+                />
 
             <Button
                 android:id="@+id/btnEntrar"
