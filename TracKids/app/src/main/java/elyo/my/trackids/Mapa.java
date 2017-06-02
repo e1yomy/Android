@@ -244,7 +244,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         }
     };
 
-    GoogleMap m;
+    static GoogleMap m;
     LocationManager locationManager;
     Location l;
     boolean gps;
@@ -571,11 +571,13 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         try {
             m.clear();
             UltimaRutaConocida(listaHijos.get(index).id);
-            Thread.sleep(500);
+            /*
+            Thread.sleep(1000);
             if(preferences.getBoolean("existe",false))
             {
                 DibujarRuta();
             }
+            */
 
         }
         catch (Exception ex)
@@ -589,11 +591,13 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
         try {
             m.clear();
             MostrarRutaDeFecha(listaHijos.get(index).id,fecha);
-            Thread.sleep(500);
+            /*
+            Thread.sleep(1000);
             if(preferences.getBoolean("existe",false))
             {
                 DibujarRuta();
             }
+            */
 
         }
         catch (Exception ex)
@@ -604,7 +608,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
 
     }
 
-    private void DibujarRuta() {
+    public static void DibujarRuta() {
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         PolylineOptions p=new PolylineOptions()
@@ -830,7 +834,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
             }while (c.moveToNext());
         }
     }
-    public BitmapDescriptor bitmapSizeByScall() {
+    public static BitmapDescriptor bitmapSizeByScall() {
         BitmapDescriptor bit;
         Bitmap bi= BitmapFactory.decodeResource(c.getResources(),R.mipmap.ic_markerlugar);
         Bitmap bi2 = Bitmap.createScaledBitmap(bi,

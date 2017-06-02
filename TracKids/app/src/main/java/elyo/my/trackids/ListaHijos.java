@@ -134,11 +134,13 @@ public class ListaHijos extends Fragment {
         try {
             listaHijos.clear();
             ListaDeHijos(preferences.getString("idUsuario", ""));
+            /*
             Thread.sleep(1000);
             AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos, c, b);
             lv.setAdapter(adaptadorLista);
             if(listaHijos.size()==0)
                 Snackbar.make(view,"No se han encontrado conexiones. Agrega a alguien e intenta nuevamente.",Snackbar.LENGTH_SHORT).show();
+            */
         }
         catch (Exception ex)
         {

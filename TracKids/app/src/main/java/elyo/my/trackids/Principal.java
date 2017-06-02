@@ -24,6 +24,15 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
+import org.json.JSONObject;
+
+import static elyo.my.trackids.ListaHijos.ActualizarLista;
+import static elyo.my.trackids.ListaHijos.b;
+import static elyo.my.trackids.ListaHijos.listaHijos;
+import static elyo.my.trackids.ListaHijos.lv;
+import static elyo.my.trackids.Mapa.DibujarRuta;
+import static elyo.my.trackids.Registro.campos;
+
 public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Mapa.OnFragmentInteractionListener,
@@ -48,11 +57,12 @@ public class Principal extends AppCompatActivity
     static MenuItem pin, correo;
     static NavigationView navigationView;
     static View parentLayout;
+    static Principal pr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
+        pr=Principal.this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -188,6 +198,10 @@ public class Principal extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if(id==R.id.nav_salir) {
+            pantalla=1;
+            finish();
+        }
         if(preferences.getInt("sesion",0)!=0)
         {
             switch (id)
@@ -209,10 +223,7 @@ public class Principal extends AppCompatActivity
                     PantallaMisLugares();
                     break;
             }
-            if(id==R.id.nav_salir) {
-                pantalla=1;
-                finish();
-            }
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -296,17 +307,18 @@ public class Principal extends AppCompatActivity
 
 
 
-    public static void Mensaje(){
+    /*public static void Mensaje(){
         p.setIndeterminate(true);
         p.setCancelable(false);
         p.setCanceledOnTouchOutside(false);
         p.setTitle("Espere");
         p.setMessage("Verificando sus credenciales");
         p.show();
-    }
-    public static void GuardarCuenta(final String nombres, final String apellidos, final String correo, final String contrasena, final String telefono, final String pin) {
+    }*/
+    public static void GuardarCuenta(final String nombres, final String apellidos, final String correo, final String contrasena, final String telefono, final String pin)
+    {
         preferences.edit().putBoolean("exito", false).commit();
-        Mensaje();
+        //Mensaje();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -315,6 +327,34 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.GuardarCuenta(nombres, apellidos, correo, contrasena, telefono, pin) == 1) {
                         preferences.edit().putBoolean("exito", true).commit();
+                        /////////////
+                        if (preferences.getInt("sesion", -1) == 3) {
+                            pantalla = 1;
+                            //cargarDatos De usuario en preferences
+                            ExisteCuenta(campos.get(2).getText().toString(),preferences.getString("contrasenaUsuario",""));
+                            preferences.edit().putInt("sesion", 2).commit();
+                            PantallaMapa();
+                            Snackbar.make(parentLayout,"Cuenta creada.",Snackbar.LENGTH_SHORT).show();
+
+                        }
+                        else {
+                            if (preferences.getBoolean("exito", false))
+                            {
+                                preferences.edit().putInt("sesion", 0).commit();
+                                Snackbar.make(parentLayout,"Cuenta creada, ahora puedes iniciar sesion.",Snackbar.LENGTH_SHORT).show();
+                                ExisteCuenta(campos.get(2).getText().toString(),campos.get(3).getText().toString());
+                                PantallaInicioDeSesion();
+                            }
+                            else
+                            {
+                                /////
+                                Snackbar.make(parentLayout,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                        /////////////
+                    }
+                    else {
+                        Snackbar.make(parentLayout,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                     }
                     responseHandler.sendEmptyMessage(0);
                 } catch (Exception ex) {
@@ -337,6 +377,27 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.ExisteCuenta(email, contra) == 1) {
                         preferences.edit().putBoolean("existe", true).commit();
+
+                        ////////////
+                        if (preferences.getBoolean("existe", false)) {
+                            toolbar.setVisibility(View.VISIBLE);
+                            pantalla = 1;
+                            preferences.edit().putInt("sesion", 1).commit();
+                            correo.setTitle("Usuario: "+usuario.usuario);
+                            pin.setTitle("Pin: "+usuario.pin);
+                            PantallaMapa();
+                        } else {
+                            //Toast.makeText(c, "Usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(parentLayout,"Usuario o contraseña incorrectos.",Snackbar.LENGTH_SHORT).show();
+                        }
+                        ////////////
+
+
+                        ////////////
+                    }
+                    else
+                    {
+                        Snackbar.make(parentLayout,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                     }
                     preferences.edit().putBoolean("procesoFinalizado",true).commit();
                 }
@@ -348,18 +409,48 @@ public class Principal extends AppCompatActivity
         });
         t.start();
     }
-    public static void CrearRegistroUltimaUbicacion(){
-        preferences.edit().putBoolean("exito",false).commit();
-        Mensaje();
+    public static void ExisteCuentaFacebook(final String email, final String contra, final JSONObject object)
+    {
+        preferences.edit().putBoolean("procesoFinalizado",false).commit();
+        preferences.edit().putBoolean("existe", false).commit();
         Thread t =new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
                     ServiciosWeb sw = new ServiciosWeb();
-                    if (sw.CrearRegistroUltimaUbicacion(preferences.getString("idUsuario","-1")) == 1) {
-                        preferences.edit().putBoolean("exito", true).commit();
+                    if (sw.ExisteCuenta(email, contra) == 1) {
+                        preferences.edit().putBoolean("existe", true).commit();
+                        ////////////
+                        pr.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                correo.setTitle("Usuario: "+usuario.usuario);
+                                pin.setTitle("Pin: "+usuario.pin);
+                            }
+                        });
+                        toolbar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                toolbar.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        pantalla=1;
+                        preferences.edit().putInt("sesion", 2).commit();
+                        PantallaMapa();
+
+                        ////////////
                     }
+                    else {
+                        preferences.edit().putInt("sesion", 3).commit();
+                        preferences.edit()
+                                .putString("correoUsuario", object.getString("email"))
+                                .putString("nombresUsuario", object.getString("first_name"))
+                                .putString("apellidosUsuario", object.getString("last_name"))
+                                .putString("contrasenaUsuario", object.getString("id"))
+                                .commit();
+                        PantallaRegistro();
+                    }
+                    preferences.edit().putBoolean("procesoFinalizado",true).commit();
                 }
                 catch (Exception ex)
                 {
@@ -392,7 +483,11 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.ExisteUsuario(email, pin) == 1) {
                         preferences.edit().putBoolean("existe", true).commit();
+                        Snackbar.make(parentLayout,"Conexión exitosa.",Snackbar.LENGTH_SHORT).show();
+                            PantallaHijos();
                     }
+                    else
+                        Snackbar.make(parentLayout,"Usuario o Pin incorrectos.",Snackbar.LENGTH_SHORT).show();
                     preferences.edit().putBoolean("procesoFinalizado",true).commit();
                 }
                 catch (Exception ex)
@@ -413,7 +508,6 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.CargarUbicacion(id,lat,lan,fecha) == 1) {
                     }
-                    preferences.edit().putBoolean("procesoFinalizado",true).commit();
                 }
                 catch (Exception ex)
                 {
@@ -429,6 +523,7 @@ public class Principal extends AppCompatActivity
         });
         t.start();
     }
+    /*
     public static void CargarUltimaUbicacion(final String id, final double lat, final double lan)
     {
         Thread t =new Thread(new Runnable() {
@@ -454,7 +549,7 @@ public class Principal extends AppCompatActivity
         });
         t.start();
     }
-
+    */
     public static void ListaDeHijos(final String id)
     {
         preferences.edit().putBoolean("existe", false).commit();
@@ -465,6 +560,20 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.ListaDeHijos(id) == 1) {
                         preferences.edit().putBoolean("existe", true).commit();
+                        final AdaptadorLista adaptadorLista = new AdaptadorLista(listaHijos, c, b);
+                        lv.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                lv.setAdapter(adaptadorLista);
+                            }
+                        });
+
+                        if(listaHijos.size()==0)
+                            Snackbar.make(parentLayout,"No se han encontrado conexiones. Agrega a alguien e intenta nuevamente.",Snackbar.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Snackbar.make(parentLayout,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                     }
                 }
                 catch (Exception ex)
@@ -486,6 +595,16 @@ public class Principal extends AppCompatActivity
                     if(sw.UltimasUbicacionesHijo(id)==1)
                     {
                         preferences.edit().putBoolean("existe", true).commit();
+                        pr.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DibujarRuta();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Snackbar.make(parentLayout,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                     }
                 }
                 catch (Exception ex)
@@ -507,6 +626,12 @@ public class Principal extends AppCompatActivity
                     if(sw.MostrarRutaFecha(id,fecha)==1)
                     {
                         preferences.edit().putBoolean("existe", true).commit();
+                        pr.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DibujarRuta();
+                            }
+                        });
                     }
                     else
                     {
@@ -530,6 +655,7 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if(sw.EliminarHijo(padre,hijo)==1)
                     {
+                        ActualizarLista();
                         Snackbar.make(parentLayout,"Conexión eliminada.",Snackbar.LENGTH_LONG).show();
                     }
                     else

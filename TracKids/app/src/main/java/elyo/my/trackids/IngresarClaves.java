@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import static elyo.my.trackids.Principal.AgregarHijo;
-import static elyo.my.trackids.Principal.PantallaHijos;
-import static elyo.my.trackids.Principal.preferences;
 
 
  /**
@@ -137,7 +135,8 @@ public class IngresarClaves extends Fragment {
              public void onClick(View v) {
                  try {
                      AgregarHijo(editUsuario.getText().toString(), editPin.getText().toString());
-                     Thread.sleep(500);
+                     /*
+                     Thread.sleep(1000);
                      if (preferences.getBoolean("existe", false)) {
                          PantallaHijos();
                      }
@@ -145,6 +144,7 @@ public class IngresarClaves extends Fragment {
                      {
                          Snackbar.make(view,"Usuario o Pin incorrectos.",Snackbar.LENGTH_SHORT).show();
                      }
+                     */
                  } catch (Exception ex) {
                      Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                  }

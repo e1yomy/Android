@@ -17,11 +17,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static elyo.my.trackids.ListaHijos.ActualizarLista;
 import static elyo.my.trackids.ListaHijos.index;
 import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.EliminarHijo;
@@ -136,11 +134,11 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                         public void onClick(DialogInterface dialog, int which) {
                             try {
                                 EliminarHijo(preferences.getString("idUsuario", ""), listaHijos.get(position).id);
-                                ActualizarLista();
+                                //ActualizarLista();
                             }
                             catch (Exception e)
                             {
-                                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -163,11 +161,9 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
 
     private void Llamar(FloatingActionButton btnLlamar, final int position) {
         try {
-
             btnLlamar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.setData(Uri.parse("tel:" + hijos.get(position).telefono));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

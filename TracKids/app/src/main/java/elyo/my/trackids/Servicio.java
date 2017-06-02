@@ -16,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import java.util.Calendar;
 
 import static elyo.my.trackids.Principal.CargarUbicacion;
-import static elyo.my.trackids.Principal.CargarUltimaUbicacion;
 import static elyo.my.trackids.Principal.preferences;
 
 /**
@@ -64,7 +63,7 @@ public class Servicio extends Service {
                             .putFloat("actualLon", (float) lan)
                             .commit();
                     CargarUbicacionDe(preferences.getString("idUsuario", ""));
-                    CargarUltimaUbicacion(preferences.getString("idUsuario", ""),lat,lan);
+                    //CargarUltimaUbicacion(preferences.getString("idUsuario", ""),lat,lan);
                 } catch (Exception ex) {
                     //Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -207,7 +206,7 @@ public class Servicio extends Service {
                     ca.get(Calendar.MINUTE)+":"+
                     ca.get(Calendar.SECOND);
             CargarUbicacion(id, lat, lan, fecha);
-            CargarUltimaUbicacion(id, lat, lan);
+            //CargarUltimaUbicacion(id, lat, lan);
 
         }
         catch (Exception ex)

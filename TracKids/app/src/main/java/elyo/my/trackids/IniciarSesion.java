@@ -24,14 +24,8 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONObject;
 
 import static elyo.my.trackids.Principal.ExisteCuenta;
-import static elyo.my.trackids.Principal.PantallaMapa;
+import static elyo.my.trackids.Principal.ExisteCuentaFacebook;
 import static elyo.my.trackids.Principal.PantallaRegistro;
-import static elyo.my.trackids.Principal.correo;
-import static elyo.my.trackids.Principal.pantalla;
-import static elyo.my.trackids.Principal.pin;
-import static elyo.my.trackids.Principal.preferences;
-import static elyo.my.trackids.Principal.toolbar;
-import static elyo.my.trackids.Principal.usuario;
 
 
 /**
@@ -158,8 +152,8 @@ public class IniciarSesion extends Fragment {
                 //Consulta a servicio web de inicio de sesion
                 try {
                     ExisteCuenta(editUsuario.getText().toString(), editContrasena.getText().toString());
-
-                    Thread.sleep(500);
+                    /*
+                    Thread.sleep(1000);
                     if (preferences.getBoolean("existe", false)) {
                         toolbar.setVisibility(View.VISIBLE);
                         pantalla = 1;
@@ -171,6 +165,7 @@ public class IniciarSesion extends Fragment {
                         //Toast.makeText(c, "Usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
                         Snackbar.make(view,"Usuario o contraseña incorrectos.",Snackbar.LENGTH_SHORT).show();
                     }
+                    */
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -215,8 +210,9 @@ public class IniciarSesion extends Fragment {
                                     GraphResponse response) {
                                 try {
                                     try {
-                                        ExisteCuenta(object.getString("email"),object.getString("id"));
-                                        Thread.sleep(500);
+                                        ExisteCuentaFacebook(object.getString("email"),object.getString("id"),object);
+                                        /*
+                                        Thread.sleep(2000);
                                         if (preferences.getBoolean("existe", false)) {
 
                                             preferences.edit()
@@ -229,7 +225,7 @@ public class IniciarSesion extends Fragment {
                                             preferences.edit().putInt("sesion", 2).commit();
                                             usuario= new Usuario(object.getString("email"),object.getString("first_name"),object.getString("last_name"),"6121214236","1234567890",preferences.getString("pinUsuario",""));
                                             toolbar.setVisibility(View.VISIBLE);
-                                            pantalla = 1;
+                                            pantalla=1;
                                             correo.setTitle("Usuario: "+usuario.usuario);
                                             pin.setTitle("Pin: "+usuario.pin);
                                             PantallaMapa();
@@ -245,11 +241,10 @@ public class IniciarSesion extends Fragment {
                                                     .commit();
                                             PantallaRegistro();
                                         }
+                                        */
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    //si ya esta guardado manda al mapa
-                                    //si no esta guardado manda al registro
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

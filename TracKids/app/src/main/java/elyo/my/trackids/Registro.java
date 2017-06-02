@@ -16,12 +16,8 @@ import com.facebook.login.LoginManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static elyo.my.trackids.Principal.CrearRegistroUltimaUbicacion;
-import static elyo.my.trackids.Principal.ExisteCuenta;
 import static elyo.my.trackids.Principal.GuardarCuenta;
 import static elyo.my.trackids.Principal.PantallaInicioDeSesion;
-import static elyo.my.trackids.Principal.PantallaMapa;
-import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
 
 
@@ -117,7 +113,7 @@ public class Registro extends Fragment {
     }
 
     EditText editNombres,editApellidos,editEmail,editContra1,editContra2, editTelefono,editPin;
-    List<EditText> campos;
+    static List<EditText> campos;
     FloatingActionButton btnVolver,btnRegistrar;
     View view;
     @Override
@@ -145,8 +141,8 @@ public class Registro extends Fragment {
         if(preferences.getInt("sesion",-1)==3)
         {
             //Cargar los datos en los campos, dejando los campos de contraseña de solo lectura
-            String nombre = preferences.getString("nombreUsuario","");
-            String apellido =preferences.getString("apellidoUsuario","");
+            String nombre = preferences.getString("nombresUsuario","");
+            String apellido =preferences.getString("apellidosUsuario","");
             String email=preferences.getString("correoUsuario","");
             String contra= preferences.getString("contrasenaUsuario","1324567890");
             editNombres.setText(nombre);
@@ -210,8 +206,8 @@ public class Registro extends Fragment {
                         //if (preferences.getInt("sesion", -1) != 2)
                         {
                             GuardarCuenta(campos.get(0).getText().toString(),campos.get(1).getText().toString(),campos.get(2).getText().toString(),campos.get(3).getText().toString(),campos.get(5).getText().toString(),campos.get(6).getText().toString());
-                            Thread.sleep(500);
-
+                            /*
+                            Thread.sleep(1000);
                             if (preferences.getInt("sesion", -1) == 3) {
                                 pantalla = 1;
                                 //cargarDatos De usuario en preferences
@@ -236,6 +232,7 @@ public class Registro extends Fragment {
                                     Snackbar.make(view,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
                                 }
                             }
+                            */
 
                         }
 

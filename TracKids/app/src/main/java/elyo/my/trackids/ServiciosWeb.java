@@ -96,7 +96,6 @@ public class ServiciosWeb {
         }
         return 0;
     }
-
     public int GuardarCuenta(String nombres, String apellidos, String correo, String contrasena, String telefono, String pin) {
         try {
             nombres=Crypto.Encriptar(nombres);
@@ -173,7 +172,6 @@ public class ServiciosWeb {
             return 0;
         }
     }
-
     public int ExisteUsuario(String email, String pin) {
         try {
             email=Crypto.Encriptar(email);
@@ -213,7 +211,6 @@ public class ServiciosWeb {
         }
         return 0;
     }
-
     private int CrearConexion(String id, String idUs) {
         try {
             urlprevia = webService + "conexion2.php";
@@ -237,12 +234,10 @@ public class ServiciosWeb {
         }
 
     }
-
     private int EliminarCuenta(String emil, String con)
     {
         return 1;
     }
-
     protected int CargarUbicacion(String id, double la, double lo, String fecha) {
         try {
             String lat= Crypto.Encriptar(String.valueOf(la));
@@ -269,8 +264,7 @@ public class ServiciosWeb {
             return 0;
         }
     }
-    protected int ListaDeHijos(String id)
-    {
+    protected int ListaDeHijos(String id){
 
         try {
             urlprevia=webService+"listarHijos.php";
@@ -351,7 +345,6 @@ public class ServiciosWeb {
             }
         }
     }
-
     protected int UltimasUbicacionesHijo(String id){
         try {
             puntos.clear();
@@ -394,7 +387,6 @@ public class ServiciosWeb {
             }
         }
     }
-
     protected int MostrarRutaFecha(String id, String fecha){
         try {
             puntos.clear();
