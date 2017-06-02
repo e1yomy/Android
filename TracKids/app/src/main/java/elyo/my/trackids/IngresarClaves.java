@@ -1,6 +1,6 @@
  package elyo.my.trackids;
 
-import android.content.Context;
+ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -128,6 +128,7 @@ public class IngresarClaves extends Fragment {
         }
         return null;
     }
+
 
      private void Boton() {
          btnAgregarHijo.setOnClickListener(new View.OnClickListener() {

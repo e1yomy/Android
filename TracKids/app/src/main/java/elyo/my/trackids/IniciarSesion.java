@@ -133,6 +133,8 @@ public class IniciarSesion extends Fragment {
 
         return view;
     }
+
+
     CallbackManager callBackManager;
     public void Botones(final View view)
     {

@@ -88,13 +88,22 @@ public class Principal extends AppCompatActivity
             if(preferences.getInt("sesion",0)!=0)
             {
                 toolbar.setVisibility(View.VISIBLE);
-                //txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
-                //txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
-                if(preferences.getInt("sesion",0)!=0) {
-                    CargarUsuario();
-
+                CargarUsuario();
+                switch (pantalla)
+                {
+                    case 1:
+                        PantallaMapa();
+                        break;
+                    case 2:
+                        PantallaHijos();
+                        break;
+                    case 3:
+                        PantallaAgregarHijo();
+                        break;
+                    case 4:
+                        PantallaMisLugares();
+                        break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Mapa()).commit();
             }
             else
             {
@@ -133,7 +142,8 @@ public class Principal extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            drawer.openDrawer(GravityCompat.START);
         }
     }
 
@@ -171,6 +181,8 @@ public class Principal extends AppCompatActivity
                 try {
                     preferences.edit().putInt("sesion", 0).commit();
                     LoginManager.getInstance().logOut();
+                    correo.setTitle("Usuario");
+                    pin.setTitle("Pin");
                     PantallaInicioDeSesion();
                 }
                 catch (Exception ex)
@@ -215,8 +227,8 @@ public class Principal extends AppCompatActivity
                     PantallaHijos();
                     break;
                 case R.id.nav_agregarhijo:
-                    PantallaAgregarHijo();
                     pantalla=3;
+                    PantallaAgregarHijo();
                     break;
                 case R.id.nav_misubicaciones:
                     pantalla=4;
@@ -244,7 +256,12 @@ public class Principal extends AppCompatActivity
     }
     public static void PantallaMisLugares(){
         toolbar.setVisibility(View.VISIBLE);
-        toolbar.setTitle("Mis lugares");
+        toolbar.post(new Runnable() {
+            @Override
+            public void run() {
+                toolbar.setTitle("Mis lugares");
+            }
+        });
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new MisUbicaciones());
@@ -255,7 +272,12 @@ public class Principal extends AppCompatActivity
     public static void PantallaRegistro(){
         try {
             toolbar.setVisibility(View.VISIBLE);
-            toolbar.setTitle("Registro");
+            toolbar.post(new Runnable() {
+                @Override
+                public void run() {
+                    toolbar.setTitle("Registro");
+                }
+            });
             transaction = fragmentManager.beginTransaction();
             transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
             transaction.replace(R.id.content_principal, new Registro());
@@ -269,7 +291,12 @@ public class Principal extends AppCompatActivity
     }
     public static void PantallaMapa(){
         toolbar.setVisibility(View.VISIBLE);
-        toolbar.setTitle("Mi mapa");
+        toolbar.post(new Runnable() {
+            @Override
+            public void run() {
+                toolbar.setTitle("Mi mapa");
+            }
+        });
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new Mapa());
@@ -279,7 +306,12 @@ public class Principal extends AppCompatActivity
     }
     public static void PantallaHijos(){
         toolbar.setVisibility(View.VISIBLE);
-        toolbar.setTitle("Lista de hijos");
+        toolbar.post(new Runnable() {
+            @Override
+            public void run() {
+                toolbar.setTitle("Lista de hijos");
+            }
+        });
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
         transaction.replace(R.id.content_principal,new ListaHijos());
@@ -290,7 +322,12 @@ public class Principal extends AppCompatActivity
     public static void PantallaAgregarHijo(){
         try {
             toolbar.setVisibility(View.VISIBLE);
-            toolbar.setTitle("Agregar hijo");
+            toolbar.post(new Runnable() {
+                @Override
+                public void run() {
+                    toolbar.setTitle("Agregar hijo");
+                }
+            });
             transaction = fragmentManager.beginTransaction();
             transaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
             transaction.replace(R.id.content_principal, new IngresarClaves());
@@ -303,9 +340,6 @@ public class Principal extends AppCompatActivity
             String s=ex.getMessage();
         }
     }
-
-
-
 
     /*public static void Mensaje(){
         p.setIndeterminate(true);
@@ -377,33 +411,34 @@ public class Principal extends AppCompatActivity
                     ServiciosWeb sw = new ServiciosWeb();
                     if (sw.ExisteCuenta(email, contra) == 1) {
                         preferences.edit().putBoolean("existe", true).commit();
-
-                        ////////////
-                        if (preferences.getBoolean("existe", false)) {
-                            toolbar.setVisibility(View.VISIBLE);
-                            pantalla = 1;
-                            preferences.edit().putInt("sesion", 1).commit();
-                            correo.setTitle("Usuario: "+usuario.usuario);
-                            pin.setTitle("Pin: "+usuario.pin);
-                            PantallaMapa();
-                        } else {
-                            //Toast.makeText(c, "Usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
-                            Snackbar.make(parentLayout,"Usuario o contraseña incorrectos.",Snackbar.LENGTH_SHORT).show();
-                        }
-                        ////////////
-
-
-                        ////////////
+                        ///////////////
+                        pantalla = 1;
+                        preferences.edit().putInt("sesion", 1).commit();
+                        pr.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                correo.setTitle("Usuario: "+usuario.usuario);
+                                pin.setTitle("Pin: "+usuario.pin);
+                            }
+                        });
+                        toolbar.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                toolbar.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        PantallaMapa();
+                        ///////////////
                     }
                     else
                     {
-                        Snackbar.make(parentLayout,"Algo ha salido mal, intente nuevamente, de no funcionar, reinicie la aplicación.",Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(parentLayout,"Usuario o contraseña incorrectos.",Snackbar.LENGTH_SHORT).show();
                     }
                     preferences.edit().putBoolean("procesoFinalizado",true).commit();
                 }
                 catch (Exception ex)
                 {
-                    String s=ex.getMessage();
+                    Snackbar.make(parentLayout,ex.getMessage(),Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -421,6 +456,8 @@ public class Principal extends AppCompatActivity
                     if (sw.ExisteCuenta(email, contra) == 1) {
                         preferences.edit().putBoolean("existe", true).commit();
                         ////////////
+                        pantalla = 1;
+                        preferences.edit().putInt("sesion", 2).commit();
                         pr.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -434,8 +471,6 @@ public class Principal extends AppCompatActivity
                                 toolbar.setVisibility(View.VISIBLE);
                             }
                         });
-                        pantalla=1;
-                        preferences.edit().putInt("sesion", 2).commit();
                         PantallaMapa();
 
                         ////////////
@@ -454,7 +489,7 @@ public class Principal extends AppCompatActivity
                 }
                 catch (Exception ex)
                 {
-                    String s=ex.getMessage();
+                    Snackbar.make(parentLayout,ex.getMessage(),Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -564,6 +599,7 @@ public class Principal extends AppCompatActivity
                         lv.post(new Runnable() {
                             @Override
                             public void run() {
+                                lv.setAdapter(null);
                                 lv.setAdapter(adaptadorLista);
                             }
                         });

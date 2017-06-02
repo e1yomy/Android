@@ -19,6 +19,7 @@ public class Crypto {
     private final static String HEX = "0123456789ABCDEF";
     public static String Encriptar(String strNormalText){
         try {
+            strNormalText=strNormalText.replace("'","");
             normalTextEnc="";
             normalTextEnc = Crypto.encrypt(seedValue, strNormalText);
         } catch (Exception e) {
@@ -39,6 +40,7 @@ public class Crypto {
     public static String MD5(String in) {
         MessageDigest digest;
         try {
+            in=in.replace("'","");
             digest = MessageDigest.getInstance("MD5");
             digest.reset();
             digest.update(in.getBytes());

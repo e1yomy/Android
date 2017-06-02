@@ -1,10 +1,12 @@
 package elyo.my.trackids;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -288,7 +290,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
                 volver.hide();
                 //
             }
-            else {
+            else if (pantalla==2) {
                 opciones.show();
                 miUbicacion.show();
                 volver.show();
@@ -301,7 +303,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback, GoogleApiClien
 
         return view;
     }
-
     private void BotonVolver() {
         volver.setOnClickListener(new View.OnClickListener() {
             @Override

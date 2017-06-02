@@ -282,7 +282,7 @@ public class ServiciosWeb {
             JSONArray json=new JSONArray(sb.toString());
             if (json.length()>0)
             {
-                    listaHijos.clear();
+                listaHijos.clear();
                 JSONObject j;
                 for(int i=0;i<json.length();i++)
                 {

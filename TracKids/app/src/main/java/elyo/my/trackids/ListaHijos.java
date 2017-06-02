@@ -119,17 +119,16 @@ public class ListaHijos extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-             view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
+        view = inflater.inflate(R.layout.fragment_lista_hijos, container, false);
 
-            lv = (ListView) view.findViewById(R.id.listHijos);
-
-            b= new BaseDatosHelper(c);
-            listaHijos = new ArrayList<Hijo>();
-
-            ActualizarLista();
-            return view;
+        lv = (ListView) view.findViewById(R.id.listHijos);
+        b = new BaseDatosHelper(c);
+        listaHijos = new ArrayList<Hijo>();
+        ActualizarLista();
+        return view;
 
     }
+
      static void ActualizarLista(){
         try {
             listaHijos.clear();
