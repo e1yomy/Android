@@ -1,10 +1,12 @@
 package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 
 
@@ -111,21 +116,27 @@ public class MisSolicitudes extends Fragment {
     }
 
     ListView lv1, lv2;
-    List<String> lista1 = new ArrayList<String>();
-    List<String> lista2 = new ArrayList<String>();
+    List<String> lista1 = new ArrayList<>();
+    List<String> lista2 = new ArrayList<>();
+    List<SolicitudItem> solicitudes= new ArrayList<>();
     FloatingActionButton btnVolver;
     LinearLayout layoutMisSolicitudes;
+    Spinner spinOpciones;
+    View view;
+    static byte opcion=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mis_solicitudes, container, false);
+        view = inflater.inflate(R.layout.fragment_mis_solicitudes, container, false);
 
         lv1 = (ListView) view.findViewById(R.id.listSolicitudes);
         lv2 = (ListView) view.findViewById(R.id.listDatos);
         btnVolver = (FloatingActionButton) view.findViewById(R.id.btnVolver);
         layoutMisSolicitudes = (LinearLayout)view.findViewById(R.id.layoutMisSolicitudes);
 
+        spinOpciones = (Spinner)view.findViewById(R.id.spinOpciones);
+        //spinOpciones.setSelection(opcion);
         lv1.setVisibility(View.VISIBLE);
         lv2.setVisibility(View.GONE);
         lv2.setItemsCanFocus(false);
@@ -135,26 +146,61 @@ public class MisSolicitudes extends Fragment {
         lista1.add("lista1");
         lista1.add("lista1");
         lista1.add("lista1");
-        lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");lista1.add("lista1");
+        lista1.add("lista1");
 
         lista2.add("lista2");
-        lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");lista2.add("lista2");
+        lista2.add("lista2");
+        lista2.add("lista2");
+        lista2.add("lista2");
+
+
+
         Toques();
         return view;
     }
-
     private void Toques() {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista1);
-        lv1.setAdapter(arrayAdapter);
-        arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista2);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista1);
+        //lv1.setAdapter(arrayAdapter);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista2);
         lv2.setAdapter(arrayAdapter);
-
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lv1.setVisibility(View.GONE);
                 lv2.setVisibility(View.VISIBLE);
                 btnVolver.show();
+                spinOpciones.setVisibility(View.GONE);
+            }
+        });
+        lv1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (opcion == 0) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(c);
+                    alert.setTitle("Interponer recurso de revisión");
+                    alert.setMessage("Ésto lo llevará a la pantalla de solicitud de recurso de revisión.\nUse esto si no está satisfecho con el resultado de su solicitud.");
+                    alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                CambiarPantalla(new NuevaSolicitudRecurso());
+                                //ActualizarLista();
+                            } catch (Exception e) {
+                                //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alert.show();
+                }
+
+
+                //Toast.makeText(c,position+"",Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
         btnVolver.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +209,56 @@ public class MisSolicitudes extends Fragment {
                 lv1.setVisibility(View.VISIBLE);
                 lv2.setVisibility(View.GONE);
                 btnVolver.hide();
+                spinOpciones.setVisibility(View.VISIBLE);
             }
         });
+        spinOpciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try{
+                    opcion= (byte) position;
+                    solicitudes.clear();
+                    switch (position)
+                    {
+                        case 0:
+                            //Solicitar lista de solicitudes de informacion
+                            Toast.makeText(c, 0+"", Toast.LENGTH_SHORT).show();
+                            solicitudes.add(new SolicitudItem(0,123,"sujeto","fecha",2));
+                            solicitudes.add(new SolicitudItem(0,13,"sujeto","fecha",1));
+                            solicitudes.add(new SolicitudItem(0,73,"sujeto","fecha",3));
+                            solicitudes.add(new SolicitudItem(0,23,"sujeto","fecha",3));
+                            break;
+                        case 1:
+                            //Solicitar lista de recursos de revisión
+                            Toast.makeText(c, 1+"", Toast.LENGTH_SHORT).show();
+                            solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",3));
+                            solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",1));
+                            solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",2));
+
+                            break;
+                        case 2:
+                            //Solicitar lista de denuncias
+                            Toast.makeText(c, 2+"", Toast.LENGTH_SHORT).show();
+                            solicitudes.add(new SolicitudItem(2,13,"sujeto","fecha",1));
+                            solicitudes.add(new SolicitudItem(2,73,"sujeto","fecha",3));
+                            solicitudes.add(new SolicitudItem(2,3,"sujeto","fecha",3));
+                            break;
+                    }
+                    ActualizarListaPrimaria();
+
+                }
+                catch (Exception e){Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();}
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+    public void ActualizarListaPrimaria()
+    {
+        AdaptadorLista adaptadorLista= new AdaptadorLista(c,solicitudes);
+        lv1.setAdapter(adaptadorLista);
     }
 }

@@ -235,7 +235,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                         );
                 btnVolverRegistro.hide();
                 LimpiarCampos();
-
+                layoutInicioSesion.setVisibility(View.VISIBLE);
+                layoutRegistro1.setVisibility(View.GONE);
                 ///
             }
         });

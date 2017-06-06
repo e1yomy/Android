@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="all">
         <item
             android:id="@+id/nav_missolicitudes"
             android:icon="@drawable/ic_mis_solicitudes"
@@ -20,7 +20,8 @@
             android:title="Sujetos Obligados" />
     </group>
     <item android:title="¿Quiénes somos?">
-        <menu>
+        <menu >
+            <group android:checkableBehavior="all">
             <item
                 android:id="@+id/nav_quienessomos"
                 android:icon="@mipmap/ic_launcher"
@@ -30,11 +31,13 @@
                 android:id="@+id/nav_mapa"
                 android:icon="@drawable/ic_ubicacion"
                 android:title="Encuéntranos" />
+            </group>
 
         </menu>
     </item>
     <item android:title="Sitios de Interés">
         <menu>
+            <group>
             <item
                 android:id="@+id/nav_sitioitai"
                 android:icon="@mipmap/ic_launcher"
@@ -43,6 +46,7 @@
                 android:id="@+id/nav_sitiopnt"
                 android:icon="@drawable/ic_pnt"
                 android:title="PNT" />
+            </group>
         </menu>
     </item>
     <item>

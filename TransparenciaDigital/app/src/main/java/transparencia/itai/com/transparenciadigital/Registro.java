@@ -15,10 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
@@ -208,7 +204,7 @@ public class Registro extends Fragment  {
             for (byte i = 0; i < texto.size(); i++) {
                 texto.get(i).setEnabled(false);
                 final byte finalI = i;
-                if(i!=2)
+                if(i<=2)
                     texto.get(i).setText(usr.datos.get(i));
                 else
                     texto.get(i).setText(usr.datos.get(i-1));

@@ -30,6 +30,12 @@
         android:orientation="vertical"
         android:visibility="visible">
 
+        <Spinner
+            android:id="@+id/spinOpciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/opciones" />
+
         <ListView
             android:id="@+id/listSolicitudes"
             android:layout_width="match_parent"

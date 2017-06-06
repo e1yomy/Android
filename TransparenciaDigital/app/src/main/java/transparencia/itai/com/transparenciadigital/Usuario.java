@@ -24,7 +24,10 @@ public class Usuario {
             municipio,
             telefono;
     ArrayList<String> datos;
-    public Usuario(String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono){
+
+    public Usuario(String id,String correo, String contrasena, String nombres, String paterno, String materno, String calle, String noExterno, String noInterno, String entreCalles, String colonia, String cp, String entidadFederativa, String municipio, String telefono)
+    {
+        this.id=id;
         this.correo= correo;
         this.contrasena= contrasena;
         this.nombres= nombres;
@@ -41,6 +44,7 @@ public class Usuario {
         this.telefono= telefono;
         this.datos= new ArrayList<>();
 
+        datos.add(id);
         datos.add(correo);
         datos.add(contrasena);
         datos.add(nombres);

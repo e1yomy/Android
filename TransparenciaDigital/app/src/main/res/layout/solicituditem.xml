@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgTipoSolicitud"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:srcCompat="@drawable/ic_sol_informacion"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+    <TextView
+        android:id="@+id/txtSujetoObligado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_toEndOf="@+id/imgTipoSolicitud"
+        android:layout_toRightOf="@+id/imgTipoSolicitud"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+    <TextView
+        android:id="@+id/txtFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imgTipoSolicitud"
+        android:layout_alignEnd="@+id/txtSujetoObligado"
+        android:layout_alignRight="@+id/txtSujetoObligado"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="31dp" />
+
+    <ImageView
+        android:id="@+id/imgSemaforo"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@android:drawable/radiobutton_off_background"
+        tools:layout_editor_absoluteX="324dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+</RelativeLayout>

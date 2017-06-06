@@ -86,7 +86,7 @@ public class Conexion {
             String str="";
             if (json.length()>0){
                 res=1;
-                preferences.edit().putString("headernombreusuario",FormatoNombre(json.getJSONObject(0).getString("nombre"))+" "+ FormatoNombre(json.getJSONObject(0).getString("apellidoPaterno"))).commit();
+                preferences.edit().putString("headernombreusuario",FormatoNombre(json.getJSONObject(0).getString("nombre")).split(" ")[0]+" "+ FormatoNombre(json.getJSONObject(0).getString("apellidoPaterno")).split(" ")[0]).commit();
                 preferences.edit().putString("headercorreo",json.getJSONObject(0).getString("correo")).commit();
 
                 preferences.edit().putString("idUsuario",json.getJSONObject(0).getString("idUsuario")).commit();
@@ -106,6 +106,7 @@ public class Conexion {
                 preferences.edit().putString("municipio",json.getJSONObject(0).getString("municipio")).commit();
                 preferences.edit().putString("telefono",json.getJSONObject(0).getString("telefono")).commit();
                 usr=new Usuario(
+                        json.getJSONObject(0).getString("idUsuario"),
                         json.getJSONObject(0).getString("correo"),
                         json.getJSONObject(0).getString("contrasena"),
                         json.getJSONObject(0).getString("nombre"),

@@ -110,6 +110,23 @@
         <item>La Paz</item>
         <item>Los Cabos</item>
     </string-array>
-
-
+    <string-array name="actoqueserecurre">
+        <item>La negativa de acceso a determinada información solicitada</item>
+        <item>La clasificación de la información solicitada</item>
+        <item>La declaración de incompetencia del sujeto obligado</item>
+        <item>La entrega de información incompleta, o que no corresponda a la solicitada</item>
+        <item>La falta de respuesta a una solicitud de acceso a la información pública dentro de los plazos establecidos en la presente ley para tales efectos</item>
+        <item>La entrega de la información solicitada en una modalidad de consulta distinta a la solicitada</item>
+        <item>La entrega de la información solicitada en un formato incomprensible y/o no accesible para el solicitante</item>
+        <item>La inconformidad con los costos de reproducción de la información; o los tiempos de entrega de la misma</item>
+        <item>La negativa a permitir la consulta directa de la información, cuando no exista impedimento alguno para su consulta</item>
+        <item>La falta, deficiencia o insuficiencia de fundamentación y/o motivación en la respuesta, cuando ésta no conceda el acceso a la información solicitada</item>
+        <item>La falta de trámite a una solicitud de información</item>
+        <item>La orientación a un trámite especifico</item>
+    </string-array>
+    <string-array name="opciones">
+        <item>Solicitud de Información</item>
+        <item>Recurso de Revisión</item>
+        <item>Denuncia por Incumplimiento</item>
+    </string-array>
 </resources>

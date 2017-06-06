@@ -44,7 +44,7 @@
                 android:layout_toRightOf="@+id/imageView"
                 android:text="Nombre del usuario"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/txtEmailUsuario"
@@ -55,7 +55,8 @@
                 android:layout_toRightOf="@+id/imageView"
                 android:paddingTop="10dp"
                 android:text="Correo electronico"
-                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                android:textSize="15sp" />
 
         </LinearLayout>
     </LinearLayout>

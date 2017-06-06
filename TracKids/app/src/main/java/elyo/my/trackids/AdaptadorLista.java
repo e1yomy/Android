@@ -25,7 +25,6 @@ import static elyo.my.trackids.ListaHijos.listaHijos;
 import static elyo.my.trackids.Principal.EliminarHijo;
 import static elyo.my.trackids.Principal.PantallaMapa;
 import static elyo.my.trackids.Principal.c;
-import static elyo.my.trackids.Principal.pantalla;
 import static elyo.my.trackids.Principal.preferences;
 
 /**
@@ -117,7 +116,6 @@ public class AdaptadorLista extends BaseAdapter implements Mapa.OnFragmentIntera
                         .putFloat("lon", Float.parseFloat(hijos.get(position).longitud))
                         .commit();
                 index=position;
-                pantalla=1;
                 PantallaMapa();
             }
         });

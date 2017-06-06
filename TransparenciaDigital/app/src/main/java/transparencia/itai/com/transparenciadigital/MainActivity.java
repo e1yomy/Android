@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     static FragmentManager fragmentManager; //Administrador de fragmentos
-    FragmentTransaction fragmentTransaction;
+    static FragmentTransaction fragmentTransaction;
     static boolean sesion=false;
     static Context c; //Variable de Contexto para mostrar Toast
     static Toolbar toolbar;  //Para modificar las opr de titulo
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         try{
             //navigationView.getMenu().getItem(0).setChecked(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
             toolbar.setVisibility(View.GONE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -126,59 +127,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        /*
-        Thread t= new Thread(new Runnable() {
-            @Override
-            public void run() {
-                paginas.add(new WebView(c));
-                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/quienes-somos.html");
-                paginas.add(new WebView(c));
-                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/estructura-organica.html");
-                paginas.add(new WebView(c));
-                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/marco-normativo.html");
-                paginas.add(new WebView(c));
-                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/directorio.html");
-                paginas.add(new WebView(c));
-                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/servicios.html");
-                paginas.add(new WebView(c));
-                paginas.get(paginas.size()-1).loadUrl("http://itaibcs.org.mx/nuestro-instituto/calendario-oficial.html");
-                for (byte i=0;i<paginas.size();i++)
-                {
-                    final WebView w=paginas.get(i);
-                    w.getSettings().setJavaScriptEnabled(true);
-                    w.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-                    w.setWebViewClient(new WebViewClient() {
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            w.loadUrl("javascript:(function() { " +
-                                    //+"document.getElementById('g-header').style.display='none';"
-                                    //+"document.getElementByClassName('g-grid').style.display='none';"
-                                    //+" document.getElementsByTagName('')[0].style.display='none';" +
-                                    "document.getElementsByClassName('g-offcanvas-toggle')[0].style.display = 'none';" +
-                                    "document.getElementsByClassName('g-flushed')[0].style.display = 'none';" +
-                                    "document.getElementsByClassName('g-container')[0].style.display = 'none';" +
-                                    "var el =document.getElementsByClassName('g-content');" +
-                                    "for(var i = 0; i < el.length; i++){" +
-                                    "if(i!=6)" +
-                                    "{el[i].style.display = 'none';}" +
-                                    "}" +
-                                    "var ele =document.getElementsByClassName('uk-grid');" +
-                                    "for(var i = 0; i < ele.length; i++){ele[i].style.display = 'none';}" +
-                                    "})()");
-                        }
-                    });
-
-                }
-                return;
-
-
-            }
-        });
-        t.start();
-        */
-
-
-
     }
 
 
@@ -188,15 +136,12 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        fragmentTransaction=fragmentManager.beginTransaction();
-
         if(id==R.id.nav_salir) {
             finish();
         }
         else if(id==R.id.nav_quienessomos){
-            fragmentTransaction.replace(R.id.content_principal,new QuienesSomos()).commit();
-            //navigationView.getMenu().getItem(id).setCheckable(true);
-            //navigationView.setCheckedItem(id);
+            CambiarPantalla(new QuienesSomos());
+            navigationView.setCheckedItem(id);
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
@@ -210,33 +155,33 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_mapa) {
             //Mostrar mapa con direccion y telefono
-            fragmentTransaction.replace(R.id.content_principal, new Mapa()).commit();
-            navigationView.getMenu().findItem(id).setChecked(true);
+            CambiarPantalla(new Mapa());
+            navigationView.setCheckedItem(id);
         }
 
         if(!preferences.getBoolean("sesion",false))
         {
-            fragmentManager.beginTransaction().replace(R.id.content_principal,new Sesion()).commit();
+            CambiarPantalla(new Sesion());
 
         }
         else
         {
             if (id == R.id.nav_missolicitudes) {
                 //Listado de solicitudes del usuario
-                fragmentTransaction.replace(R.id.content_principal, new MisSolicitudes()).commit();
+                CambiarPantalla(new MisSolicitudes());
                 navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_sujetosobligados) {
                 // Handle the camera action
-                fragmentTransaction.replace(R.id.content_principal,new SujetosObligados()).commit();
+                CambiarPantalla(new SujetosObligados());
                 navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_acceso) {
                 //Solicitar acceso a informacion
-                fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudAcceso()).commit();
+                CambiarPantalla(new NuevaSolicitudAcceso());
                 navigationView.getMenu().findItem(id).setChecked(true);
 
             } else if (id == R.id.nav_denuncia) {
                 //Solicitar recurso de revision
-                fragmentTransaction.replace(R.id.content_principal, new NuevaSolicitudDenuncia()).commit();
+                CambiarPantalla(new NuevaSolicitudDenuncia());
                 navigationView.getMenu().findItem(id).setChecked(true);
             }
 
@@ -248,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    private void QuitarSeleccionMenu() {
+    private static void QuitarSeleccionMenu() {
         for(byte i=0;i<navigationView.getMenu().size();i++){
             navigationView.getMenu().getItem(i).setChecked(false);
         }
@@ -266,19 +211,17 @@ public class MainActivity extends AppCompatActivity
             //return true;
         }
         else if(id==R.id.action_misdatos){
-            QuitarSeleccionMenu();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Registro()).commit();
+            CambiarPantalla(new Registro());
 
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
-            QuitarSeleccionMenu();
+            CambiarPantalla(new Sesion());
 
             txtNombreUsuario.setText("");
             txtEmailUsuario.setText("");
             toolbar.setVisibility(View.GONE);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
 
         }
 
@@ -389,6 +332,7 @@ public class MainActivity extends AppCompatActivity
     }
     public static void RecuperarDatosDeUsuario(){
         usr= new Usuario(
+                preferences.getString("idUsuario",""),
                 preferences.getString("correo",""),
                 preferences.getString("contrasena",""),
                 preferences.getString("nombre",""),
@@ -427,6 +371,14 @@ public class MainActivity extends AppCompatActivity
         });
         tr.start();
 
+    }
+    public static void CambiarPantalla(Fragment f)
+    {
+        fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
+        fragmentTransaction.replace(R.id.content_principal,f);
+        fragmentTransaction.commit();
+        QuitarSeleccionMenu();
     }
 
 }
