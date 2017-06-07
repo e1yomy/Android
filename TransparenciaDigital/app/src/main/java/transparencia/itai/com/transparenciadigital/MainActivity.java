@@ -20,10 +20,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.ActualizarListaPrimaria;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv1;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
+import static transparencia.itai.com.transparenciadigital.Sesion.LimpiarCampos;
+import static transparencia.itai.com.transparenciadigital.Sesion.btnVolverRegistro;
+import static transparencia.itai.com.transparenciadigital.Sesion.layoutInicioSesion;
+import static transparencia.itai.com.transparenciadigital.Sesion.layoutRegistro1;
+import static transparencia.itai.com.transparenciadigital.SujetosObligados.listas;
+import static transparencia.itai.com.transparenciadigital.SujetosObligados.txtTituloSO;
 
 
 public class MainActivity extends AppCompatActivity
@@ -76,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        ma=MainActivity.this;
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,6 +98,7 @@ public class MainActivity extends AppCompatActivity
             //navigationView.getMenu().getItem(0).setChecked(true);
             toolbar.setVisibility(View.GONE);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
+
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -124,7 +137,8 @@ public class MainActivity extends AppCompatActivity
 
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         c=this;
-
+        CargarSujetosObligados();
+        listas= new ArrayList<>();
 
 
     }
@@ -136,29 +150,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if(id==R.id.nav_salir) {
-            finish();
-        }
-        else if(id==R.id.nav_quienessomos){
-            CambiarPantalla(new QuienesSomos());
-            navigationView.setCheckedItem(id);
-            drawer.closeDrawer(GravityCompat.START);
-            return false;
-        }
-        else if(id==R.id.nav_sitioitai){
-            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/")));
-            QuitarSeleccionMenu();
-        }
-        else if(id==R.id.nav_sitiopnt){
-            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.plataformadetransparencia.org.mx/")));
-            QuitarSeleccionMenu();
-        }
-        else if (id == R.id.nav_mapa) {
-            //Mostrar mapa con direccion y telefono
-            CambiarPantalla(new Mapa());
-            navigationView.setCheckedItem(id);
-        }
-
         if(!preferences.getBoolean("sesion",false))
         {
             CambiarPantalla(new Sesion());
@@ -184,9 +175,28 @@ public class MainActivity extends AppCompatActivity
                 CambiarPantalla(new NuevaSolicitudDenuncia());
                 navigationView.getMenu().findItem(id).setChecked(true);
             }
-
-
-
+        }
+        if(id==R.id.nav_salir) {
+            finish();
+        }
+        else if(id==R.id.nav_quienessomos){
+            CambiarPantalla(new QuienesSomos());
+            navigationView.setCheckedItem(id);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
+        }
+        else if(id==R.id.nav_sitioitai){
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/")));
+            QuitarSeleccionMenu();
+        }
+        else if(id==R.id.nav_sitiopnt){
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.plataformadetransparencia.org.mx/")));
+            QuitarSeleccionMenu();
+        }
+        else if (id == R.id.nav_mapa) {
+            //Mostrar  mapa con direccion y telefono
+            CambiarPantalla(new Mapa());
+            navigationView.setCheckedItem(id);
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -308,7 +318,10 @@ public class MainActivity extends AppCompatActivity
                     Conexion conexion = new Conexion();
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
                     if(conexion.RegistrarUsuario( correo, contrasena, nombres, paterno, materno, calle, noExterno, noInterno, entreCalles, colonia, cp, entidadFederativa, municipio, telefono)==1) {
-                        ini=1;
+                        btnVolverRegistro.hide();
+                        LimpiarCampos();
+                        layoutInicioSesion.setVisibility(View.VISIBLE);
+                        layoutRegistro1.setVisibility(View.GONE);
                     }
                 }
                 catch (Exception ex)
@@ -357,10 +370,81 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 try {
                     Conexion conexion = new Conexion();
-                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
                     if(conexion.ListarSujetos()==1) {
+                        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, nombresSO);
+                        listas.get(0).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listas.get(0).setAdapter(arrayAdapter);
+                            }
+                        });
+                        if(nombresSO.size()>0) {
 
-                        ini=1;
+                        }
+                        else
+                        {
+                            txtTituloSO.setText("Listado de Sujetos Obligados" +
+                                    "\n\n" +
+                                    "No se ha encontrado un listado.\n" +
+                                    "Revise su coneción e intente nuevamente.");
+                        }                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
+    public static void CargarSujetosObligados(){
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    if(conexion.ListarSujetos()==1) {            }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
+    public static void ListarSolicitudesDeSujetoObligado(final String id){
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.ListarSolicitudesDeSujetoObligado(id)==1) {
+
+                        listas.get(1).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(solicitudes.size()>0) {
+                                    AdaptadorLista adaptadorLista = new AdaptadorLista(c, solicitudes);
+                                    listas.get(1).setAdapter(adaptadorLista);
+                                }
+                                else
+                                {
+                                    txtTituloSO.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            txtTituloSO.setText("No se han encontrado coincidencias.");
+                                        }
+                                    });
+
+                                }
+                            }
+                        });
                     }
                 }
                 catch (Exception ex)
@@ -372,6 +456,70 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
+    static MainActivity ma;
+    public static void CargarSolicitud(final String fecha, final String idUsuario, final String idNofiticaciones, final String idSujeto, final String nombreSujeto, final String descripcion, final String idTipoDeEntrega){
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.CargarSolicitud(fecha,idUsuario,idNofiticaciones,idSujeto,nombreSujeto,descripcion
+                    ,idTipoDeEntrega)==1) {
+                        ma.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    CambiarPantalla(new MisSolicitudes());
+                                }
+                                catch (Exception ex)
+                                {
+                                    String s= ex.getMessage();
+                                }
+                            }
+                        });
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
+    public static void ListarSolicitudes(){
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.ListarSolicitudes()==1) {
+
+                        lv1.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ActualizarListaPrimaria();
+                            }
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
+
     public static void CambiarPantalla(Fragment f)
     {
         fragmentTransaction=fragmentManager.beginTransaction();
@@ -380,5 +528,38 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
         QuitarSeleccionMenu();
     }
+    public static void CargarRecurso(final String id, final String s, final String s1, final String s2, final String toString, final String string, final String toString1, final int i, final String fecha){
 
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.CargarRecurso(id,s,s1,s2,toString,string,toString1,i,fecha)==1) {
+                        ma.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    CambiarPantalla(new MisSolicitudes());
+                                }
+                                catch (Exception ex)
+                                {
+                                    String s= ex.getMessage();
+                                }
+                            }
+                        });
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
 }

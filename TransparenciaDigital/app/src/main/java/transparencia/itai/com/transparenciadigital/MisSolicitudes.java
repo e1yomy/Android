@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
+import static transparencia.itai.com.transparenciadigital.MainActivity.ListarSolicitudes;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 
 
@@ -115,10 +116,11 @@ public class MisSolicitudes extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    ListView lv1, lv2;
+    static ListView lv1;
+    ListView lv2;
     List<String> lista1 = new ArrayList<>();
     List<String> lista2 = new ArrayList<>();
-    List<SolicitudItem> solicitudes= new ArrayList<>();
+    static List<SolicitudItem> solicitudes= new ArrayList<>();
     FloatingActionButton btnVolver;
     LinearLayout layoutMisSolicitudes;
     Spinner spinOpciones;
@@ -158,11 +160,11 @@ public class MisSolicitudes extends Fragment {
         Toques();
         return view;
     }
+    static int indice=0;
     private void Toques() {
         //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista1);
         //lv1.setAdapter(arrayAdapter);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista2);
-        lv2.setAdapter(arrayAdapter);
+
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -170,11 +172,22 @@ public class MisSolicitudes extends Fragment {
                 lv2.setVisibility(View.VISIBLE);
                 btnVolver.show();
                 spinOpciones.setVisibility(View.GONE);
+                ////////////
+                lista2.clear();
+                lista2.add(String.valueOf(solicitudes.get(position).tipo));
+                lista2.add(String.valueOf(solicitudes.get(position).id));
+                lista2.add(solicitudes.get(position).sujetoObligado);
+                lista2.add(solicitudes.get(position).fecha);
+                lista2.add(String.valueOf(solicitudes.get(position).estado));
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista2);
+                lv2.setAdapter(arrayAdapter);
+                //////////////
             }
         });
         lv1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                indice=position;
                 if (opcion == 0) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(c);
                     alert.setTitle("Interponer recurso de revisión");
@@ -210,6 +223,7 @@ public class MisSolicitudes extends Fragment {
                 lv2.setVisibility(View.GONE);
                 btnVolver.hide();
                 spinOpciones.setVisibility(View.VISIBLE);
+
             }
         });
         spinOpciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -222,29 +236,34 @@ public class MisSolicitudes extends Fragment {
                     {
                         case 0:
                             //Solicitar lista de solicitudes de informacion
+                            /*
                             Toast.makeText(c, 0+"", Toast.LENGTH_SHORT).show();
                             solicitudes.add(new SolicitudItem(0,123,"sujeto","fecha",2));
                             solicitudes.add(new SolicitudItem(0,13,"sujeto","fecha",1));
-                            solicitudes.add(new SolicitudItem(0,73,"sujeto","fecha",3));
+                            solicitudes.add(new SolicitudItem(0,73,"sujeto","fecha",0));
                             solicitudes.add(new SolicitudItem(0,23,"sujeto","fecha",3));
+                            */
                             break;
                         case 1:
                             //Solicitar lista de recursos de revisión
+                            /*
                             Toast.makeText(c, 1+"", Toast.LENGTH_SHORT).show();
                             solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",3));
                             solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",1));
                             solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",2));
-
+                            */
                             break;
                         case 2:
                             //Solicitar lista de denuncias
+                            /*
                             Toast.makeText(c, 2+"", Toast.LENGTH_SHORT).show();
                             solicitudes.add(new SolicitudItem(2,13,"sujeto","fecha",1));
                             solicitudes.add(new SolicitudItem(2,73,"sujeto","fecha",3));
                             solicitudes.add(new SolicitudItem(2,3,"sujeto","fecha",3));
+                            */
                             break;
                     }
-                    ActualizarListaPrimaria();
+                    ListarSolicitudes();
 
                 }
                 catch (Exception e){Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();}
@@ -256,7 +275,7 @@ public class MisSolicitudes extends Fragment {
             }
         });
     }
-    public void ActualizarListaPrimaria()
+    public static void ActualizarListaPrimaria()
     {
         AdaptadorLista adaptadorLista= new AdaptadorLista(c,solicitudes);
         lv1.setAdapter(adaptadorLista);

@@ -17,9 +17,12 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabTitulos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/blanco"
+            app:tabSelectedTextColor="@color/colorAccent">
 
             <android.support.design.widget.TabItem
+                android:id="@+id/tabItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ITAI" />
@@ -56,7 +59,7 @@
             android:id="@+id/scroll1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp"
+            android:layout_margin="5dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -167,7 +170,7 @@
             android:id="@+id/scroll2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp"
+            android:layout_margin="5dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -222,7 +225,7 @@
             android:id="@+id/scroll3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp">
+            android:layout_margin="5dp">
 
 
             <LinearLayout
@@ -825,7 +828,7 @@
             android:id="@+id/scroll4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp"
+            android:layout_margin="5dp"
             android:visibility="gone">
 
 
@@ -845,7 +848,7 @@
             android:id="@+id/scroll5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="30dp"
+            android:layout_margin="5dp"
             android:visibility="gone">
 
 
@@ -866,7 +869,7 @@
             android:id="@+id/scroll6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_margin="5dp"
             android:visibility="gone">
 
 

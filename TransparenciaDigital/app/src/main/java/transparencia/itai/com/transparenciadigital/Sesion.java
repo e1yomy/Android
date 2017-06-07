@@ -157,12 +157,12 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     Button entrar;
     TextView registro;
     FragmentManager fragmentManager;
-    ScrollView layoutRegistro1,layoutInicioSesion;
+    static ScrollView layoutRegistro1,layoutInicioSesion;
     //LinearLayout layoutInicioSesion;
     Button btnRegistro1;
-    ArrayList<EditText> textos= new ArrayList<>();
+    static ArrayList<EditText> textos= new ArrayList<>();
     EditText editCuenta, editContrasena;
-    FloatingActionButton btnVolverRegistro;
+    static FloatingActionButton btnVolverRegistro;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -303,7 +303,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
             });
         }
     }
-    public void LimpiarCampos(){
+    public static void LimpiarCampos(){
         for(byte i=0;i<textos.size();i++){
             textos.get(i).setText("");
         }

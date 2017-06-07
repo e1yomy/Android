@@ -3,10 +3,23 @@ package transparencia.itai.com.transparenciadigital;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.Calendar;
+
+import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
+import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
+import static transparencia.itai.com.transparenciadigital.MainActivity.CargarRecurso;
+import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.indice;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 
 
 /**
@@ -60,12 +73,6 @@ public class NuevaSolicitudRecurso extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nueva_solicitud_recurso, container, false);
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -105,4 +112,47 @@ public class NuevaSolicitudRecurso extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    FloatingActionButton btnVolverALista,btnEnviarRecurso;
+    EditText txtNombreSujeto,txtCausa;
+    Spinner spinActoRecurrido;
+    View view;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view=inflater.inflate(R.layout.fragment_nueva_solicitud_recurso, container, false);
+        btnVolverALista=(FloatingActionButton)view.findViewById(R.id.btnVolverALista);
+        btnEnviarRecurso=(FloatingActionButton)view.findViewById(R.id.btnEnviarRecurso);
+        txtNombreSujeto=(EditText)view.findViewById(R.id.txtNombreSujeto);
+        txtNombreSujeto.setText(solicitudes.get(indice).sujetoObligado);
+        txtNombreSujeto.setEnabled(false);
+        txtCausa=(EditText)view.findViewById(R.id.txtCausa);
+        spinActoRecurrido= (Spinner)view.findViewById(R.id.spinActoRecurrido);
+        Botones();
+        return view;
+    }
+
+    private void Botones() {
+        btnVolverALista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CambiarPantalla(new MisSolicitudes());
+            }
+        });
+        btnEnviarRecurso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar ca= Calendar.getInstance();
+                String fecha= ca.get(Calendar.YEAR)+"-"+
+                        (ca.get(Calendar.MONTH)+1)+"-"+
+                        ca.get(Calendar.DAY_OF_MONTH)+" "+
+                        ca.get(Calendar.HOUR_OF_DAY)+":"+
+                        ca.get(Calendar.MINUTE)+":"+
+                        ca.get(Calendar.SECOND);
+                int idS= Integer.parseInt(idSO.get(nombresSO.indexOf(txtNombreSujeto.getText().toString())));
+                CargarRecurso(usr.getId(),"0","0", String.valueOf(idS),txtNombreSujeto.getText().toString(),spinActoRecurrido.getSelectedItem().toString(),txtCausa.getText().toString(),solicitudes.get(indice).id,fecha);
+            }
+        });
+    }
 }
+

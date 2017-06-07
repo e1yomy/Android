@@ -3,6 +3,7 @@ package transparencia.itai.com.transparenciadigital;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.util.List;
 import static transparencia.itai.com.transparenciadigital.MainActivity.FormatoNombre;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.opcion;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 
 /**
  * Created by elyo_ on 23/04/2017.
@@ -174,7 +177,6 @@ public class Conexion {
         }
 
     }
-
     public int ListarSujetos(){
         String data = "";
         BufferedReader reader=null;
@@ -213,7 +215,6 @@ public class Conexion {
         //Envia la respuesta del servidor a obtener los datos, verificar que haya existencia, guardar datos y continuar;
         return GuardarDatosSujetosObligador(sb.toString());
     }
-
     private int GuardarDatosSujetosObligador(String s) {
         try {
             idSO.clear();
@@ -238,5 +239,239 @@ public class Conexion {
         }
         return 0;
     }
+    protected int CargarSolicitud(String fecha, String idUsuario, String idNofiticaciones, String idSujeto, String nombreSujeto, String descripcion, String idTipoDeEntrega)
+    {
+        String data = "";
+        urlprevia=webService+"nuevaSolicitud.php";
+        try {
+            direccion= new URL(urlprevia);
+            BufferedReader reader=null;
+            StringBuilder sb= new StringBuilder();
+            URLConnection conn;
+            OutputStreamWriter wr;
 
+            data = URLEncoder.encode("folio", "UTF-8")+ "=" + URLEncoder.encode("000", "UTF-8");
+            data += "&" + URLEncoder.encode("fecha", "UTF-8") + "="+ URLEncoder.encode(fecha, "UTF-8");
+            data += "&" + URLEncoder.encode("idUsuario", "UTF-8") + "="+ URLEncoder.encode(idUsuario, "UTF-8");
+            data += "&" + URLEncoder.encode("idNotificaciones", "UTF-8") + "="+ URLEncoder.encode(idNofiticaciones, "UTF-8");
+            data += "&" + URLEncoder.encode("idSujeto", "UTF-8") + "="+ URLEncoder.encode(idSujeto, "UTF-8");
+            data += "&" + URLEncoder.encode("nombreSujeto", "UTF-8") + "="+ URLEncoder.encode(nombreSujeto, "UTF-8");
+            data += "&" + URLEncoder.encode("descripcion", "UTF-8") + "="+ URLEncoder.encode(descripcion, "UTF-8");
+            data += "&" + URLEncoder.encode("idTipoDeEntrega", "UTF-8") + "="+ URLEncoder.encode(idTipoDeEntrega, "UTF-8");
+
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "="+ URLEncoder.encode(contrasenaWS, "UTF-8");
+
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+            return 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    public int ListarSolicitudes(){
+        String data = "";
+        BufferedReader reader=null;
+        StringBuilder sb= new StringBuilder();
+        URLConnection conn;
+        OutputStreamWriter wr;
+
+        try {
+            //Indica url del webservice
+            urlprevia=webService+"listarSolicitud.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            switch (opcion)
+            {
+                case 0:
+                    data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode("idAcceso", "UTF-8");
+                    data += "&" + URLEncoder.encode("tabla", "UTF-8") + "="+ URLEncoder.encode("solAcceso", "UTF-8");
+                    break;
+                case 1:
+                    data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode("idRecurso", "UTF-8");
+                    data += "&" + URLEncoder.encode("tabla", "UTF-8") + "="+ URLEncoder.encode("recRevision", "UTF-8");
+                    break;
+                case 2:
+                    data = URLEncoder.encode("id", "UTF-8")+ "=" + URLEncoder.encode("idDemanda", "UTF-8");
+                    data += "&" + URLEncoder.encode("tabla", "UTF-8") + "="+ URLEncoder.encode("demIncumplimiento", "UTF-8");
+                    break;
+            }
+            data += "&" + URLEncoder.encode("idUsuario", "UTF-8") + "="+ URLEncoder.encode(usr.getId(), "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "="+ URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+        } catch (Exception ex){
+            String e=ex.getMessage();
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //Envia la respuesta del servidor a obtener los datos, verificar que haya existencia, guardar datos y continuar;
+        return GuardarDatosSolicitudes(sb.toString());
+    }
+    private int GuardarDatosSolicitudes(String s) {
+        try {
+            String t="";
+            int ti=opcion;
+            switch (opcion)
+            {
+                case 0:
+                    t="idAcceso";
+                    break;
+                case 1:
+                    t="idRecurso";
+                    break;
+                case 2:
+                    t="idDemanda";
+                    break;
+            }
+            solicitudes.clear();
+            JSONArray json = new JSONArray(s);
+            String str = "";
+            int i=0;
+            while (i<json.length()){
+                //for (int j=0;j<json.getJSONObject(i).length();j++)
+                {
+                    JSONObject j = json.getJSONObject(i);
+                    solicitudes.add(new SolicitudItem(opcion,j.getInt(t),j.getString("nombreSujeto"),j.getString("fecha").split(" ")[0],2));
+                }
+                i++;
+            }
+            return 1;
+
+        }
+        catch (Exception e)
+        {
+            String a=e.getMessage();
+        }
+        return 0;
+    }
+
+    public int ListarSolicitudesDeSujetoObligado(String idSujeto){
+        String data = "";
+        BufferedReader reader=null;
+        StringBuilder sb= new StringBuilder();
+        URLConnection conn;
+        OutputStreamWriter wr;
+
+        try {
+            //Indica url del webservice
+            urlprevia=webService+"listarSolicitudSujeto.php";
+            direccion = new URL(urlprevia);
+            //Datos a enviar en POST
+            data = URLEncoder.encode("idSujeto", "UTF-8") + "="+ URLEncoder.encode(idSujeto, "UTF-8");
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "="+ URLEncoder.encode(contrasenaWS, "UTF-8");
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+
+        } catch (Exception ex){
+            String e=ex.getMessage();
+        }
+        finally{
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //Envia la respuesta del servidor a obtener los datos, verificar que haya existencia, guardar datos y continuar;
+        return GuardarDatosSolicitudesPorSujetoObligado(sb.toString());
+    }
+    private int GuardarDatosSolicitudesPorSujetoObligado(String s) {
+        try {
+            solicitudes.clear();
+            JSONArray json = new JSONArray(s);
+            String str = "";
+            int i=0;
+            while (i<json.length()){
+                //for (int j=0;j<json.getJSONObject(i).length();j++)
+                {
+                    JSONObject j = json.getJSONObject(i);
+                    solicitudes.add(new SolicitudItem(0,j.getInt("idAcceso"),j.getString("nombreSujeto"),j.getString("fecha").split(" ")[0],3));
+                }
+                i++;
+            }
+            return 1;
+
+        }
+        catch (Exception e)
+        {
+            String a=e.getMessage();
+        }
+        return 0;
+    }
+    protected int CargarRecurso(String id, String s, String s1, String s2, String toString, String string, String toString1, int i, String fecha)
+    {
+        String data = "";
+        urlprevia=webService+"nuevoRecurso.php";
+        try {
+            direccion= new URL(urlprevia);
+            BufferedReader reader=null;
+            StringBuilder sb= new StringBuilder();
+            URLConnection conn;
+            OutputStreamWriter wr;
+
+            data = URLEncoder.encode("idUsuario", "UTF-8")+ "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("folio", "UTF-8") + "="+ URLEncoder.encode(s, "UTF-8");
+            data += "&" + URLEncoder.encode("idTipoDeEntrega", "UTF-8") + "="+ URLEncoder.encode(s1, "UTF-8");
+            data += "&" + URLEncoder.encode("idSujeto", "UTF-8") + "="+ URLEncoder.encode(s2, "UTF-8");
+            data += "&" + URLEncoder.encode("nombreSujeto", "UTF-8") + "="+ URLEncoder.encode(toString, "UTF-8");
+            data += "&" + URLEncoder.encode("causa", "UTF-8") + "="+ URLEncoder.encode(string, "UTF-8");
+            data += "&" + URLEncoder.encode("motivo", "UTF-8") + "="+ URLEncoder.encode(toString1, "UTF-8");
+            data += "&" + URLEncoder.encode("pruebas", "UTF-8") + "="+ URLEncoder.encode(String.valueOf(i), "UTF-8");
+            data += "&" + URLEncoder.encode("fecha", "UTF-8") + "="+ URLEncoder.encode(fecha, "UTF-8");
+
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "="+ URLEncoder.encode(contrasenaWS, "UTF-8");
+
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+            return 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

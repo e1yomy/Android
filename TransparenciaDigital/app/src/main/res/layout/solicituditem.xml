@@ -32,12 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imgTipoSolicitud"
-        android:layout_alignEnd="@+id/txtSujetoObligado"
-        android:layout_alignRight="@+id/txtSujetoObligado"
+        android:layout_alignLeft="@+id/txtSujetoObligado"
+
+
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
         tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="31dp" />
+        tools:layout_editor_absoluteY="31dp"
+        android:paddingLeft="20dp"/>
 
     <ImageView
         android:id="@+id/imgSemaforo"

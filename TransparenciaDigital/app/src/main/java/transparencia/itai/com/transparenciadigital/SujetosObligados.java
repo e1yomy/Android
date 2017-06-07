@@ -16,9 +16,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.ListaSujetosObligados;
+import static transparencia.itai.com.transparenciadigital.MainActivity.ListarSolicitudesDeSujetoObligado;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 
 
 /**
@@ -113,10 +116,11 @@ public class SujetosObligados extends Fragment {
     }
 
     int nivel=-1;
-    ArrayList<ListView> listas= new ArrayList<>();
-    List<String> lista = new ArrayList<>();
+    static ArrayList<ListView> listas= new ArrayList<>();
+    static List<String> lista = new ArrayList<>();
     FloatingActionButton btnVolverSO;
-    TextView txtTituloSO;
+    static TextView txtTituloSO;
+    int index=-1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -137,18 +141,6 @@ public class SujetosObligados extends Fragment {
     private void CargarSujetos() {
         try {
             ListaSujetosObligados();
-            Thread.sleep(500);
-            if(nombresSO.size()>0) {
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, nombresSO);
-                listas.get(0).setAdapter(arrayAdapter);
-            }
-            else
-            {
-                txtTituloSO.setText("Listado de Sujetos Obligados" +
-                        "\n\n" +
-                        "No se ha encontrado un listado.\n" +
-                        "Revise su coneción e intente nuevamente.");
-            }
         }
         catch (Exception ex)
         {
@@ -169,22 +161,41 @@ public class SujetosObligados extends Fragment {
                 ActualizarPantalla(--nivel);
             }
         });
-        for(byte i=0;i<listas.size();i++)
-        {
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista);
-            listas.get(i).setAdapter(arrayAdapter);
-            if(i!=listas.size()-1) {
-                listas.get(i).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        ActualizarPantalla(++nivel);
-                    }
-                });
+        listas.get(0).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                index=position;
+                ActualizarPantalla(++nivel);
+                //Llamar a hacer lista de solicitude
+                listas.get(1).setAdapter(null);
+                CargarSolicitudes();
             }
-
+        });
+        listas.get(1).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                index=position;
+                ActualizarPantalla(++nivel);
+                List<String> l=new ArrayList<String>();
+                l.add(String.valueOf(solicitudes.get(position).tipo));
+                l.add(String.valueOf(solicitudes.get(position).id));
+                l.add(solicitudes.get(position).sujetoObligado);
+                l.add(solicitudes.get(position).fecha);
+                l.add(String.valueOf(solicitudes.get(position).estado));
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,l);
+                listas.get(2).setAdapter(arrayAdapter);
+            }
+        });
+    }
+    private void CargarSolicitudes() {
+        try {
+            ListarSolicitudesDeSujetoObligado(idSO.get(index));
+        }
+        catch (Exception ex)
+        {
+            String a=ex.getMessage()+" "+ex.getLocalizedMessage();
         }
     }
-
     public void ActualizarPantalla(int n){
         switch (n)
         {
@@ -194,7 +205,7 @@ public class SujetosObligados extends Fragment {
                 break;
             case 1:
                 btnVolverSO.show();
-                txtTituloSO.setText("Listado solicitudes realizadas al Sujeto Obligado");
+                txtTituloSO.setText("Listado solicitudes realizadas a "+nombresSO.get(index));
                 ///Guardar el texto del item seleccionado y mostrarlo aquí
                 break;
             case 2:

@@ -4,20 +4,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
+import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.CargarSolicitud;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 
 /**
@@ -118,15 +126,22 @@ public class NuevaSolicitudAcceso extends Fragment implements MisSolicitudes.OnF
 
     ArrayList<RadioButton> opciones=new ArrayList<>();
     ScrollView layoutSolicitudAcceso;
-    Button btnTerminarSolicitudAcceso;
+    FloatingActionButton btnTerminarSolicitudAcceso;
     FragmentManager fragmentManager;
+    RadioGroup radioGroup;
+    EditText editDescripcion;
+    AutoCompleteTextView editSujeto;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_nueva_solicitud_acceso, container, false);
         layoutSolicitudAcceso=(ScrollView)view.findViewById(R.id.layoutSolicitudAcceso);
-        btnTerminarSolicitudAcceso=(Button)view.findViewById(R.id.btnTerminarSolicitudAcceso);
+        btnTerminarSolicitudAcceso=(FloatingActionButton)view.findViewById(R.id.btnTerminarSolicitudAcceso);
+        editSujeto = (AutoCompleteTextView)view.findViewById(R.id.editSujeto);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
+                android.R.layout.simple_dropdown_item_1line, nombresSO);
+        editSujeto.setAdapter(adapter);
         fragmentManager= getFragmentManager();
         MetodosClic(view);
 
@@ -140,27 +155,16 @@ public class NuevaSolicitudAcceso extends Fragment implements MisSolicitudes.OnF
         opciones.add((RadioButton) view.findViewById(R.id.radioOpcion4));
         opciones.add((RadioButton) view.findViewById(R.id.radioOpcion5));
         opciones.add((RadioButton) view.findViewById(R.id.radioOpcion6));
-        opciones.add((RadioButton) view.findViewById(R.id.radioOpcion7));
-        final EditText editText = (EditText) view.findViewById(R.id.editOpcion7);
+        opciones.get(5).setSelected(true);
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
+        editDescripcion=(EditText)view.findViewById(R.id.editDescripcion);
+
         for(byte i=0;i<opciones.size();i++)
         {
-            if(opciones.get(i).getId()==R.id.radioOpcion7)
             {
                 opciones.get(i).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        editText.setVisibility(View.VISIBLE);
-                        layoutSolicitudAcceso.fullScroll(View.FOCUS_DOWN);
-
-                    }
-                });
-            }
-            else
-            {
-                opciones.get(i).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        editText.setVisibility(View.GONE);
                         layoutSolicitudAcceso.fullScroll(View.FOCUS_DOWN);
                     }
                 });
@@ -181,7 +185,16 @@ public class NuevaSolicitudAcceso extends Fragment implements MisSolicitudes.OnF
 
                         //Snackbar con mensaje de que la solicitud se envio correctamente y después mandar a la lista de solicitudes
                         //Si no se envio, mantener en esa pantalla y mostrar mensaje de error de conexion.
-                        fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                        Calendar ca= Calendar.getInstance();
+                        String fecha= ca.get(Calendar.YEAR)+"-"+
+                                (ca.get(Calendar.MONTH)+1)+"-"+
+                                ca.get(Calendar.DAY_OF_MONTH)+" "+
+                                ca.get(Calendar.HOUR_OF_DAY)+":"+
+                                ca.get(Calendar.MINUTE)+":"+
+                                ca.get(Calendar.SECOND);
+
+                        int index = radioGroup.indexOfChild(view.findViewById(radioGroup.getCheckedRadioButtonId()));
+                        CargarSolicitud(fecha,usr.getId(), String.valueOf(index),idSO.get(nombresSO.indexOf(editSujeto.getText().toString())),editSujeto.getText().toString(),editDescripcion.getText().toString(),"0");
                     }
                 });
                 alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {

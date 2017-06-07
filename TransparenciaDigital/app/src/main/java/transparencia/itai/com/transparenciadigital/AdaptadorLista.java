@@ -73,7 +73,7 @@ public class AdaptadorLista extends BaseAdapter {
                             imgSemaforo.setImageResource(R.mipmap.ic_green);
                             break;
                         case 3:
-                            imgSemaforo.setImageDrawable(null);
+                            imgSemaforo.setImageResource(R.mipmap.ic_blue);
                             break;
                     }
                     //Hacer la petición de las solicitudes de este tipo para ese usuario

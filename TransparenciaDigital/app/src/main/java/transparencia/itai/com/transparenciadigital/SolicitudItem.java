@@ -29,6 +29,24 @@ public class SolicitudItem {
             return;
         }
     }
+    public void ObtenerDetalles()
+    {
+        String tabla="";
+        switch (tipo)
+        {
+            case 0:
+                tabla="solAcceso";
+                break;
+            case 1:
+                tabla="recRevision";
+                break;
+            case 2:
+                tabla="demIncumplimiento";
+                break;
+        }
+        //Enviar solicitud de datos con la tabla seleccionada y el this.id
+
+    }
 
 
 }
