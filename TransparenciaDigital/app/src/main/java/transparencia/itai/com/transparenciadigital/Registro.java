@@ -204,10 +204,10 @@ public class Registro extends Fragment  {
             for (byte i = 0; i < texto.size(); i++) {
                 texto.get(i).setEnabled(false);
                 final byte finalI = i;
-                if(i<=2)
-                    texto.get(i).setText(usr.datos.get(i));
+                if(i<2)
+                    texto.get(i).setText(usr.datos.get(i+1));
                 else
-                    texto.get(i).setText(usr.datos.get(i-1));
+                    texto.get(i).setText(usr.datos.get(i));
 
 
                 texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {

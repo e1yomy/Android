@@ -33,7 +33,7 @@
         <Spinner
             android:id="@+id/spinOpciones"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:backgroundTint="@color/common_action_bar_splitter"
             android:entries="@array/opciones"
             android:paddingBottom="5dp"

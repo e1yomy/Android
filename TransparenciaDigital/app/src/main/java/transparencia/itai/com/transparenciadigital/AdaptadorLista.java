@@ -61,6 +61,7 @@ public class AdaptadorLista extends BaseAdapter {
                             break;
                     }
                     txtSujetoObligado.setText(s.sujetoObligado);
+                    txtSujetoObligado.setSingleLine();
                     txtFecha.setText(s.fecha);
                     switch (s.estado) {
                         case 0:

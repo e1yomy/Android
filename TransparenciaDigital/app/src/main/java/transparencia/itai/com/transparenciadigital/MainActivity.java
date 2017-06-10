@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity
     static TextView txtNombreUsuario, txtEmailUsuario,txtNoSolicitudes;
     static Usuario usr;
     static ArrayList<WebView> paginas;
+    View v;
+    static View header;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,11 +97,20 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        header= navigationView.getHeaderView(0);
+        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
+        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
+        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+
         try{
             //navigationView.getMenu().getItem(0).setChecked(true);
+            c=this;
             toolbar.setVisibility(View.GONE);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
-
+            CargarSujetosObligados();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -127,20 +139,6 @@ public class MainActivity extends AppCompatActivity
         {
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header= navigationView.getHeaderView(0);
-
-        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
-        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
-
-        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
-        c=this;
-        CargarSujetosObligados();
-        listas= new ArrayList<>();
-
-
     }
 
 
@@ -153,7 +151,6 @@ public class MainActivity extends AppCompatActivity
         if(!preferences.getBoolean("sesion",false))
         {
             CambiarPantalla(new Sesion());
-
         }
         else
         {
@@ -327,17 +324,12 @@ public class MainActivity extends AppCompatActivity
                 catch (Exception ex)
                 {
                     String s= ex.getMessage();
+
                 }
             }
         });
         tr.start();
-        if(ini==1)
-        {
-            fragmentManager.beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
-            Toast.makeText(c, "Usuario creado, ahora puedes iniciar sesión", Toast.LENGTH_SHORT).show();
-            ini=0;
-            tr.stop();
-        }
+
     }
 
     public static String FormatoNombre(String nombre){
@@ -363,7 +355,7 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
-    public static void ListaSujetosObligados(){
+    public static void ListaSujetosObligados(final View view){
 
         Thread tr = new Thread(new Runnable() {
             @Override
@@ -386,12 +378,16 @@ public class MainActivity extends AppCompatActivity
                             txtTituloSO.setText("Listado de Sujetos Obligados" +
                                     "\n\n" +
                                     "No se ha encontrado un listado.\n" +
-                                    "Revise su coneción e intente nuevamente.");
-                        }                    }
+                                    "Revise su conexión e intente nuevamente.");
+                        }
+                    }
+                    else
+                        Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
                 }
                 catch (Exception ex)
                 {
                     String s= ex.getMessage();
+                    Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
                 }
             }
         });
@@ -406,6 +402,8 @@ public class MainActivity extends AppCompatActivity
                 try {
                     Conexion conexion = new Conexion();
                     if(conexion.ListarSujetos()==1) {            }
+
+
                 }
                 catch (Exception ex)
                 {
@@ -457,13 +455,15 @@ public class MainActivity extends AppCompatActivity
 
     }
     static MainActivity ma;
-    public static void CargarSolicitud(final String fecha, final String idUsuario, final String idNofiticaciones, final String idSujeto, final String nombreSujeto, final String descripcion, final String idTipoDeEntrega){
+    public static void CargarSolicitud(final View view, final String fecha, final String idUsuario, final String idNofiticaciones, final String idSujeto, final String nombreSujeto, final String descripcion, final String idTipoDeEntrega)
+    {
 
         Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Conexion conexion = new Conexion();
+
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
                     if(conexion.CargarSolicitud(fecha,idUsuario,idNofiticaciones,idSujeto,nombreSujeto,descripcion
                     ,idTipoDeEntrega)==1) {
@@ -471,6 +471,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 try {
+                                    Snack(view,"Solicitud enviada");
                                     CambiarPantalla(new MisSolicitudes());
                                 }
                                 catch (Exception ex)
@@ -479,12 +480,14 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
                         });
-
-
+                    }
+                    else {
+                        Snack(view,"Ha ocurrido un problema y la su solicitud no pudo ser enviada");
                     }
                 }
                 catch (Exception ex)
                 {
+                    Snack(view,"Ha ocurrido un problema y la su solicitud no pudo ser enviada");
                     String s= ex.getMessage();
                 }
             }
@@ -492,7 +495,7 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void ListarSolicitudes(){
+    public static void ListarSolicitudes(final View view){
 
         Thread tr = new Thread(new Runnable() {
             @Override
@@ -501,7 +504,6 @@ public class MainActivity extends AppCompatActivity
                     Conexion conexion = new Conexion();
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
                     if(conexion.ListarSolicitudes()==1) {
-
                         lv1.post(new Runnable() {
                             @Override
                             public void run() {
@@ -509,9 +511,12 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
                     }
+                    else
+                        Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
                 }
                 catch (Exception ex)
                 {
+                    Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
                     String s= ex.getMessage();
                 }
             }
@@ -528,7 +533,8 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
         QuitarSeleccionMenu();
     }
-    public static void CargarRecurso(final String id, final String s, final String s1, final String s2, final String toString, final String string, final String toString1, final int i, final String fecha){
+    public static void CargarRecurso(final View view, final String id, final String s, final String s1, final String s2, final String toString, final String string, final String toString1, final int i, final String fecha)
+    {
 
         Thread tr = new Thread(new Runnable() {
             @Override
@@ -541,6 +547,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 try {
+                                    Snack(view,"Recurso de revisión enviado");
                                     CambiarPantalla(new MisSolicitudes());
                                 }
                                 catch (Exception ex)
@@ -549,17 +556,37 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
                         });
-
-
                     }
+                    else
+                        Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
                 }
                 catch (Exception ex)
                 {
+                    Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
                     String s= ex.getMessage();
                 }
             }
         });
         tr.start();
 
+    }
+    //Error generico. Usualmente por conexión a internet
+    public static void Snack(final View view, final String mensaje)
+    {
+        final Snackbar s=Snackbar.make(view,mensaje+".",Snackbar.LENGTH_INDEFINITE);
+        if(mensaje.contains("Solicitud")||mensaje.contains("Recurso"))
+        {
+            s.setDuration(2000);
+        }
+        else
+        {
+        s.setAction("Ocultar", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                s.dismiss();
+            }
+        });
+        }
+        s.show();
     }
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 
 import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CargarSolicitud;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
@@ -185,19 +187,34 @@ public class NuevaSolicitudAcceso extends Fragment implements MisSolicitudes.OnF
 
                         //Snackbar con mensaje de que la solicitud se envio correctamente y después mandar a la lista de solicitudes
                         //Si no se envio, mantener en esa pantalla y mostrar mensaje de error de conexion.
-                        Calendar ca= Calendar.getInstance();
-                        String fecha= ca.get(Calendar.YEAR)+"-"+
-                                (ca.get(Calendar.MONTH)+1)+"-"+
-                                ca.get(Calendar.DAY_OF_MONTH)+" "+
-                                ca.get(Calendar.HOUR_OF_DAY)+":"+
-                                ca.get(Calendar.MINUTE)+":"+
+                        Calendar ca = Calendar.getInstance();
+                        String fecha = ca.get(Calendar.YEAR) + "-" +
+                                (ca.get(Calendar.MONTH) + 1) + "-" +
+                                ca.get(Calendar.DAY_OF_MONTH) + " " +
+                                ca.get(Calendar.HOUR_OF_DAY) + ":" +
+                                ca.get(Calendar.MINUTE) + ":" +
                                 ca.get(Calendar.SECOND);
 
                         int index = radioGroup.indexOfChild(view.findViewById(radioGroup.getCheckedRadioButtonId()));
-                        CargarSolicitud(fecha,usr.getId(), String.valueOf(index),idSO.get(nombresSO.indexOf(editSujeto.getText().toString())),editSujeto.getText().toString(),editDescripcion.getText().toString(),"0");
+                        if (nombresSO.indexOf(editSujeto.getText().toString()) != -1)
+                            if (editDescripcion.getText().toString() != "")
+                                if (index != -1)
+                                    CargarSolicitud(view, fecha, usr.getId(), String.valueOf(index), idSO.get(nombresSO.indexOf(editSujeto.getText().toString())), editSujeto.getText().toString(), editDescripcion.getText().toString(), "0");
+                                else
+                                    Snackbar.make(view, "Favor de seleccionar una modalidad de entrega.", Snackbar.LENGTH_SHORT).show();
+                            else
+                                Snackbar.make(view, "Favor de ingresar la informaión solicitada.", Snackbar.LENGTH_SHORT).show();
+                        else
+                            Snackbar.make(view, "Favor de ingresar un Sujeto Obligado valido.", Snackbar.LENGTH_SHORT).show();
                     }
                 });
-                alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CambiarPantalla(new MisSolicitudes());
+                    }
+                });
+                alert.setNeutralButton("Volver", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Volver a la edición de la solicitúd

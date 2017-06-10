@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
@@ -71,6 +73,7 @@ public class Conexion {
 
         } catch (Exception ex){
             String e=ex.getMessage();
+            return 0;
         }
         finally{
             try {
@@ -161,6 +164,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
@@ -193,6 +197,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
@@ -204,6 +209,7 @@ public class Conexion {
 
         } catch (Exception ex){
             String e=ex.getMessage();
+            return 0;
         }
         finally{
             try {
@@ -264,6 +270,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
@@ -311,6 +318,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
@@ -320,8 +328,14 @@ public class Conexion {
             while ((linea=reader.readLine())!=null)
                 sb.append(linea);
 
-        } catch (Exception ex){
+        }
+        catch (UnknownHostException e)
+        {
+            return 0;
+        }
+        catch (Exception ex){
             String e=ex.getMessage();
+            return 0;
         }
         finally{
             try {
@@ -388,6 +402,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
@@ -399,6 +414,7 @@ public class Conexion {
 
         } catch (Exception ex){
             String e=ex.getMessage();
+            return 0;
         }
         finally{
             try {
@@ -459,6 +475,7 @@ public class Conexion {
             //Abrir conexion y envio de datos via POST
             conn= direccion.openConnection();
             conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
             wr= new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();

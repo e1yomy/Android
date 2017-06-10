@@ -263,7 +263,7 @@ public class MisSolicitudes extends Fragment {
                             */
                             break;
                     }
-                    ListarSolicitudes();
+                    ListarSolicitudes(view);
 
                 }
                 catch (Exception e){Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();}

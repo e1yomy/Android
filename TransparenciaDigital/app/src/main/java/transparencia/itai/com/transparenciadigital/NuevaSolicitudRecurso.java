@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,15 +143,22 @@ public class NuevaSolicitudRecurso extends Fragment {
         btnEnviarRecurso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar ca= Calendar.getInstance();
-                String fecha= ca.get(Calendar.YEAR)+"-"+
-                        (ca.get(Calendar.MONTH)+1)+"-"+
-                        ca.get(Calendar.DAY_OF_MONTH)+" "+
-                        ca.get(Calendar.HOUR_OF_DAY)+":"+
-                        ca.get(Calendar.MINUTE)+":"+
-                        ca.get(Calendar.SECOND);
-                int idS= Integer.parseInt(idSO.get(nombresSO.indexOf(txtNombreSujeto.getText().toString())));
-                CargarRecurso(usr.getId(),"0","0", String.valueOf(idS),txtNombreSujeto.getText().toString(),spinActoRecurrido.getSelectedItem().toString(),txtCausa.getText().toString(),solicitudes.get(indice).id,fecha);
+                try {
+                    Calendar ca = Calendar.getInstance();
+
+                    String fecha = ca.get(Calendar.YEAR) + "-" +
+                            (ca.get(Calendar.MONTH) + 1) + "-" +
+                            ca.get(Calendar.DAY_OF_MONTH) + " " +
+                            ca.get(Calendar.HOUR_OF_DAY) + ":" +
+                            ca.get(Calendar.MINUTE) + ":" +
+                            ca.get(Calendar.SECOND);
+                    int idS = Integer.parseInt(idSO.get(nombresSO.indexOf(txtNombreSujeto.getText().toString())));
+                    CargarRecurso(view,usr.getId(), "0", "0", String.valueOf(idS), txtNombreSujeto.getText().toString(), spinActoRecurrido.getSelectedItem().toString(), txtCausa.getText().toString(), solicitudes.get(indice).id, fecha);
+                }
+                catch (Exception e)
+                {
+                    Snackbar.make(view,e.getMessage(),Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

@@ -121,11 +121,12 @@ public class SujetosObligados extends Fragment {
     FloatingActionButton btnVolverSO;
     static TextView txtTituloSO;
     int index=-1;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sujetos_obligados, container, false);
+        view = inflater.inflate(R.layout.fragment_sujetos_obligados, container, false);
         listas.add((ListView) view.findViewById(R.id.listSujetosObligados));
         listas.add((ListView) view.findViewById(R.id.listSolicitudes));
         listas.add((ListView) view.findViewById(R.id.listDetalles));
@@ -140,7 +141,7 @@ public class SujetosObligados extends Fragment {
 
     private void CargarSujetos() {
         try {
-            ListaSujetosObligados();
+            ListaSujetosObligados(view);
         }
         catch (Exception ex)
         {
