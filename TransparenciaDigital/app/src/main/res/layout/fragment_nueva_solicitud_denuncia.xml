@@ -22,18 +22,12 @@
                 android:layout_height="wrap_content"
                 android:text="Sujeto Obligado" />
 
-            <EditText
-                android:id="@+id/editText5"
+            <AutoCompleteTextView
+                android:id="@+id/editSujetoO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Nombre del Sujeto Obligado"
-                android:inputType="textPersonName" />
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:completionHint="Seleccionar el sujeto obligado"
+                android:lines="1"/>
 
             <TextView
                 android:id="@+id/textView15"
@@ -43,7 +37,7 @@
                 android:text="Incumplimiento" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/editDescripcionIncumplimiento"
                 android:layout_width="match_parent"
                 android:layout_height="188dp"
                 android:ems="10"

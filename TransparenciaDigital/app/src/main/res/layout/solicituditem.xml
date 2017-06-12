@@ -15,15 +15,19 @@
 
     <TextView
         android:id="@+id/txtSujetoObligado"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="28dp"
         android:layout_marginStart="28dp"
-        android:layout_toEndOf="@+id/imgTipoSolicitud"
+        android:layout_toLeftOf="@+id/imgSemaforo"
         android:layout_toRightOf="@+id/imgTipoSolicitud"
+        android:layout_toStartOf="@+id/imgSemaforo"
+        android:paddingLeft="15dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+        android:textSize="15sp"
         tools:layout_editor_absoluteX="58dp"
         tools:layout_editor_absoluteY="6dp" />
 
@@ -31,15 +35,17 @@
         android:id="@+id/txtFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imgTipoSolicitud"
-        android:layout_alignLeft="@+id/txtSujetoObligado"
 
 
+        android:paddingLeft="25dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:textSize="10sp"
         tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="31dp"
-        android:paddingLeft="20dp"/>
+        android:layout_below="@+id/txtSujetoObligado"
+        android:layout_alignLeft="@+id/txtSujetoObligado"
+        android:layout_alignStart="@+id/txtSujetoObligado" />
 
     <ImageView
         android:id="@+id/imgSemaforo"

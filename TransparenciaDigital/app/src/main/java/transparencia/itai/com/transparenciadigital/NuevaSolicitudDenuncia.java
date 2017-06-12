@@ -10,9 +10,20 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import java.util.Calendar;
+
+import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
+import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.CargarDemanda;
+import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 
 /**
@@ -113,20 +124,32 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
     }
     Button btnTerminarSolicitudDenuncia;
     FragmentManager fragmentManager;
+    AutoCompleteTextView editSujetoO;
+    EditText editDescripcionIncumplimiento;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
-        View view =inflater.inflate(R.layout.fragment_nueva_solicitud_denuncia, container, false);
+        view =inflater.inflate(R.layout.fragment_nueva_solicitud_denuncia, container, false);
         btnTerminarSolicitudDenuncia= (Button)view.findViewById(R.id.btnTerminarSolicitudDenuncia);
         fragmentManager= getFragmentManager();
-
-        Boton(view);
-
+        try {
+            editDescripcionIncumplimiento = (EditText) view.findViewById(R.id.editDescripcionIncumplimiento);
+            editSujetoO = (AutoCompleteTextView) view.findViewById(R.id.editSujetoO);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
+                    android.R.layout.simple_dropdown_item_1line, nombresSO);
+            editSujetoO.setAdapter(adapter);
+            Boton(view);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         return view;
     }
 
-    private void Boton(View view) {
+    private void Boton(final View view) {
         btnTerminarSolicitudDenuncia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +165,32 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
 
                         //Snackbar con mensaje de que la solicitud se envio correctamente y después mandar a la lista de solicitudes
                         //Si no se envio, mantener en esa pantalla y mostrar mensaje de error de conexion.
-                        fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                        try {
+                            Calendar ca = Calendar.getInstance();
+                            String fecha = ca.get(Calendar.YEAR) + "-" +
+                                    (ca.get(Calendar.MONTH) + 1) + "-" +
+                                    ca.get(Calendar.DAY_OF_MONTH) + " " +
+                                    ca.get(Calendar.HOUR_OF_DAY) + ":" +
+                                    ca.get(Calendar.MINUTE) + ":" +
+                                    ca.get(Calendar.SECOND);
+
+                            if (nombresSO.indexOf(editSujetoO.getText().toString()) != -1) {
+                                if (editDescripcionIncumplimiento.getText().toString().length() > 10) {
+                                    int idS = Integer.parseInt(idSO.get(nombresSO.indexOf(editSujetoO.getText().toString())));
+                                    CargarDemanda(view, usr.getId(), "0", String.valueOf(idS), editSujetoO.getText().toString(), editDescripcionIncumplimiento.getText().toString(), fecha);
+                                } else {
+                                    Snack(view, "Favor de ingresar la descripción de manera un poco más extensa");
+                                }
+                            } else {
+                                Snack(view, "Favor de ingresar un Sujeto Obligado valido");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                 });
                 alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {

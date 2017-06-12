@@ -495,8 +495,8 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void ListarSolicitudes(final View view){
-
+    public static void ListarSolicitudes(final View view)
+    {
         Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -524,7 +524,6 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-
     public static void CambiarPantalla(Fragment f)
     {
         fragmentTransaction=fragmentManager.beginTransaction();
@@ -535,7 +534,6 @@ public class MainActivity extends AppCompatActivity
     }
     public static void CargarRecurso(final View view, final String id, final String s, final String s1, final String s2, final String toString, final String string, final String toString1, final int i, final String fecha)
     {
-
         Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -570,11 +568,10 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    //Error generico. Usualmente por conexión a internet
     public static void Snack(final View view, final String mensaje)
     {
         final Snackbar s=Snackbar.make(view,mensaje+".",Snackbar.LENGTH_INDEFINITE);
-        if(mensaje.contains("Solicitud")||mensaje.contains("Recurso"))
+        if(mensaje.contains("Solicitud")||mensaje.contains("Recurso") ||mensaje.contains("Denuncia"))
         {
             s.setDuration(2000);
         }
@@ -588,5 +585,40 @@ public class MainActivity extends AppCompatActivity
         });
         }
         s.show();
+    }
+    public static void CargarDemanda(final View view, final String id, final String IdtipoDeEntrega, final String idSujeto, final String nombreSujeto, final String descripcion, final String fecha)
+    {
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.CargarDemanda(id,IdtipoDeEntrega,idSujeto,nombreSujeto,descripcion,fecha)==1) {
+                        ma.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Snack(view,"Denuncia por incumplimiento enviada");
+                                    CambiarPantalla(new MisSolicitudes());
+                                }
+                                catch (Exception ex)
+                                {
+                                    String s= ex.getMessage();
+                                }
+                            }
+                        });
+                    }
+                    else
+                        Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
+                }
+                catch (Exception ex)
+                {
+                    Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
     }
 }

@@ -491,4 +491,43 @@ public class Conexion {
             return 0;
         }
     }
+    protected int CargarDemanda(String id, String IdtipoDeEntrega, String idSujeto, String nombreSujeto, String descripcion, String fecha)
+    {
+        String data = "";
+        urlprevia=webService+"nuevaDemanda.php";
+        try {
+            direccion= new URL(urlprevia);
+            BufferedReader reader=null;
+            StringBuilder sb= new StringBuilder();
+            URLConnection conn;
+            OutputStreamWriter wr;
+
+            data = URLEncoder.encode("idUsuario", "UTF-8")+ "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("IdtipoDeEntrega", "UTF-8") + "="+ URLEncoder.encode(IdtipoDeEntrega, "UTF-8");
+            data += "&" + URLEncoder.encode("idSujeto", "UTF-8") + "="+ URLEncoder.encode(idSujeto, "UTF-8");
+            data += "&" + URLEncoder.encode("nombreSujeto", "UTF-8") + "="+ URLEncoder.encode(nombreSujeto, "UTF-8");
+            data += "&" + URLEncoder.encode("descripcion", "UTF-8") + "="+ URLEncoder.encode(descripcion, "UTF-8");
+            data += "&" + URLEncoder.encode("fecha", "UTF-8") + "="+ URLEncoder.encode(fecha, "UTF-8");
+
+            data += "&" + URLEncoder.encode("pass", "UTF-8") + "="+ URLEncoder.encode(contrasenaWS, "UTF-8");
+
+            //Abrir conexion y envio de datos via POST
+            conn= direccion.openConnection();
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(3000);
+            wr= new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+            //Obtener respuesta del servidor
+            reader= new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //Leer respuesta del servidor
+            while ((linea=reader.readLine())!=null)
+                sb.append(linea);
+            return 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
