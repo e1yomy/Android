@@ -23,6 +23,7 @@ import java.util.List;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.ListarSolicitudes;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
 
 
 /**
@@ -197,6 +198,7 @@ public class MisSolicitudes extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             try {
                                 CambiarPantalla(new NuevaSolicitudRecurso());
+                                pantalla=3;
                                 //ActualizarLista();
                             } catch (Exception e) {
                                 //Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();

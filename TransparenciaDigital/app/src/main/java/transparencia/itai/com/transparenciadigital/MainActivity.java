@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -84,12 +85,15 @@ public class MainActivity extends AppCompatActivity
     static ArrayList<WebView> paginas;
     View v;
     static View header;
+    static int pantalla=0;
+    AlertDialog.Builder msgAyuda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         ma=MainActivity.this;
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity
         try{
             //navigationView.getMenu().getItem(0).setChecked(true);
             c=this;
+            msgAyuda= new AlertDialog.Builder(c);
             toolbar.setVisibility(View.GONE);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
             CargarSujetosObligados();
@@ -124,11 +129,13 @@ public class MainActivity extends AppCompatActivity
                         RecuperarDatosDeUsuario();
                         navigationView.getMenu().getItem(0).setChecked(true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                        pantalla=1;
                     }
                     else
                     {
                         toolbar.setVisibility(View.GONE);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
+                        pantalla=9;
                     }
                 }
             },2000);
@@ -151,25 +158,30 @@ public class MainActivity extends AppCompatActivity
         if(!preferences.getBoolean("sesion",false))
         {
             CambiarPantalla(new Sesion());
+            pantalla=9;
         }
         else
         {
             if (id == R.id.nav_missolicitudes) {
                 //Listado de solicitudes del usuario
                 CambiarPantalla(new MisSolicitudes());
+                pantalla=1;
                 navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_sujetosobligados) {
                 // Handle the camera action
                 CambiarPantalla(new SujetosObligados());
+                pantalla=5;
                 navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_acceso) {
                 //Solicitar acceso a informacion
                 CambiarPantalla(new NuevaSolicitudAcceso());
+                pantalla=2;
                 navigationView.getMenu().findItem(id).setChecked(true);
 
             } else if (id == R.id.nav_denuncia) {
                 //Solicitar recurso de revision
                 CambiarPantalla(new NuevaSolicitudDenuncia());
+                pantalla=4;
                 navigationView.getMenu().findItem(id).setChecked(true);
             }
         }
@@ -178,6 +190,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if(id==R.id.nav_quienessomos){
             CambiarPantalla(new QuienesSomos());
+            pantalla=6;
             navigationView.setCheckedItem(id);
             drawer.closeDrawer(GravityCompat.START);
             return false;
@@ -193,6 +206,7 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_mapa) {
             //Mostrar  mapa con direccion y telefono
             CambiarPantalla(new Mapa());
+            pantalla=7;
             navigationView.setCheckedItem(id);
         }
 
@@ -214,16 +228,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            //return true;
+        if (id == R.id.action_help) {
+            MostrarAyuda();
         }
         else if(id==R.id.action_misdatos){
             CambiarPantalla(new Registro());
+            pantalla=8;
 
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
             CambiarPantalla(new Sesion());
+            pantalla=9;
 
             txtNombreUsuario.setText("");
             txtEmailUsuario.setText("");
@@ -233,6 +249,67 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void MostrarAyuda() {
+        String s1 = "", s2 = "";
+        switch (pantalla) {
+            case 1:
+                //Mis solicitudes
+                s1 = getResources().getString(R.string.missolisitudes);
+                s2 = getResources().getString(R.string.ayuda1);
+                break;
+            case 2:
+                //Solicitud de acceso
+                s1 = getResources().getString(R.string.solicituddeinformacion);
+                s2 = getResources().getString(R.string.ayuda2);
+                break;
+            case 3:
+                //Recurso de revision
+                s1 = getResources().getString(R.string.recursoderevision);
+                s2 = getResources().getString(R.string.ayuda3);
+                break;
+            case 4:
+                //Denuncia por incumplimiento
+                s1 = getResources().getString(R.string.denunciaporincumplimiento);
+                s2 = getResources().getString(R.string.ayuda4);
+                break;
+            case 5:
+                //Sujetos obligados
+                s1 = getResources().getString(R.string.sujetosobligados);
+                s2 = getResources().getString(R.string.ayuda5);
+                break;
+            case 6:
+                //Nosotros
+                s1 = getResources().getString(R.string.itai);
+                s2 = getResources().getString(R.string.ayuda6);
+                break;
+            case 7:
+                //Encuentranos
+                s1 = getResources().getString(R.string.encuentranos);
+                s2 = getResources().getString(R.string.ayuda7);
+                break;
+            case 8:
+                //Mis datos//registro
+                s1 = getResources().getString(R.string.misdatos);
+                s2 = getResources().getString(R.string.ayuda8);
+                break;
+            case 9:
+                //Inicio de sesion
+                s1 = getResources().getString(R.string.action_help);
+                s2 = getResources().getString(R.string.ayuda9);
+                QuitarSeleccionMenu();
+                break;
+
+        }
+        Mensaje(s1,s2);
+    }
+
+    private void Mensaje(String titulo,String mensaje) {
+        msgAyuda.setTitle(titulo);
+        msgAyuda.setMessage(mensaje);
+        msgAyuda.setPositiveButton("Aceptar",null);
+        msgAyuda.show();
     }
 
     @Override
@@ -265,8 +342,14 @@ public class MainActivity extends AppCompatActivity
                     Conexion conexion = new Conexion();
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
                     if(conexion.IniciarSesion(cuenta,contra)==1) {
-
-                        ini=1;
+                        toolbar.setVisibility(View.VISIBLE);
+                        preferences.edit().putBoolean("sesion", true).commit();
+                        HabilitarMenu(preferences.getBoolean("sesion", false));
+                        navigationView.getMenu().getItem(0).setChecked(true);
+                        txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+                        txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
+                        CambiarPantalla(new MisSolicitudes());
+                        pantalla=1;
                     }
                 }
                 catch (Exception ex)
@@ -276,34 +359,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         tr.start();
-        try
-        {
-            //Se asigna un tiempo de espera hasta que la conexion y verificacion de datos haya terminado
-            //De no haber devuelto resultado favorable en cinco segundos, el proceso termina.
-            int tiempo=0;
-            while(ini!=1) {
-                Thread.sleep(100);
-                tiempo+=100;
-                if(tiempo>5000) {
-                    //Mensaje de que no se encuentra el usuario
-                    tr.stop();
-                    break;
-                }
-            }
-        } catch (InterruptedException e) {e.printStackTrace();}
 
-        if(ini==1)
-        {
-            toolbar.setVisibility(View.VISIBLE);
-            preferences.edit().putBoolean("sesion", true).commit();
-            HabilitarMenu(preferences.getBoolean("sesion", false));
-            navigationView.getMenu().getItem(0).setChecked(true);
-            txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
-            txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
-            fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
-            ini=0;
-            tr.stop();
-        }
     }
 
     public static void Registro( final String correo, final String contrasena, final String nombres, final String paterno, final String materno, final String calle, final String noExterno, final String noInterno, final String entreCalles, final String colonia, final String cp, final String entidadFederativa, final String municipio, final String telefono)
@@ -473,6 +529,7 @@ public class MainActivity extends AppCompatActivity
                                 try {
                                     Snack(view,"Solicitud enviada");
                                     CambiarPantalla(new MisSolicitudes());
+                                    pantalla=1;
                                 }
                                 catch (Exception ex)
                                 {
@@ -547,6 +604,7 @@ public class MainActivity extends AppCompatActivity
                                 try {
                                     Snack(view,"Recurso de revisión enviado");
                                     CambiarPantalla(new MisSolicitudes());
+                                    pantalla=1;
                                 }
                                 catch (Exception ex)
                                 {
@@ -601,6 +659,7 @@ public class MainActivity extends AppCompatActivity
                                 try {
                                     Snack(view,"Denuncia por incumplimiento enviada");
                                     CambiarPantalla(new MisSolicitudes());
+                                    pantalla=1;
                                 }
                                 catch (Exception ex)
                                 {

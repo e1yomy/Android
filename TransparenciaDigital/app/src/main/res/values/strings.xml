@@ -102,6 +102,8 @@
     <string name="tratados">Tratados Internacionales</string>
     <string name="tratados1">Convención Americana sobre derechos humanos (Actual desde 1981)</string>
     <string name="tratados2">Pacto Internacional de Derechos Civiles y Políticos (Actual desde 1981)</string>
+    <string name="action_help">Ayuda</string>
+
 
     <string-array name="municipios">
         <item>Mulegé</item>
@@ -129,4 +131,63 @@
         <item>Recurso de Revisión</item>
         <item>Denuncia por Incumplimiento</item>
     </string-array>
+
+
+
+
+
+    <string name="missolisitudes">Mis Solicitudes</string>
+    <string name="solicituddeinformacion">Solicitud de Información</string>
+    <string name="recursoderevision">Recurso de Revisión</string>
+    <string name="denunciaporincumplimiento">Denuncia por Incumplimiento</string>
+    <string name="sujetosobligados">Sujetos Obligados</string>
+    <string name="encuentranos">Encuéntranos</string>
+    <string name="misdatos">Mis Datos</string>
+    <string name="salir">Salir</string>
+    <string name="ayuda1">
+    En esta pantalla, usted puede ver un listado de las Solicitudes de acceso a la información que ha realizado, así como también los Recursos de revisión que ha interpuesto sobre alguna de sus Solicitudes de acceso y las Denuncias por imcumplimiento de obligaciones que usted ha realizado.\n\n
+    En la parte superior, debajo del titulo de la pantalla actual, se muestra el titulo de la lista que usted estará viendo en pantalla, al presionar, usted puede cambiar la lista desplegada entre Solicitudes de información, Recursos de revisión y Denuncias por incumplimiento.\n\n
+    Al cambiar la selección, la lista desplegada se actualizará para mostrar la lista que coincida con la opción seleccionada.\n\n
+    Para una mejor visualización de cada elemento, al tocar alguno, se mostrarán los detalles de ese elemento.\n
+    Para regresar a la lista de Mis Solicitudes, se debe presionar el botón de Regresar, que se encuentra en la parte inferior izquierda de la pantalla.\n\n
+    Para las Solicitudes de acceso, se tiene la particularidad de poder interponer Recursos de revisión. Esto se realiza dejando presionado el elemento sobre el cuál se desea interponer el Recurso de revisión, donde al realizar lo anterior, se muestra un mensaje emergente que describe la acción, al presionar Cancelar o fuera de el mensaje, se cerrará, al presionar en Aceptar, se mostrará la pantalla de Recurso de revisión.
+    </string>
+    <string name="ayuda2">
+    En esta pantalla, usted puede puede realizar solicitudes de información hacia los Sujetos Obligados.\n\n
+    Debe conocer el nombre del Sujeto Obligado al cuál quiere realizar la solicitud. Ingrese el nombre en el campo de texto y se mostrará justo debajo del texto la lista de Sujetos Obligados que coinciden con el nombre que usted ha escrito.\n\n
+    Al encontrar el correcto, se debe seleccionar de la lista y continuar al siguiente campo de texto, donde se debe ingresar una descripción de la información que se busca obtener del Sujeto Obligado seleccionado con anterioridad.\n\n
+    Posteriormente, se debe seleccionar de las opciones, la modalidad en que se desea que le sea entregada la información, por defecto está seleccionado Correo electrónico.\n\n
+    Una vez llenados los campos de texto y verificar la opción de modalidad de entrega, se debe presionar el botón de Enviar, situado en la parte inferior derecha de la pantalla, donde se muestra un mensaje para confirmar que desea enviar la solicitud, así como tres opciones.\n
+    \n1.- Volver: regresa al modo de edición, en caso de que se desee modificar algún dato o sencillamente verificarlos.
+    \n2.- Cancelar: Cancela el proceso de la solicitud, y lo lleva a la pantalla de Mis Solicitudes.
+    \n3.- Sí: Envía los datos de la Solicitud de acceso a la información y posteriormente lo lleva a la pantalla de Mis Solicitudes.
+    </string>
+    <string name="ayuda3">
+
+    </string>
+    <string name="ayuda4">
+            En esta pantalla usted puede realizar denuncias hacia un Sujeto Obligado por la falta de publicación de las obligaciones previstas en la Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur.\n\n
+            Debe conocer el nombre del Sujeto Obligado al cuál le quiere realizar la denuncia. Ingrese el nombre en el campo de texto, y se mostrará justo debajo del texto la lista de Sujetos Obligados que coinciden con el nombre que usted ha escrito.\n\n
+            Al encontrar el correcto, se debe seleccionar de la lista y continuar al siguiente campo de texto, donde se debe ingresar una descripción del incumplimiento que se quiere denunciar sobre el Sujeto Obligado seleccionado con anterioridad.\n\n
+            Una vez llenados los campos de texto y verificar la opción de modalidad de entrega, se debe presionar el botón de Enviar, situado en la parte inferior derecha de la pantalla, donde se muestra un mensaje para confirmar que desea enviar la solicitud, así como tres opciones.\n
+            \n1.- Volver: regresa al modo de edición, en caso de que se desee modificar algún dato o sencillamente verificarlos.
+            \n2.- Cancelar: Cancela el proceso de la solicitud, y lo lleva a la pantalla de Mis Solicitudes.
+            \n3.- Sí: Envía los datos de la Denuncia por Incumplimiento y posteriormente lo lleva a la pantalla de Mis Solicitudes.
+    </string>
+
+    <string name="ayuda5">
+
+    </string>
+    <string name="ayuda6">
+
+    </string>
+    <string name="ayuda7">
+
+    </string>
+    <string name="ayuda8">
+
+    </string>
+    <string name="ayuda9">
+
+</string>
 </resources>

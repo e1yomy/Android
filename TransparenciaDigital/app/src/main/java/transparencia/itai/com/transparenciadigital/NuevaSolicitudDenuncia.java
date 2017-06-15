@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CargarDemanda;
 import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
@@ -122,7 +123,7 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
             mListener.onFragmentInteraction(uri);
         }
     }
-    Button btnTerminarSolicitudDenuncia;
+    FloatingActionButton btnTerminarSolicitudDenuncia;
     FragmentManager fragmentManager;
     AutoCompleteTextView editSujetoO;
     EditText editDescripcionIncumplimiento;
@@ -132,7 +133,7 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
         view =inflater.inflate(R.layout.fragment_nueva_solicitud_denuncia, container, false);
-        btnTerminarSolicitudDenuncia= (Button)view.findViewById(R.id.btnTerminarSolicitudDenuncia);
+        btnTerminarSolicitudDenuncia= (FloatingActionButton)view.findViewById(R.id.btnTerminarSolicitudDenuncia);
         fragmentManager= getFragmentManager();
         try {
             editDescripcionIncumplimiento = (EditText) view.findViewById(R.id.editDescripcionIncumplimiento);
@@ -193,10 +194,16 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
 
                     }
                 });
-                alert.setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                alert.setNeutralButton("Volver", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Volver a la edición de la solicitúd
+                    }
+                });
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CambiarPantalla(new MisSolicitudes());
                     }
                 });
                 alert.show();

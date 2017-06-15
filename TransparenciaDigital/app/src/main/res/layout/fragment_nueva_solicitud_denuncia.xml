@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp">
+        android:layout_margin="5dp"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionHint="Seleccionar el sujeto obligado"
-                android:lines="1"/>
+                android:lines="1" />
 
             <TextView
                 android:id="@+id/textView15"
@@ -44,11 +46,20 @@
                 android:hint="Descripción clara y precisa del incumplimiento denunciado"
                 android:inputType="textMultiLine" />
 
-            <Button
-                android:id="@+id/btnTerminarSolicitudDenuncia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Enviar Solicitud" />
         </LinearLayout>
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnTerminarSolicitudDenuncia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_menu_send" />
 </RelativeLayout>

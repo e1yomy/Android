@@ -63,6 +63,7 @@ public class AdaptadorLista extends BaseAdapter {
                     txtSujetoObligado.setText(s.sujetoObligado);
                     txtSujetoObligado.setSingleLine();
                     txtFecha.setText(s.fecha);
+
                     switch (s.estado) {
                         case 0:
                             imgSemaforo.setImageResource(R.mipmap.ic_red);

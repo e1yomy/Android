@@ -18,6 +18,7 @@ import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CargarRecurso;
+import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.indice;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
@@ -138,6 +139,7 @@ public class NuevaSolicitudRecurso extends Fragment {
             @Override
             public void onClick(View v) {
                 CambiarPantalla(new MisSolicitudes());
+                pantalla=1;
             }
         });
         btnEnviarRecurso.setOnClickListener(new View.OnClickListener() {
