@@ -26,6 +26,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity
     static View header;
     static int pantalla=0;
     AlertDialog.Builder msgAyuda;
+    static JSONObject postDataParams = new JSONObject();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

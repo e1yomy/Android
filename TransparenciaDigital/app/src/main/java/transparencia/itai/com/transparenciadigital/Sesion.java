@@ -17,13 +17,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static transparencia.itai.com.transparenciadigital.MainActivity.IniciarSesion;
 import static transparencia.itai.com.transparenciadigital.MainActivity.Registro;
+import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.toolbar;
 
@@ -249,7 +253,22 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                     //MainActivity.fragmentManager.beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
 
                     //Funcion del MainActivity que hace la llamada al inicio de sesion desde un hilo
-                    IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString());
+                    //IniciarSesion(editCuenta.getText().toString(),editContrasena.getText().toString());
+                    try {
+                        postDataParams= new JSONObject();
+                        postDataParams.put("token", "12345678");
+                        postDataParams.put("funcion", "acceso");
+                        postDataParams.put("tabla", "ciudadano");
+                        postDataParams.put("usuario", editCuenta.getText().toString());
+                        postDataParams.put("contrasena", editContrasena.getText().toString());
+                        Log.e("params",postDataParams.toString());
+                    }
+                    catch (Exception ex)
+                    {
+                        Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    new AsyncConsulta().execute();
 
                 } catch (Exception ex) {
                     String exx = ex.getMessage();
