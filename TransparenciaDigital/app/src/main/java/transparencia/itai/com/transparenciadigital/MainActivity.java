@@ -1,5 +1,6 @@
 package transparencia.itai.com.transparenciadigital;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +92,8 @@ public class MainActivity extends AppCompatActivity
     static int pantalla=0;
     AlertDialog.Builder msgAyuda;
     static JSONObject postDataParams = new JSONObject();
+    static ProgressDialog progressDialog;
+    static RelativeLayout mainView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +115,7 @@ public class MainActivity extends AppCompatActivity
         txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
         txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
-
+        mainView= (RelativeLayout)findViewById(R.id.content_principal);
         try{
             //navigationView.getMenu().getItem(0).setChecked(true);
             c=this;
@@ -119,7 +123,11 @@ public class MainActivity extends AppCompatActivity
             toolbar.setVisibility(View.GONE);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
             CargarSujetosObligados();
-
+            progressDialog=new ProgressDialog(c);
+            progressDialog.setTitle("Espere");
+            progressDialog.setMessage("Un momento, por favor.");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -441,12 +449,12 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                     else
-                        Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
+                        Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
                 }
                 catch (Exception ex)
                 {
                     String s= ex.getMessage();
-                    Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
+                    Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
                 }
             }
         });
@@ -530,7 +538,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 try {
-                                    Snack(view,"Solicitud enviada");
+                                    Snack("Solicitud enviada");
                                     CambiarPantalla(new MisSolicitudes());
                                     pantalla=1;
                                 }
@@ -542,12 +550,12 @@ public class MainActivity extends AppCompatActivity
                         });
                     }
                     else {
-                        Snack(view,"Ha ocurrido un problema y la su solicitud no pudo ser enviada");
+                        Snack("Ha ocurrido un problema y la su solicitud no pudo ser enviada");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Snack(view,"Ha ocurrido un problema y la su solicitud no pudo ser enviada");
+                    Snack("Ha ocurrido un problema y la su solicitud no pudo ser enviada");
                     String s= ex.getMessage();
                 }
             }
@@ -572,11 +580,11 @@ public class MainActivity extends AppCompatActivity
                         });
                     }
                     else
-                        Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
+                        Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
                 }
                 catch (Exception ex)
                 {
-                    Snack(view,"Ha ocurrido un problema y la lista no ha podido cargarse");
+                    Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
                     String s= ex.getMessage();
                 }
             }
@@ -605,7 +613,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 try {
-                                    Snack(view,"Recurso de revisión enviado");
+                                    Snack("Recurso de revisión enviado");
                                     CambiarPantalla(new MisSolicitudes());
                                     pantalla=1;
                                 }
@@ -617,11 +625,11 @@ public class MainActivity extends AppCompatActivity
                         });
                     }
                     else
-                        Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
+                        Snack("Ha ocurrido un problema y su solicitud no pudo ser enviada");
                 }
                 catch (Exception ex)
                 {
-                    Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
+                    Snack("Ha ocurrido un problema y su solicitud no pudo ser enviada");
                     String s= ex.getMessage();
                 }
             }
@@ -629,9 +637,9 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void Snack(final View view, final String mensaje)
+    public static void Snack(final String mensaje)
     {
-        final Snackbar s=Snackbar.make(view,mensaje+".",Snackbar.LENGTH_INDEFINITE);
+        final Snackbar s=Snackbar.make(mainView,mensaje+".",Snackbar.LENGTH_INDEFINITE);
         if(mensaje.contains("Solicitud")||mensaje.contains("Recurso") ||mensaje.contains("Denuncia"))
         {
             s.setDuration(2000);
@@ -660,7 +668,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 try {
-                                    Snack(view,"Denuncia por incumplimiento enviada");
+                                    Snack("Denuncia por incumplimiento enviada");
                                     CambiarPantalla(new MisSolicitudes());
                                     pantalla=1;
                                 }
@@ -672,11 +680,11 @@ public class MainActivity extends AppCompatActivity
                         });
                     }
                     else
-                        Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
+                        Snack("Ha ocurrido un problema y su solicitud no pudo ser enviada");
                 }
                 catch (Exception ex)
                 {
-                    Snack(view,"Ha ocurrido un problema y su solicitud no pudo ser enviada");
+                    Snack("Ha ocurrido un problema y su solicitud no pudo ser enviada");
                     String s= ex.getMessage();
                 }
             }

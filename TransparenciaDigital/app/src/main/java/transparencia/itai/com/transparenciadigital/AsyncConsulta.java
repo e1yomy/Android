@@ -3,8 +3,10 @@ package transparencia.itai.com.transparenciadigital;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,26 +19,44 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
+import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.FormatoNombre;
 import static transparencia.itai.com.transparenciadigital.MainActivity.HabilitarMenu;
+import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.ma;
 import static transparencia.itai.com.transparenciadigital.MainActivity.navigationView;
 import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
+import static transparencia.itai.com.transparenciadigital.MainActivity.progressDialog;
 import static transparencia.itai.com.transparenciadigital.MainActivity.toolbar;
 import static transparencia.itai.com.transparenciadigital.MainActivity.txtEmailUsuario;
 import static transparencia.itai.com.transparenciadigital.MainActivity.txtNombreUsuario;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.ActualizarListaPrimaria;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lista2;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv1;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv2;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.opcion;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
+import static transparencia.itai.com.transparenciadigital.Sesion.LimpiarCampos;
+import static transparencia.itai.com.transparenciadigital.Sesion.btnVolverRegistro;
+import static transparencia.itai.com.transparenciadigital.Sesion.layoutInicioSesion;
+import static transparencia.itai.com.transparenciadigital.Sesion.layoutRegistro1;
+import static transparencia.itai.com.transparenciadigital.SujetosObligados.listas;
 
 /**
  * Created by elyo_ on 19/06/2017.
  */
 
 public class AsyncConsulta extends AsyncTask<String, Void, String> {
-
-    protected void onPreExecute(){}
+    int i=0;
+    protected void onPreExecute(){
+        progressDialog.show();
+    }
 
     @Override
     protected String doInBackground(String... arg0) {
@@ -82,67 +102,276 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         }
 
     }
-
     protected void onPostExecute(String result) {
         //Debug.waitForDebugger();
 
-        Toast.makeText(c, result,
-                Toast.LENGTH_LONG).show();
+        //Toast.makeText(c, result,Toast.LENGTH_LONG).show();
         try {
-            JSONObject json=new JSONObject(result);
-            //Getting JSON Array node
-            switch (postDataParams.get("funcion").toString())
-            {
-                case "acceso":
-                    /////////////
-                    preferences.edit().putString("headernombreusuario",FormatoNombre(json.getString("nombre")).split(" ")[0]+" "+ FormatoNombre(json.getString("apellidoPaterno")).split(" ")[0]).commit();
-                    preferences.edit().putString("headercorreo",json.getString("correo")).commit();
-                    preferences.edit().putString("idUsuario",json.getString("idUsuario")).commit();
-                    preferences.edit().putString("correo",json.getString("correo")).commit();
-                    preferences.edit().putString("contrasena",json.getString("contrasena")).commit();
-                    preferences.edit().putString("nombre",json.getString("nombre")).commit();
-                    preferences.edit().putString("apellidoPaterno",json.getString("apellidoPaterno")).commit();
-                    preferences.edit().putString("apellidoMaterno",json.getString("apellidoMaterno")).commit();
-                    preferences.edit().putString("calle",json.getString("calle")).commit();
-                    preferences.edit().putString("numeroExterior",json.getString("numeroExterior")).commit();
-                    preferences.edit().putString("numeroInterior",json.getString("numeroInterior")).commit();
-                    preferences.edit().putString("entreCalles",json.getString("entreCalles")).commit();
-                    preferences.edit().putString("colonia",json.getString("colonia")).commit();
-                    preferences.edit().putString("CP",json.getString("CP")).commit();
-                    preferences.edit().putString("entidad",json.getString("entidad")).commit();
-                    preferences.edit().putString("municipio",json.getString("municipio")).commit();
-                    preferences.edit().putString("telefono",json.getString("telefono")).commit();
-                    usr=new Usuario(
-                            json.getString("idUsuario"),
-                            json.getString("correo"),
-                            json.getString("contrasena"),
-                            json.getString("nombre"),
-                            json.getString("apellidoPaterno"),
-                            json.getString("apellidoMaterno"),
-                            json.getString("calle"),
-                            json.getString("numeroExterior"),
-                            json.getString("numeroInterior"),
-                            json.getString("entreCalles"),
-                            json.getString("colonia"),
-                            json.getString("CP"),
-                            json.getString("entidad"),
-                            json.getString("municipio"),
-                            json.getString("telefono"));
-                    /////////////
-                    toolbar.setVisibility(View.VISIBLE);
-                    preferences.edit().putBoolean("sesion", true).commit();
-                    HabilitarMenu(preferences.getBoolean("sesion", false));
-                    navigationView.getMenu().getItem(0).setChecked(true);
-                    txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
-                    txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
-                    CambiarPantalla(new MisSolicitudes());
-                    pantalla=1;
-                    break;
-            }
+            i=0;
+                switch (postDataParams.get("funcion").toString()) {
+                    case "registro":
+                        Registro(result);
+                        break;
+                    case "nuevaSolicitud":
+                        NuevaSolicitud(result);
+                        break;
+                    case "nuevoRecurso":
+                       NuevoRecurso(result);
+                        break;
+                    case "nuevaDenuncia":
+                        NuevaDenuncia(result);
+                        break;
+                    case "acceso":
+                        Acceso(result);
+                        break;
+                    case "misSolicitudes":
+                        ListaDeSolicitudes(result);
+                        break;
+                    case "listarSujetos":
+                        ListarSujetos(result);
+                        break;
+                    case "datosSolicitud":
+                        DatosSolicitud(result);
+                        break;
+
+                }
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
+        } catch (Exception e){
+            Toast.makeText(c,e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        progressDialog.dismiss();
+    }
 
+    private void NuevaSolicitud(String result) {
+        if(result.equals("true"))
+        {
+            //Solicitud enviada
+            ma.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Snack("Solicitud enviada");
+                        CambiarPantalla(new MisSolicitudes());
+                        pantalla=1;
+                    }
+                    catch (Exception ex)
+                    {
+                        String s= ex.getMessage();
+                    }
+                }
+            });
+        }
+        else
+        {
+            Snack("Ha ocurrido un problema y su Solicitud no pudo ser enviada");
+        }
+    }
+
+    private void NuevoRecurso(String result) {
+        if(result.equals("true"))
+        {
+            //Solicitud enviada
+            ma.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Snack("Recurso de Revisión enviado");
+                        CambiarPantalla(new MisSolicitudes());
+                        pantalla=1;
+                    }
+                    catch (Exception ex)
+                    {
+                        String s= ex.getMessage();
+                    }
+                }
+            });
+        }
+        else
+        {
+            Snack("Ha ocurrido un problema y su Recurso no pudo ser enviada");
+        }
+    }
+
+    private void NuevaDenuncia(String result) {
+        if(result.equals("true"))
+        {
+            //Solicitud enviada
+            ma.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Snack("Denuncia enviada");
+                        CambiarPantalla(new MisSolicitudes());
+                        pantalla=1;
+                    }
+                    catch (Exception ex)
+                    {
+                        String s= ex.getMessage();
+                    }
+                }
+            });
+        }
+        else
+        {
+            Snack("Ha ocurrido un problema y su Denuncia no pudo ser enviada");
+        }
+    }
+
+    private void ListaDeSolicitudes(String result) {
+        try {
+            solicitudes.clear();
+            String t = "";
+            switch (opcion) {
+                case 0:
+                    t = "idAcceso";
+                    break;
+                case 1:
+                    t = "idRecurso";
+                    break;
+                case 2:
+                    t = "idDemanda";
+                    break;
+            }
+            JSONArray j1 = new JSONArray(result);
+            while (i < j1.length()) {
+                {
+                    JSONObject j = j1.getJSONObject(i);
+                    solicitudes.add(new SolicitudItem(opcion, j.getInt(t), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], 2));
+                }
+                i++;
+            }
+            lv1.post(new Runnable() {
+                @Override
+                public void run() {
+                    ActualizarListaPrimaria();
+                }
+            });
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarSujetos(String result) {
+        try {
+            idSO.clear();
+            nombresSO.clear();
+            JSONArray jsonArray=new JSONArray(result);
+            while (i<jsonArray.length()) {
+                idSO.add(jsonArray.getJSONObject(i).getString("idSuj"));
+                nombresSO.add(jsonArray.getJSONObject(i).getString("nombre"));
+                //Toast.makeText(c, idSO.get(idSO.size()-1)+","+nombresSO.get(nombresSO.size()-1), Toast.LENGTH_SHORT).show();
+                i++;
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, nombresSO);
+            listas.get(0).setAdapter(arrayAdapter);
+        }
+        catch (Exception e)
+        {
+            String a=e.getMessage();
+        }
+    }
+
+    private void DatosSolicitud(String result) {
+        try {
+            JSONObject js = new JSONObject(result);
+            lista2.clear();
+            switch (opcion) {
+                case 0:
+                    lista2.add("Solicitud de Acceso a la Información");
+                    lista2.add("Folio: " + js.getString("folio"));
+                    lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                    lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                    lista2.add("Descripción: " + js.getString("descripcion"));
+                    break;
+                case 1:
+                    lista2.add("Recurso de Revisión");
+                    lista2.add("Folio: " + js.getString("folio"));
+                    lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                    lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                    lista2.add("Causa: " + js.getString("causa"));
+                    lista2.add("Motivo: " + js.getString("motivo"));
+                    lista2.add("Pruebas(folio de solicitud): " + js.getString("pruebas"));
+                    break;
+                case 2:
+                    lista2.add("Denuncia por Incumplimiento de Obligaciones de Transparencia");
+                    lista2.add("Folio: " + js.getString("folio"));
+                    lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                    lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                    lista2.add("Descripción: " + js.getString("descripcion"));
+                    break;
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, lista2);
+            lv2.setAdapter(arrayAdapter);
+        } catch (Exception e) {
+        }
+    }
+
+    private void Acceso(String result) {
+        try {
+            JSONObject json = new JSONObject(result);
+            /////////////
+            preferences.edit().putString("headernombreusuario", FormatoNombre(json.getString("nombre")).split(" ")[0] + " " + FormatoNombre(json.getString("apellidoPaterno")).split(" ")[0]).commit();
+            preferences.edit().putString("headercorreo", json.getString("correo")).commit();
+            preferences.edit().putString("idUsuario", json.getString("idUsuario")).commit();
+            preferences.edit().putString("correo", json.getString("correo")).commit();
+            preferences.edit().putString("contrasena", json.getString("contrasena")).commit();
+            preferences.edit().putString("nombre", json.getString("nombre")).commit();
+            preferences.edit().putString("apellidoPaterno", json.getString("apellidoPaterno")).commit();
+            preferences.edit().putString("apellidoMaterno", json.getString("apellidoMaterno")).commit();
+            preferences.edit().putString("calle", json.getString("calle")).commit();
+            preferences.edit().putString("numeroExterior", json.getString("numeroExterior")).commit();
+            preferences.edit().putString("numeroInterior", json.getString("numeroInterior")).commit();
+            preferences.edit().putString("entreCalles", json.getString("entreCalles")).commit();
+            preferences.edit().putString("colonia", json.getString("colonia")).commit();
+            preferences.edit().putString("CP", json.getString("CP")).commit();
+            preferences.edit().putString("entidad", json.getString("entidad")).commit();
+            preferences.edit().putString("municipio", json.getString("municipio")).commit();
+            preferences.edit().putString("telefono", json.getString("telefono")).commit();
+            usr = new Usuario(
+                    json.getString("idUsuario"),
+                    json.getString("correo"),
+                    json.getString("contrasena"),
+                    json.getString("nombre"),
+                    json.getString("apellidoPaterno"),
+                    json.getString("apellidoMaterno"),
+                    json.getString("calle"),
+                    json.getString("numeroExterior"),
+                    json.getString("numeroInterior"),
+                    json.getString("entreCalles"),
+                    json.getString("colonia"),
+                    json.getString("CP"),
+                    json.getString("entidad"),
+                    json.getString("municipio"),
+                    json.getString("telefono"));
+            /////////////
+            toolbar.setVisibility(View.VISIBLE);
+            preferences.edit().putBoolean("sesion", true).commit();
+            HabilitarMenu(preferences.getBoolean("sesion", false));
+            navigationView.getMenu().getItem(0).setChecked(true);
+            txtNombreUsuario.setText(preferences.getString("headernombreusuario", "Nombre"));
+            txtEmailUsuario.setText(preferences.getString("headercorreo", "alguien@example.com"));
+            CambiarPantalla(new MisSolicitudes());
+            pantalla = 1;
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    public void Registro(String result){
+        if(result.equals("true"))
+        {
+            //Registro exitoso
+            btnVolverRegistro.hide();
+            LimpiarCampos();
+            layoutInicioSesion.setVisibility(View.VISIBLE);
+            layoutRegistro1.setVisibility(View.GONE);
+        }
+        else
+        {
+            //Registro fallido
+
+        }
     }
 }

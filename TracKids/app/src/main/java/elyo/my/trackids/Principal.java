@@ -80,6 +80,7 @@ public class Principal extends AppCompatActivity
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         fragmentManager = getSupportFragmentManager();
         p=new ProgressDialog(c);
+
         servicio= new Servicio(c);
 
         try{

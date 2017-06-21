@@ -19,14 +19,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
-import static transparencia.itai.com.transparenciadigital.MainActivity.CargarSolicitud;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 
@@ -197,13 +199,31 @@ public class NuevaSolicitudAcceso extends Fragment implements MisSolicitudes.OnF
 
                         int index = radioGroup.indexOfChild(view.findViewById(radioGroup.getCheckedRadioButtonId()));
                         if (nombresSO.indexOf(editSujeto.getText().toString()) != -1)
-                            if (editDescripcion.getText().toString() != "")
-                                if (index != -1)
-                                    CargarSolicitud(view, fecha, usr.getId(), String.valueOf(index), idSO.get(nombresSO.indexOf(editSujeto.getText().toString())), editSujeto.getText().toString(), editDescripcion.getText().toString(), "0");
+                            if (editDescripcion.getText().toString().length()>20)
+                                if (index != -1) {
+                                    try {
+                                        postDataParams = new JSONObject();
+                                        postDataParams.put("token", "12345678");
+                                        postDataParams.put("funcion", "nuevaSolicitud");
+                                        postDataParams.put("tabla", "solAcceso");
+                                        postDataParams.put("folio","0");
+                                        postDataParams.put("fecha",fecha);
+                                        postDataParams.put("idUsuario",usr.getId());
+                                        postDataParams.put("idNotificaciones","0");
+                                        postDataParams.put("idSujeto",idSO.get(nombresSO.indexOf(editSujeto.getText().toString())));
+                                        postDataParams.put("nombreSujeto",editSujeto.getText().toString());
+                                        postDataParams.put("descripcion",editDescripcion.getText().toString());
+                                        postDataParams.put("IdtipoDeEntrega","0");
+                                        new AsyncConsulta().execute();
+                                    } catch (Exception ex) {
+
+                                    }
+                                    //CargarSolicitud(view, fecha, usr.getId(), String.valueOf(index), idSO.get(nombresSO.indexOf(editSujeto.getText().toString())), editSujeto.getText().toString(), editDescripcion.getText().toString(), "0");
+                                }
                                 else
                                     Snackbar.make(view, "Favor de seleccionar una modalidad de entrega.", Snackbar.LENGTH_SHORT).show();
                             else
-                                Snackbar.make(view, "Favor de ingresar la informaión solicitada.", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Favor de ingresar la informaión de manera más extensa.", Snackbar.LENGTH_SHORT).show();
                         else
                             Snackbar.make(view, "Favor de ingresar un Sujeto Obligado valido.", Snackbar.LENGTH_SHORT).show();
                     }

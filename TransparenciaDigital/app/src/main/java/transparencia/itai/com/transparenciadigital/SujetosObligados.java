@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.ListaSujetosObligados;
 import static transparencia.itai.com.transparenciadigital.MainActivity.ListarSolicitudesDeSujetoObligado;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 
 
@@ -142,6 +145,16 @@ public class SujetosObligados extends Fragment {
     private void CargarSujetos() {
         try {
             ListaSujetosObligados(view);
+            try {
+                postDataParams = new JSONObject();
+                postDataParams.put("token", "12345678");
+                postDataParams.put("funcion", "listarSujetos");
+                //new AsyncConsulta().execute();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         catch (Exception ex)
         {

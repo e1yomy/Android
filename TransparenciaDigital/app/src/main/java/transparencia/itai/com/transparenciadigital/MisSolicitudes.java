@@ -11,19 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
-import static transparencia.itai.com.transparenciadigital.MainActivity.ListarSolicitudes;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
+import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
+import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 
 /**
@@ -118,9 +120,9 @@ public class MisSolicitudes extends Fragment {
     }
 
     static ListView lv1;
-    ListView lv2;
-    List<String> lista1 = new ArrayList<>();
-    List<String> lista2 = new ArrayList<>();
+    static ListView lv2;
+    static List<String> lista1 = new ArrayList<>();
+    static List<String> lista2 = new ArrayList<>();
     static List<SolicitudItem> solicitudes= new ArrayList<>();
     FloatingActionButton btnVolver;
     LinearLayout layoutMisSolicitudes;
@@ -169,20 +171,49 @@ public class MisSolicitudes extends Fragment {
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lv1.setVisibility(View.GONE);
-                lv2.setVisibility(View.VISIBLE);
-                btnVolver.show();
-                spinOpciones.setVisibility(View.GONE);
-                ////////////
-                lista2.clear();
-                lista2.add(String.valueOf(solicitudes.get(position).tipo));
-                lista2.add(String.valueOf(solicitudes.get(position).id));
-                lista2.add(solicitudes.get(position).sujetoObligado);
-                lista2.add(solicitudes.get(position).fecha);
-                lista2.add(String.valueOf(solicitudes.get(position).estado));
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista2);
-                lv2.setAdapter(arrayAdapter);
-                //////////////
+                try {
+                    lv1.setVisibility(View.GONE);
+                    lv2.setVisibility(View.VISIBLE);
+                    btnVolver.show();
+                    spinOpciones.setVisibility(View.GONE);
+                    ////////////
+                    //Hacer solicitud de detalles de solicitud
+                    //////////////////
+                    postDataParams = new JSONObject();
+                    postDataParams.put("token", "12345678");
+                    postDataParams.put("funcion", "datosSolicitud");
+                    switch (opcion) {
+                        case 0:
+                            postDataParams.put("tabla", "solAcceso");
+                            postDataParams.put("idTabla", "idAcceso");
+                            break;
+                        case 1:
+                            postDataParams.put("tabla", "recRevision");
+                            postDataParams.put("idTabla", "idRecurso");
+                            break;
+                        case 2:
+                            postDataParams.put("tabla", "demIncumplimiento");
+                            postDataParams.put("idTabla", "idDemanda");
+                            break;
+                    }
+                    postDataParams.put("id", solicitudes.get(position).id);
+                    new AsyncConsulta().execute();
+                    //////////////////
+                    /*
+                    lista2.add(String.valueOf(solicitudes.get(position).tipo));
+                    lista2.add(String.valueOf(solicitudes.get(position).id));
+                    lista2.add(solicitudes.get(position).sujetoObligado);
+                    lista2.add(solicitudes.get(position).fecha);
+                    lista2.add(String.valueOf(solicitudes.get(position).estado));
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, lista2);
+                    lv2.setAdapter(arrayAdapter);
+                    */
+                    //////////////
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         });
         lv1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -234,38 +265,27 @@ public class MisSolicitudes extends Fragment {
                 try{
                     opcion= (byte) position;
                     solicitudes.clear();
-                    switch (position)
+                    //ListarSolicitudes(view);
+                    postDataParams = new JSONObject();
+                    postDataParams.put("token", "12345678");
+                    postDataParams.put("funcion", "misSolicitudes");
+                    switch (opcion)
                     {
                         case 0:
-                            //Solicitar lista de solicitudes de informacion
-                            /*
-                            Toast.makeText(c, 0+"", Toast.LENGTH_SHORT).show();
-                            solicitudes.add(new SolicitudItem(0,123,"sujeto","fecha",2));
-                            solicitudes.add(new SolicitudItem(0,13,"sujeto","fecha",1));
-                            solicitudes.add(new SolicitudItem(0,73,"sujeto","fecha",0));
-                            solicitudes.add(new SolicitudItem(0,23,"sujeto","fecha",3));
-                            */
+                            postDataParams.put("tabla", "solAcceso");
+                            postDataParams.put("idTabla", "idAcceso");
                             break;
                         case 1:
-                            //Solicitar lista de recursos de revisión
-                            /*
-                            Toast.makeText(c, 1+"", Toast.LENGTH_SHORT).show();
-                            solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",3));
-                            solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",1));
-                            solicitudes.add(new SolicitudItem(1,113,"sujeto","fecha",2));
-                            */
+                            postDataParams.put("tabla", "recRevision");
+                            postDataParams.put("idTabla", "idRecurso");
                             break;
                         case 2:
-                            //Solicitar lista de denuncias
-                            /*
-                            Toast.makeText(c, 2+"", Toast.LENGTH_SHORT).show();
-                            solicitudes.add(new SolicitudItem(2,13,"sujeto","fecha",1));
-                            solicitudes.add(new SolicitudItem(2,73,"sujeto","fecha",3));
-                            solicitudes.add(new SolicitudItem(2,3,"sujeto","fecha",3));
-                            */
+                            postDataParams.put("tabla", "demIncumplimiento");
+                            postDataParams.put("idTabla", "idDemanda");
                             break;
                     }
-                    ListarSolicitudes(view);
+                    postDataParams.put("idUsuario", usr.getId());
+                    new AsyncConsulta().execute();
 
                 }
                 catch (Exception e){Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();}

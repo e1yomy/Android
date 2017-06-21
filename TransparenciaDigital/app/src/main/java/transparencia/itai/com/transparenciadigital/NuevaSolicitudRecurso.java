@@ -12,13 +12,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
 import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
-import static transparencia.itai.com.transparenciadigital.MainActivity.CargarRecurso;
 import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
+import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.indice;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
@@ -155,7 +157,20 @@ public class NuevaSolicitudRecurso extends Fragment {
                             ca.get(Calendar.MINUTE) + ":" +
                             ca.get(Calendar.SECOND);
                     int idS = Integer.parseInt(idSO.get(nombresSO.indexOf(txtNombreSujeto.getText().toString())));
-                    CargarRecurso(view,usr.getId(), "0", "0", String.valueOf(idS), txtNombreSujeto.getText().toString(), spinActoRecurrido.getSelectedItem().toString(), txtCausa.getText().toString(), solicitudes.get(indice).id, fecha);
+                    //CargarRecurso(view,usr.getId(), "0", "0", String.valueOf(idS), txtNombreSujeto.getText().toString(), spinActoRecurrido.getSelectedItem().toString(), txtCausa.getText().toString(), solicitudes.get(indice).id, fecha);
+                    postDataParams = new JSONObject();
+                    postDataParams.put("token", "12345678");
+                    postDataParams.put("funcion", "nuevoRecurso");
+                    postDataParams.put("idUsuario", usr.getId());
+                    postDataParams.put("folio", "0");
+                    postDataParams.put("idTipoDeEntrega", "0");
+                    postDataParams.put("idSujeto", idS);
+                    postDataParams.put("nombreSujeto", txtNombreSujeto.getText().toString());
+                    postDataParams.put("causa",spinActoRecurrido.getSelectedItem().toString());
+                    postDataParams.put("motivo", txtCausa.getText().toString());
+                    postDataParams.put("pruebas", solicitudes.get(indice).id);
+                    postDataParams.put("fecha", fecha);
+                    new AsyncConsulta().execute();
                 }
                 catch (Exception e)
                 {

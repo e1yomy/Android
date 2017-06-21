@@ -16,14 +16,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
 import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
 import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
-import static transparencia.itai.com.transparenciadigital.MainActivity.CargarDemanda;
 import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
 
@@ -178,12 +180,24 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
                             if (nombresSO.indexOf(editSujetoO.getText().toString()) != -1) {
                                 if (editDescripcionIncumplimiento.getText().toString().length() > 10) {
                                     int idS = Integer.parseInt(idSO.get(nombresSO.indexOf(editSujetoO.getText().toString())));
-                                    CargarDemanda(view, usr.getId(), "0", String.valueOf(idS), editSujetoO.getText().toString(), editDescripcionIncumplimiento.getText().toString(), fecha);
+                                    //CargarDemanda(view, usr.getId(), "0", String.valueOf(idS), editSujetoO.getText().toString(), editDescripcionIncumplimiento.getText().toString(), fecha);
+                                    postDataParams = new JSONObject();
+                                    postDataParams.put("token", "12345678");
+                                    postDataParams.put("funcion", "nuevaDenuncia");
+                                    postDataParams.put("idUsuario", usr.getId());
+                                    postDataParams.put("folio", "0");
+                                    postDataParams.put("idTipoDeEntrega", "0");
+                                    postDataParams.put("idSujeto", idS);
+                                    postDataParams.put("nombreSujeto", editSujetoO.getText().toString());
+                                    postDataParams.put("descripcion",editDescripcionIncumplimiento.getText().toString());
+                                    postDataParams.put("fecha", fecha);
+                                    new AsyncConsulta().execute();
+
                                 } else {
-                                    Snack(view, "Favor de ingresar la descripción de manera un poco más extensa");
+                                    Snack("Favor de ingresar la descripción de manera un poco más extensa");
                                 }
                             } else {
-                                Snack(view, "Favor de ingresar un Sujeto Obligado valido");
+                                Snack("Favor de ingresar un Sujeto Obligado valido");
                             }
                         }
                         catch (Exception ex)

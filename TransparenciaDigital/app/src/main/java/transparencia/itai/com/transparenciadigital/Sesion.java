@@ -25,7 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static transparencia.itai.com.transparenciadigital.MainActivity.Registro;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
@@ -222,25 +221,32 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                 //layoutRegistro1.setVisibility(View.GONE);
 
                 preferences.edit().putBoolean("sesion",false);
-                Registro(textos.get(3).getText().toString(),
-                        textos.get(4).getText().toString(),
-                        textos.get(0).getText().toString(),
-                        textos.get(1).getText().toString(),
-                        textos.get(2).getText().toString(),
-                        textos.get(6).getText().toString(),
-                        textos.get(7).getText().toString(),
-                        textos.get(8).getText().toString(),
-                        textos.get(9).getText().toString(),
-                        textos.get(10).getText().toString(),
-                        textos.get(11).getText().toString(),
-                        textos.get(12).getText().toString(),
-                        textos.get(13).getText().toString(),
-                        textos.get(14).getText().toString()
-                        );
-                btnVolverRegistro.hide();
-                LimpiarCampos();
-                layoutInicioSesion.setVisibility(View.VISIBLE);
-                layoutRegistro1.setVisibility(View.GONE);
+                //Registro(textos.get(3).getText().toString(),textos.get(4).getText().toString(),textos.get(0).getText().toString(),textos.get(1).getText().toString(),textos.get(2).getText().toString(),textos.get(6).getText().toString(),textos.get(7).getText().toString(),textos.get(8).getText().toString(),textos.get(9).getText().toString(),textos.get(10).getText().toString(),textos.get(11).getText().toString(),textos.get(12).getText().toString(),textos.get(13).getText().toString(),textos.get(14).getText().toString());
+                try {
+                    postDataParams = new JSONObject();
+                    postDataParams.put("token", "12345678");
+                    postDataParams.put("funcion", "registro");
+                    postDataParams.put("tabla", "ciudadano");
+                    postDataParams.put("usu", textos.get(3).getText().toString());
+                    postDataParams.put("pas", textos.get(4).getText().toString());
+                    postDataParams.put("nom", textos.get(0).getText().toString());
+                    postDataParams.put("paterno", textos.get(1).getText().toString());
+                    postDataParams.put("materno", textos.get(2).getText().toString());
+                    postDataParams.put("calles", textos.get(6).getText().toString());
+                    postDataParams.put("numeroExterior", textos.get(7).getText().toString());
+                    postDataParams.put("numeroInterior", textos.get(8).getText().toString());
+                    postDataParams.put("entreCalles", textos.get(9).getText().toString());
+                    postDataParams.put("colonia", textos.get(10).getText().toString());
+                    postDataParams.put("CP", textos.get(11).getText().toString());
+                    postDataParams.put("entidad", textos.get(12).getText().toString());
+                    postDataParams.put("municipio", textos.get(13).getText().toString());
+                    postDataParams.put("telefono", textos.get(14).getText().toString());
+                    new AsyncConsulta().execute();
+                }
+                catch (Exception ex)
+                {
+
+                }
                 ///
             }
         });
