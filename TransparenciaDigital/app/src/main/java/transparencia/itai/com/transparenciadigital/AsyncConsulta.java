@@ -18,16 +18,19 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
-import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.FormatoNombre;
 import static transparencia.itai.com.transparenciadigital.MainActivity.HabilitarMenu;
+import static transparencia.itai.com.transparenciadigital.MainActivity.OcultarSnack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.ma;
 import static transparencia.itai.com.transparenciadigital.MainActivity.navigationView;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
@@ -43,6 +46,7 @@ import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv2;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.opcion;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 import static transparencia.itai.com.transparenciadigital.Sesion.LimpiarCampos;
+import static transparencia.itai.com.transparenciadigital.Sesion.btnRegistro1;
 import static transparencia.itai.com.transparenciadigital.Sesion.btnVolverRegistro;
 import static transparencia.itai.com.transparenciadigital.Sesion.layoutInicioSesion;
 import static transparencia.itai.com.transparenciadigital.Sesion.layoutRegistro1;
@@ -133,6 +137,9 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                     case "datosSolicitud":
                         DatosSolicitud(result);
                         break;
+                    case "listarSolicitudSujetos":
+                        SolicitudesSujeto(result);
+                        break;
 
                 }
         } catch (JSONException e) {
@@ -144,6 +151,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         progressDialog.dismiss();
     }
 
+
     private void NuevaSolicitud(String result) {
         if(result.equals("true"))
         {
@@ -153,8 +161,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 public void run() {
                     try {
                         Snack("Solicitud enviada");
-                        CambiarPantalla(new MisSolicitudes());
-                        pantalla=1;
+                        CambiarPantalla(new MisSolicitudes(),1);
                     }
                     catch (Exception ex)
                     {
@@ -178,8 +185,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 public void run() {
                     try {
                         Snack("Recurso de Revisión enviado");
-                        CambiarPantalla(new MisSolicitudes());
-                        pantalla=1;
+                        CambiarPantalla(new MisSolicitudes(),1);
                     }
                     catch (Exception ex)
                     {
@@ -190,7 +196,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         }
         else
         {
-            Snack("Ha ocurrido un problema y su Recurso no pudo ser enviada");
+            Snack("Ha ocurrido un problema y su Recurso no pudo ser enviado");
         }
     }
 
@@ -203,8 +209,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 public void run() {
                     try {
                         Snack("Denuncia enviada");
-                        CambiarPantalla(new MisSolicitudes());
-                        pantalla=1;
+                        CambiarPantalla(new MisSolicitudes(),1);
                     }
                     catch (Exception ex)
                     {
@@ -223,31 +228,43 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         try {
             solicitudes.clear();
             String t = "";
+            String titulo="";
             switch (opcion) {
                 case 0:
                     t = "idAcceso";
+                    titulo="Solicitudes de Acceso";
                     break;
                 case 1:
                     t = "idRecurso";
+                    titulo="Recursos de Revisión";
                     break;
                 case 2:
                     t = "idDemanda";
+                    titulo="Denuncias por Incumplimiento";
                     break;
             }
-            JSONArray j1 = new JSONArray(result);
-            while (i < j1.length()) {
-                {
-                    JSONObject j = j1.getJSONObject(i);
-                    solicitudes.add(new SolicitudItem(opcion, j.getInt(t), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], 2));
-                }
-                i++;
+            JSONArray j1;
+            try{j1 = new JSONArray(result);}
+            catch (Exception e)
+            {
+                Snack("No se han encontrado "+titulo);
+                return;
             }
-            lv1.post(new Runnable() {
-                @Override
-                public void run() {
-                    ActualizarListaPrimaria();
+                while (i < j1.length()) {
+                    {
+                        JSONObject j = j1.getJSONObject(i);
+                        solicitudes.add(new SolicitudItem(opcion, j.getInt(t), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], 2));
+                    }
+                    i++;
                 }
-            });
+                lv1.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ActualizarListaPrimaria();
+                         OcultarSnack();
+                    }
+                });
+
         } catch (Exception e) {
         }
     }
@@ -256,59 +273,103 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         try {
             idSO.clear();
             nombresSO.clear();
+            if(result.contains("NA"))
+            {
+                Snack("No se han encontrado Sujetos Obligados");
+                return;
+            }
             JSONArray jsonArray=new JSONArray(result);
             while (i<jsonArray.length()) {
                 idSO.add(jsonArray.getJSONObject(i).getString("idSuj"));
                 nombresSO.add(jsonArray.getJSONObject(i).getString("nombre"));
-                //Toast.makeText(c, idSO.get(idSO.size()-1)+","+nombresSO.get(nombresSO.size()-1), Toast.LENGTH_SHORT).show();
                 i++;
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, nombresSO);
-            listas.get(0).setAdapter(arrayAdapter);
         }
         catch (Exception e)
         {
             String a=e.getMessage();
         }
     }
+    private void SolicitudesSujeto(String result) {
+        try {
+            solicitudes.clear();
+            if(result.contains("NA"))
+            {
+                Snack("No se han encontrado Solicitudes para el Sujeto Obligado seleccionado");
+                return;
+            }
+            JSONArray json = new JSONArray(result);
+                i = 0;
+                while (i < json.length()) {
+                    {
+                        JSONObject j = json.getJSONObject(i);
+                        solicitudes.add(new SolicitudItem(0, j.getInt("idAcceso"), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], 3));
+                    }
+                    i++;
+                }
+                AdaptadorLista adaptadorLista = new AdaptadorLista(c, solicitudes);
+                listas.get(1).setAdapter(adaptadorLista);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void DatosSolicitud(String result) {
         try {
             JSONObject js = new JSONObject(result);
-            lista2.clear();
-            switch (opcion) {
-                case 0:
-                    lista2.add("Solicitud de Acceso a la Información");
-                    lista2.add("Folio: " + js.getString("folio"));
-                    lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
-                    lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
-                    lista2.add("Descripción: " + js.getString("descripcion"));
-                    break;
-                case 1:
-                    lista2.add("Recurso de Revisión");
-                    lista2.add("Folio: " + js.getString("folio"));
-                    lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
-                    lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
-                    lista2.add("Causa: " + js.getString("causa"));
-                    lista2.add("Motivo: " + js.getString("motivo"));
-                    lista2.add("Pruebas(folio de solicitud): " + js.getString("pruebas"));
-                    break;
-                case 2:
-                    lista2.add("Denuncia por Incumplimiento de Obligaciones de Transparencia");
-                    lista2.add("Folio: " + js.getString("folio"));
-                    lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
-                    lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
-                    lista2.add("Descripción: " + js.getString("descripcion"));
-                    break;
+            if(pantalla==1) {
+                lista2.clear();
+                switch (opcion) {
+                    case 0:
+                        lista2.add("Solicitud de Acceso a la Información");
+                        lista2.add("Folio: " + js.getString("folio"));
+                        lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                        lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                        lista2.add("Descripción: " + js.getString("descripcion"));
+                        break;
+                    case 1:
+                        lista2.add("Recurso de Revisión");
+                        lista2.add("Folio: " + js.getString("folio"));
+                        lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                        lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                        lista2.add("Causa: " + js.getString("causa"));
+                        lista2.add("Motivo: " + js.getString("motivo"));
+                        lista2.add("Pruebas(folio de solicitud): " + js.getString("pruebas"));
+                        break;
+                    case 2:
+                        lista2.add("Denuncia por Incumplimiento de Obligaciones de Transparencia");
+                        lista2.add("Folio: " + js.getString("folio"));
+                        lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                        lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                        lista2.add("Descripción: " + js.getString("descripcion"));
+                        break;
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, lista2);
+                lv2.setAdapter(arrayAdapter);
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, lista2);
-            lv2.setAdapter(arrayAdapter);
+            else if(pantalla==5)
+            {
+                List<String> l = new ArrayList<String>();
+                l.add("Solicitud de Acceso a la Información");
+                l.add("Folio: " + js.getString("folio"));
+                l.add("Fecha: " + js.getString("fecha").split(" ")[0]);
+                l.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
+                l.add("Descripción: " + js.getString("descripcion"));
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, l);
+                listas.get(2).setAdapter(arrayAdapter);
+            }
         } catch (Exception e) {
+
         }
     }
 
     private void Acceso(String result) {
         try {
+            if(result.contains("incorrectos"))
+            {
+                Snack("Correo electrónico o contraseña incorrectos");
+                return;
+            }
             JSONObject json = new JSONObject(result);
             /////////////
             preferences.edit().putString("headernombreusuario", FormatoNombre(json.getString("nombre")).split(" ")[0] + " " + FormatoNombre(json.getString("apellidoPaterno")).split(" ")[0]).commit();
@@ -351,8 +412,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
             navigationView.getMenu().getItem(0).setChecked(true);
             txtNombreUsuario.setText(preferences.getString("headernombreusuario", "Nombre"));
             txtEmailUsuario.setText(preferences.getString("headercorreo", "alguien@example.com"));
-            CambiarPantalla(new MisSolicitudes());
-            pantalla = 1;
+            CambiarPantalla(new MisSolicitudes(),1);
         }
         catch (Exception e){
 
@@ -364,14 +424,19 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         {
             //Registro exitoso
             btnVolverRegistro.hide();
+            btnRegistro1.hide();
             LimpiarCampos();
             layoutInicioSesion.setVisibility(View.VISIBLE);
             layoutRegistro1.setVisibility(View.GONE);
+            Snack("Usuario registrado, ahora puedes iniciar sesión");
         }
         else
         {
             //Registro fallido
+            Snack("Algo ha salido mal y su usuario no se ha podido guardar");
 
         }
     }
+
+
 }

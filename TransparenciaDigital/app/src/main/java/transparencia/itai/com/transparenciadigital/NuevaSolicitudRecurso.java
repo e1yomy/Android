@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -16,10 +17,10 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
-import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
-import static transparencia.itai.com.transparenciadigital.MainActivity.pantalla;
+import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.indice;
@@ -132,6 +133,8 @@ public class NuevaSolicitudRecurso extends Fragment {
         txtNombreSujeto.setEnabled(false);
         txtCausa=(EditText)view.findViewById(R.id.txtCausa);
         spinActoRecurrido= (Spinner)view.findViewById(R.id.spinActoRecurrido);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(c, R.array.actoqueserecurre,R.layout.textospinner);
+        spinActoRecurrido.setAdapter(adapter);
         Botones();
         return view;
     }
@@ -140,8 +143,7 @@ public class NuevaSolicitudRecurso extends Fragment {
         btnVolverALista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CambiarPantalla(new MisSolicitudes());
-                pantalla=1;
+                CambiarPantalla(new MisSolicitudes(),1);
             }
         });
         btnEnviarRecurso.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -28,11 +29,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.ActualizarListaPrimaria;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv1;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
@@ -94,6 +104,11 @@ public class MainActivity extends AppCompatActivity
     static JSONObject postDataParams = new JSONObject();
     static ProgressDialog progressDialog;
     static RelativeLayout mainView;
+    static TextView txtTituloPantalla;
+    AppBarLayout appBarLayout;
+    static List<String> nombresSO= new ArrayList<>();
+    static List<String> idSO = new ArrayList<>();
+    static MainActivity ma;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,37 +116,34 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
         ma=MainActivity.this;
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        appBarLayout= (AppBarLayout)findViewById(R.id.appBarLayout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         header= navigationView.getHeaderView(0);
         txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
         txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
-        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+        txtTituloPantalla= (TextView)findViewById(R.id.txtTituloPantalla);
         mainView= (RelativeLayout)findViewById(R.id.content_principal);
+        appBarLayout.setBackgroundResource(R.drawable.side_nav_bar);
+        c=this;
+        preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+        msgAyuda= new AlertDialog.Builder(c);
+        progressDialog=new ProgressDialog(c);
+        Hilo();
+
+
         try{
-            //navigationView.getMenu().getItem(0).setChecked(true);
-            c=this;
-            msgAyuda= new AlertDialog.Builder(c);
-            toolbar.setVisibility(View.GONE);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
             CargarSujetosObligados();
-            progressDialog=new ProgressDialog(c);
-            progressDialog.setTitle("Espere");
-            progressDialog.setMessage("Un momento, por favor.");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
                     if(preferences.getBoolean("sesion",false))
                     {
                         toolbar.setVisibility(View.VISIBLE);
@@ -139,6 +151,7 @@ public class MainActivity extends AppCompatActivity
                         txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
                         RecuperarDatosDeUsuario();
                         navigationView.getMenu().getItem(0).setChecked(true);
+                        //CambiarPantalla(new MisSolicitudes(),1);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
                         pantalla=1;
                     }
@@ -147,11 +160,12 @@ public class MainActivity extends AppCompatActivity
                         toolbar.setVisibility(View.GONE);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
                         pantalla=9;
+                        //CambiarPantalla(new Sesion(),9);
+
                     }
                 }
             },2000);
 
-            fragmentManager=getSupportFragmentManager();
         }
         catch (Exception ex)
         {
@@ -168,31 +182,26 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if(!preferences.getBoolean("sesion",false))
         {
-            CambiarPantalla(new Sesion());
-            pantalla=9;
+            CambiarPantalla(new Sesion(),9);
         }
         else
         {
             if (id == R.id.nav_missolicitudes) {
                 //Listado de solicitudes del usuario
-                CambiarPantalla(new MisSolicitudes());
-                pantalla=1;
+                CambiarPantalla(new MisSolicitudes(),1);
                 navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_sujetosobligados) {
                 // Handle the camera action
-                CambiarPantalla(new SujetosObligados());
-                pantalla=5;
+                CambiarPantalla(new SujetosObligados(),5);
                 navigationView.getMenu().findItem(id).setChecked(true);
             }else if (id == R.id.nav_acceso) {
                 //Solicitar acceso a informacion
-                CambiarPantalla(new NuevaSolicitudAcceso());
-                pantalla=2;
+                CambiarPantalla(new NuevaSolicitudAcceso(),2);
                 navigationView.getMenu().findItem(id).setChecked(true);
 
             } else if (id == R.id.nav_denuncia) {
                 //Solicitar recurso de revision
-                CambiarPantalla(new NuevaSolicitudDenuncia());
-                pantalla=4;
+                CambiarPantalla(new NuevaSolicitudDenuncia(),4);
                 navigationView.getMenu().findItem(id).setChecked(true);
             }
         }
@@ -200,8 +209,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
         else if(id==R.id.nav_quienessomos){
-            CambiarPantalla(new QuienesSomos());
-            pantalla=6;
+            CambiarPantalla(new QuienesSomos(),6);
             navigationView.setCheckedItem(id);
             drawer.closeDrawer(GravityCompat.START);
             return false;
@@ -216,8 +224,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_mapa) {
             //Mostrar  mapa con direccion y telefono
-            CambiarPantalla(new Mapa());
-            pantalla=7;
+            CambiarPantalla(new Mapa(),7);
             navigationView.setCheckedItem(id);
         }
 
@@ -243,14 +250,12 @@ public class MainActivity extends AppCompatActivity
             MostrarAyuda();
         }
         else if(id==R.id.action_misdatos){
-            CambiarPantalla(new Registro());
-            pantalla=8;
+            CambiarPantalla(new Registro(),8);
 
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
             HabilitarMenu(preferences.getBoolean("sesion",false));
-            CambiarPantalla(new Sesion());
-            pantalla=9;
+            CambiarPantalla(new Sesion(),9);
 
             txtNombreUsuario.setText("");
             txtEmailUsuario.setText("");
@@ -340,11 +345,107 @@ public class MainActivity extends AppCompatActivity
         misDatos.setEnabled(boo);
         cerrarSesion.setEnabled(boo);
     }
-    static byte ini=0; //Puede sustituirse por un boolean
 
     //Funcion que se encarga de verificar que la cuenta que se ha ingresado sea valida
     //
-    public static void IniciarSesion(final String cuenta, final String contra){
+
+    public static String FormatoNombre(String nombre){
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+    }
+    public static void RecuperarDatosDeUsuario(){
+        usr= new Usuario(
+                preferences.getString("idUsuario",""),
+                preferences.getString("correo",""),
+                preferences.getString("contrasena",""),
+                preferences.getString("nombre",""),
+                preferences.getString("apellidoPaterno",""),
+                preferences.getString("apellidoMaterno",""),
+                preferences.getString("calle",""),
+                preferences.getString("numeroExterior",""),
+                preferences.getString("numeroInterior",""),
+                preferences.getString("entreCalles",""),
+                preferences.getString("colonia",""),
+                preferences.getString("CP",""),
+                preferences.getString("entidad",""),
+                preferences.getString("municipio",""),
+                preferences.getString("telefono","")
+        );
+    }
+    public static  void CambiarPantalla(Fragment f, int p)
+    {
+        if(p!=pantalla) {
+            OcultarSnack();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.entrada, R.anim.salida);
+            fragmentTransaction.replace(R.id.content_principal, f);
+            fragmentTransaction.commit();
+            QuitarSeleccionMenu();
+            switch (p) {
+                case 1:
+                    txtTituloPantalla.setText("Mis Solicitudes");
+                    navigationView.getMenu().getItem(0).setChecked(true);
+                    break;
+                case 2:
+                    txtTituloPantalla.setText("Nueva Solicitud de Información");
+                    navigationView.getMenu().getItem(1).setChecked(true);
+                    break;
+                case 3:
+                    txtTituloPantalla.setText("Nuevo Recurso de Revisión");
+                    break;
+                case 4:
+                    txtTituloPantalla.setText("Nueva Denuncia por Incumplimiento");
+                    navigationView.getMenu().getItem(2).setChecked(true);
+                    break;
+                case 5:
+                    txtTituloPantalla.setText("Listado de Sujetos Obligados");
+                    navigationView.getMenu().getItem(3).setChecked(true);
+                    break;
+                case 6:
+                    txtTituloPantalla.setText("¿Quiénes Somos?");
+                    navigationView.getMenu().getItem(4).setChecked(true);
+                    break;
+                case 7:
+                    txtTituloPantalla.setText("Encuéntranos");
+                    navigationView.getMenu().getItem(5).setChecked(true);
+                    break;
+                case 8:
+                    txtTituloPantalla.setText("Mis Datos");
+                    break;
+                case 9:
+                    txtTituloPantalla.setText("Inicio de Sesión");
+                    break;
+            }
+            pantalla = p;
+        }
+    }
+    static Snackbar s;
+    public static void Snack(final String mensaje)
+    {
+        s=Snackbar.make(mainView,mensaje+".",Snackbar.LENGTH_INDEFINITE);
+        if(mensaje.contains("enviado")||mensaje.contains("enviada")||pantalla==9)
+        {
+            s.setDuration(2000);
+        }
+        else
+        {
+            s.setAction("Ocultar", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    s.dismiss();
+                }
+            });
+        }
+        s.show();
+    }
+    public static void OcultarSnack()
+    {
+        if (s != null)
+            if (s.isShown())
+                s.dismiss();
+    }
+
+    public static void IniciarSesion(final String cuenta, final String contra)
+    {
 
         Thread tr = new Thread(new Runnable() {
             @Override
@@ -359,8 +460,7 @@ public class MainActivity extends AppCompatActivity
                         navigationView.getMenu().getItem(0).setChecked(true);
                         txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
                         txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
-                        CambiarPantalla(new MisSolicitudes());
-                        pantalla=1;
+                        CambiarPantalla(new MisSolicitudes(),1);
                     }
                 }
                 catch (Exception ex)
@@ -372,7 +472,6 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-
     public static void Registro( final String correo, final String contrasena, final String nombres, final String paterno, final String materno, final String calle, final String noExterno, final String noInterno, final String entreCalles, final String colonia, final String cp, final String entidadFederativa, final String municipio, final String telefono)
     {
         Thread tr = new Thread(new Runnable() {
@@ -398,31 +497,8 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-
-    public static String FormatoNombre(String nombre){
-        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
-    }
-    public static void RecuperarDatosDeUsuario(){
-        usr= new Usuario(
-                preferences.getString("idUsuario",""),
-                preferences.getString("correo",""),
-                preferences.getString("contrasena",""),
-                preferences.getString("nombre",""),
-                preferences.getString("apellidoPaterno",""),
-                preferences.getString("apellidoMaterno",""),
-                preferences.getString("calle",""),
-                preferences.getString("numeroExterior",""),
-                preferences.getString("numeroInterior",""),
-                preferences.getString("entreCalles",""),
-                preferences.getString("colonia",""),
-                preferences.getString("CP",""),
-                preferences.getString("entidad",""),
-                preferences.getString("municipio",""),
-                preferences.getString("telefono","")
-        );
-    }
-
-    public static void ListaSujetosObligados(final View view){
+    public static void ListaSujetosObligados(final View view)
+    {
 
         Thread tr = new Thread(new Runnable() {
             @Override
@@ -461,14 +537,64 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void CargarSujetosObligados(){
-
+    public static void CargarSujetosObligados()
+    {
         Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Conexion conexion = new Conexion();
-                    if(conexion.ListarSujetos()==1) {            }
+                    try {
+                        postDataParams = new JSONObject();
+                        postDataParams.put("token", "12345678");
+                        postDataParams.put("funcion", "listarSujetos");
+
+                        URL url = new URL("http://pruebastec.890m.com/finales/datos.php"); // here is your URL path
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setReadTimeout(15000 /* milliseconds */);
+                        conn.setConnectTimeout(15000 /* milliseconds */);
+                        conn.setRequestMethod("POST");
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        OutputStream os = conn.getOutputStream();
+                        BufferedWriter writer = new BufferedWriter(
+                                new OutputStreamWriter(os, "UTF-8"));
+                        writer.write(postDataParams.toString());
+                        writer.flush();
+                        writer.close();
+                        os.close();
+                        int responseCode=conn.getResponseCode();
+                        InputStream inputStream;
+                        // get stream
+                        if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                            inputStream = conn.getInputStream();
+                        }
+                        else {
+                            inputStream = conn.getErrorStream();
+                        }
+                        // parse stream
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                        String temp, response = "";
+                        while ((temp = bufferedReader.readLine()) != null) {
+                            response += temp;
+                        }
+                        idSO.clear();
+                        nombresSO.clear();
+                        JSONArray jsonArray=new JSONArray(response);
+                        int j=0;
+                        while (j<jsonArray.length()) {
+                            idSO.add(jsonArray.getJSONObject(j).getString("idSuj"));
+                            nombresSO.add(jsonArray.getJSONObject(j).getString("nombre"));
+                            //Toast.makeText(c, idSO.get(idSO.size()-1)+","+nombresSO.get(nombresSO.size()-1), Toast.LENGTH_SHORT).show();
+                            j++;
+                        }
+
+                    }
+                    catch(final Exception e){
+
+                    }
+                    //Conexion conexion = new Conexion();
+                    //if(conexion.ListarSujetos()==1) {            }
 
 
                 }
@@ -481,7 +607,8 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void ListarSolicitudesDeSujetoObligado(final String id){
+    public static void ListarSolicitudesDeSujetoObligado(final String id)
+    {
 
         Thread tr = new Thread(new Runnable() {
             @Override
@@ -521,7 +648,6 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    static MainActivity ma;
     public static void CargarSolicitud(final View view, final String fecha, final String idUsuario, final String idNofiticaciones, final String idSujeto, final String nombreSujeto, final String descripcion, final String idTipoDeEntrega)
     {
 
@@ -539,8 +665,7 @@ public class MainActivity extends AppCompatActivity
                             public void run() {
                                 try {
                                     Snack("Solicitud enviada");
-                                    CambiarPantalla(new MisSolicitudes());
-                                    pantalla=1;
+                                    CambiarPantalla(new MisSolicitudes(),1);
                                 }
                                 catch (Exception ex)
                                 {
@@ -592,14 +717,6 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void CambiarPantalla(Fragment f)
-    {
-        fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.entrada,R.anim.salida);
-        fragmentTransaction.replace(R.id.content_principal,f);
-        fragmentTransaction.commit();
-        QuitarSeleccionMenu();
-    }
     public static void CargarRecurso(final View view, final String id, final String s, final String s1, final String s2, final String toString, final String string, final String toString1, final int i, final String fecha)
     {
         Thread tr = new Thread(new Runnable() {
@@ -614,8 +731,7 @@ public class MainActivity extends AppCompatActivity
                             public void run() {
                                 try {
                                     Snack("Recurso de revisión enviado");
-                                    CambiarPantalla(new MisSolicitudes());
-                                    pantalla=1;
+                                    CambiarPantalla(new MisSolicitudes(),1);
                                 }
                                 catch (Exception ex)
                                 {
@@ -637,24 +753,6 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
-    public static void Snack(final String mensaje)
-    {
-        final Snackbar s=Snackbar.make(mainView,mensaje+".",Snackbar.LENGTH_INDEFINITE);
-        if(mensaje.contains("Solicitud")||mensaje.contains("Recurso") ||mensaje.contains("Denuncia"))
-        {
-            s.setDuration(2000);
-        }
-        else
-        {
-        s.setAction("Ocultar", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                s.dismiss();
-            }
-        });
-        }
-        s.show();
-    }
     public static void CargarDemanda(final View view, final String id, final String IdtipoDeEntrega, final String idSujeto, final String nombreSujeto, final String descripcion, final String fecha)
     {
         Thread tr = new Thread(new Runnable() {
@@ -669,8 +767,7 @@ public class MainActivity extends AppCompatActivity
                             public void run() {
                                 try {
                                     Snack("Denuncia por incumplimiento enviada");
-                                    CambiarPantalla(new MisSolicitudes());
-                                    pantalla=1;
+                                    CambiarPantalla(new MisSolicitudes(),1);
                                 }
                                 catch (Exception ex)
                                 {
@@ -686,6 +783,28 @@ public class MainActivity extends AppCompatActivity
                 {
                     Snack("Ha ocurrido un problema y su solicitud no pudo ser enviada");
                     String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+    }
+    public void Hilo()
+    {
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    toolbar.setBackgroundResource(R.drawable.side_nav_bar);
+                    toolbar.setVisibility(View.GONE);
+                    progressDialog.setTitle("Espere");
+                    progressDialog.setMessage("Un momento, por favor.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+                    fragmentManager=getSupportFragmentManager();
+                    }
+                catch (Exception ex)
+                {
+                    Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

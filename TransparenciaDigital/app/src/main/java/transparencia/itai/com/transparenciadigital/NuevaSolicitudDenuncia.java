@@ -20,8 +20,8 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
-import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
@@ -217,7 +217,7 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
                 alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        CambiarPantalla(new MisSolicitudes());
+                        CambiarPantalla(new MisSolicitudes(),1);
                     }
                 });
                 alert.show();

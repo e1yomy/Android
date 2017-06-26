@@ -18,41 +18,39 @@
             android:id="@+id/tabTitulos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="@color/blanco"
-            app:tabSelectedTextColor="@color/colorAccent">
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ITAI" />
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextColor="@color/blanco">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estructura Organica" />
+                android:text="@string/itai" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Marco Normativo" />
+                android:text="@string/estructuraorganica" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Directorio" />
+                android:text="@string/marconormativo" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Servicios" />
+                android:text="@string/directorio" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calendario Oficial" />
+                android:text="@string/servicios" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/calendariooficial" />
         </android.support.design.widget.TabLayout>
 
         <ScrollView

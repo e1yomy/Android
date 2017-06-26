@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +27,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.toolbar;
-
+import static transparencia.itai.com.transparenciadigital.MainActivity.txtTituloPantalla;
 
 
 /**
@@ -162,10 +165,11 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
     FragmentManager fragmentManager;
     static ScrollView layoutRegistro1,layoutInicioSesion;
     //LinearLayout layoutInicioSesion;
-    Button btnRegistro1;
+    static FloatingActionButton btnRegistro1;
     static ArrayList<EditText> textos= new ArrayList<>();
     EditText editCuenta, editContrasena;
     static FloatingActionButton btnVolverRegistro;
+    Spinner spinnMunicipio;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -186,8 +190,14 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
 
 
         layoutInicioSesion.setVisibility(View.VISIBLE);
+        spinnMunicipio=(Spinner)view.findViewById(R.id.spinnMunicipio);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(c, R.array.municipios,R.layout.textospinner);
+        spinnMunicipio.setAdapter(adapter);
+
         layoutRegistro1.setVisibility(View.GONE);
-        btnRegistro1=(Button)view.findViewById(R.id.btnRegistro1);
+        btnRegistro1=(FloatingActionButton)view.findViewById(R.id.btnRegistro1);
+        btnRegistro1.setVisibility(View.GONE);
+        btnVolverRegistro.setVisibility(View.GONE);
         toolbar.setVisibility(View.GONE);
         Botones();
         Llenar(view);
@@ -205,6 +215,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                     layoutRegistro1.setVisibility(View.VISIBLE);
                     layoutRegistro1.fullScroll(View.FOCUS_UP);
                     btnVolverRegistro.show();
+                    btnRegistro1.show();
+                    txtTituloPantalla.setText("Registro");
                 } catch (Exception ex) {
                     String s = ex.getMessage();
                 }
@@ -220,6 +232,111 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                 //layoutInicioSesion.setVisibility(View.VISIBLE);
                 //layoutRegistro1.setVisibility(View.GONE);
 
+                for(byte i=0;i<textos.size();i++)
+                {
+                    String texto=textos.get(i).getText().toString();
+                    switch (i)
+                    {
+                        case 0:
+                            if(texto.length()<3)
+                            {
+                                Snack("Verificar los campos");
+                                return;
+                            }
+                            break;
+                        case 1:
+                            if(texto.length()<3)
+                            {
+                                Snack("Verificar los campos");
+                                return;
+                            }
+                            break;
+                        case 2:
+                            if(texto.length()<3)
+                            {
+                                Snack("Verificar los campos");
+                                return;
+                            }
+                            break;
+                        case 3:
+                            if(!texto.contains("@"))
+                            {
+                                Snack("Ingresar un correo electrónico válido");
+                                return;
+                            }
+                            break;
+                        case 4:
+                            if(texto.length()<3)
+                            {
+                                Snack("Favor de utilizar una contraseña más larga");
+                                return;
+                            }
+                            break;
+                        case 5:
+                            if(!texto.equals(textos.get(i-1).getText().toString()))
+                            {
+                                Snack("Las contraseñas no coinciden");
+                                return;
+                            }
+                            if(texto.length()<3)
+                            {
+                                Snack("Favor de utilizar una contraseña más larga");
+                                return;
+                            }
+                            break;
+                        case 6:
+                            if(texto.length()<2)
+                            {
+                                Snack("Verificar el nombre de la calle");
+                                return;
+                            }
+                            break;
+                        case 7:
+                            if(texto.length()==0)
+                            {
+                                Snack("Verificar el Número Exterior");
+                                return;
+                            }
+                            break;
+                        case 8:
+                            break;
+                        case 9:
+                            if(texto.length()<2)
+                            {
+                                Snack("Verificar el nombre de las calle");
+                                return;
+                            }
+                            break;
+                        case 10:
+                            if(texto.length()<2)
+                            {
+                                Snack("Verificar el nombre de la colonia");
+                                return;
+                            }
+                        break;
+                        case 11:
+                            if(texto.length()!=5)
+                            {
+                                Snack("Verificar el Código Postal");
+                                return;
+                            }
+                            break;
+                        case 12:
+                            break;
+                        case 13:
+                            if(texto.length()<10)
+                            {
+                                Snack("Verificar el Número Telefónico");
+                                return;
+                            }
+                            break;
+                    }
+                }
+                if(spinnMunicipio.getSelectedItemPosition()==0)
+                {
+                    Snack("Seleccionar un municipio");
+                    return;
+                }
                 preferences.edit().putBoolean("sesion",false);
                 //Registro(textos.get(3).getText().toString(),textos.get(4).getText().toString(),textos.get(0).getText().toString(),textos.get(1).getText().toString(),textos.get(2).getText().toString(),textos.get(6).getText().toString(),textos.get(7).getText().toString(),textos.get(8).getText().toString(),textos.get(9).getText().toString(),textos.get(10).getText().toString(),textos.get(11).getText().toString(),textos.get(12).getText().toString(),textos.get(13).getText().toString(),textos.get(14).getText().toString());
                 try {
@@ -239,8 +356,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                     postDataParams.put("colonia", textos.get(10).getText().toString());
                     postDataParams.put("CP", textos.get(11).getText().toString());
                     postDataParams.put("entidad", textos.get(12).getText().toString());
-                    postDataParams.put("municipio", textos.get(13).getText().toString());
-                    postDataParams.put("telefono", textos.get(14).getText().toString());
+                    postDataParams.put("municipio", spinnMunicipio.getSelectedItem().toString());
+                    postDataParams.put("telefono", textos.get(13).getText().toString());
                     new AsyncConsulta().execute();
                 }
                 catch (Exception ex)
@@ -291,6 +408,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
                 layoutInicioSesion.setVisibility(View.VISIBLE);
                 layoutRegistro1.setVisibility(View.GONE);
                 btnVolverRegistro.hide();
+                btnRegistro1.hide();
+                txtTituloPantalla.setText("Inicio de Sesión");
                 LimpiarCampos();
             }
         });
@@ -310,7 +429,7 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         textos.add((EditText) view.findViewById(R.id.editDomicilioColonia1));
         textos.add((EditText) view.findViewById(R.id.editDomicilioCP1));
         textos.add((EditText) view.findViewById(R.id.editDomicilioEntidadFederativa1));
-        textos.add((EditText) view.findViewById(R.id.editDomicilioMunicipio1));
+        textos.get(textos.size()-1).setEnabled(false);
         textos.add((EditText) view.findViewById(R.id.editTelefono1));
 
         for(byte i=0;i<textos.size();i++){

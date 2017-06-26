@@ -12,17 +12,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
-import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
-import static transparencia.itai.com.transparenciadigital.MainActivity.ListaSujetosObligados;
-import static transparencia.itai.com.transparenciadigital.MainActivity.ListarSolicitudesDeSujetoObligado;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 
@@ -118,18 +117,21 @@ public class SujetosObligados extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    int nivel=-1;
+    byte nivel=0;
     static ArrayList<ListView> listas= new ArrayList<>();
     static List<String> lista = new ArrayList<>();
     FloatingActionButton btnVolverSO;
     static TextView txtTituloSO;
-    int index=-1;
+    int indSolicitud=-1;
+    int indSO=-1;
     View view;
+    static ListView listaSO;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_sujetos_obligados, container, false);
+        listaSO=(ListView) view.findViewById(R.id.listSujetosObligados);
         listas.add((ListView) view.findViewById(R.id.listSujetosObligados));
         listas.add((ListView) view.findViewById(R.id.listSolicitudes));
         listas.add((ListView) view.findViewById(R.id.listDetalles));
@@ -137,28 +139,30 @@ public class SujetosObligados extends Fragment {
         txtTituloSO= (TextView)view.findViewById(R.id.txtTituloSO);
         Clics();
         CargarSujetos();
-        ActualizarPantalla(++nivel);
+        ActualizarPantalla(nivel);
 
         return view;
     }
 
     private void CargarSujetos() {
         try {
-            ListaSujetosObligados(view);
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, nombresSO);
+            listaSO.setAdapter(arrayAdapter);
+            //ListaSujetosObligados(view);
             try {
-                postDataParams = new JSONObject();
-                postDataParams.put("token", "12345678");
-                postDataParams.put("funcion", "listarSujetos");
+                //postDataParams = new JSONObject();
+                //postDataParams.put("token", "12345678");
+                //postDataParams.put("funcion", "listarSujetos");
                 //new AsyncConsulta().execute();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            String a=ex.getMessage()+" "+ex.getLocalizedMessage();
+            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -172,45 +176,82 @@ public class SujetosObligados extends Fragment {
         btnVolverSO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActualizarPantalla(--nivel);
+
+                try {
+                    ActualizarPantalla(--nivel);
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         listas.get(0).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                index=position;
-                ActualizarPantalla(++nivel);
-                //Llamar a hacer lista de solicitude
-                listas.get(1).setAdapter(null);
-                CargarSolicitudes();
+                try {
+                    indSO = position;
+
+                    ActualizarPantalla(++nivel);
+                    //Llamar a hacer lista de solicitude
+                    listas.get(1).setAdapter(null);
+                    CargarSolicitudes();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         listas.get(1).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                index=position;
-                ActualizarPantalla(++nivel);
-                List<String> l=new ArrayList<String>();
-                l.add(String.valueOf(solicitudes.get(position).tipo));
-                l.add(String.valueOf(solicitudes.get(position).id));
-                l.add(solicitudes.get(position).sujetoObligado);
-                l.add(solicitudes.get(position).fecha);
-                l.add(String.valueOf(solicitudes.get(position).estado));
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,l);
-                listas.get(2).setAdapter(arrayAdapter);
+                try {
+                    indSolicitud = position;
+                    ActualizarPantalla(++nivel);
+                    //List<String> l = new ArrayList<String>();
+                    //l.add(String.valueOf(solicitudes.get(position).tipo));
+                    //l.add(String.valueOf(solicitudes.get(position).id));
+                    //l.add(solicitudes.get(position).sujetoObligado);
+                    //l.add(solicitudes.get(position).fecha);
+                    //l.add(String.valueOf(solicitudes.get(position).estado));
+
+                    postDataParams = new JSONObject();
+                    postDataParams.put("token", "12345678");
+                    postDataParams.put("funcion", "datosSolicitud");
+                    postDataParams.put("tabla", "solAcceso");
+                    postDataParams.put("idTabla", "idAcceso");
+                    postDataParams.put("id", solicitudes.get(position).id);
+                    new AsyncConsulta().execute();
+
+
+                    //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, l);
+                    //listas.get(2).setAdapter(arrayAdapter);
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
     private void CargarSolicitudes() {
         try {
-            ListarSolicitudesDeSujetoObligado(idSO.get(index));
-        }
-        catch (Exception ex)
-        {
-            String a=ex.getMessage()+" "+ex.getLocalizedMessage();
+            //ListarSolicitudesDeSujetoObligado(idSO.get(indSO));
+            postDataParams = new JSONObject();
+            postDataParams.put("token", "12345678");
+            postDataParams.put("funcion", "listarSolicitudSujetos");
+            postDataParams.put("tabla", "solAcceso");
+            postDataParams.put("idSuj", idSO.get(indSO));
+            new AsyncConsulta().execute();
+
+        } catch (Exception e) {
+            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
     public void ActualizarPantalla(int n){
+        if(nivel<0)
+            nivel=0;
         switch (n)
         {
             case 0:
@@ -219,13 +260,19 @@ public class SujetosObligados extends Fragment {
                 break;
             case 1:
                 btnVolverSO.show();
-                txtTituloSO.setText("Listado solicitudes realizadas a "+nombresSO.get(index));
+                txtTituloSO.setText("Listado solicitudes realizadas a "+nombresSO.get(indSO));
                 ///Guardar el texto del item seleccionado y mostrarlo aquí
                 break;
             case 2:
                 btnVolverSO.show();
                 txtTituloSO.setText("Detalles de la solicitud");
                 break;
+            default:
+                n=0;
+                btnVolverSO.hide();
+                txtTituloSO.setText("Listado de Sujetos Obligados");
+                break;
+
         }
 
         for(byte i=0;i<listas.size();i++)

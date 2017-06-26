@@ -6,27 +6,40 @@
     android:visibility="visible"
     tools:context="transparencia.itai.com.transparenciadigital.Sesion">
 
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnRegistro1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnVolverRegistro"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_send" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnVolverRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="21dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:clickable="true"
-        android:visibility="gone"
-        app:fabSize="normal"
+        android:visibility="visible"
+        app:fabSize="mini"
         app:srcCompat="@android:drawable/ic_menu_revert" />
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
 
 
         <ScrollView
@@ -34,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
 
@@ -63,7 +76,7 @@
                     android:layout_weight="1"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:text="Correo"
+                    android:text="@string/correo"
                     android:textAlignment="textStart"
                     android:textSize="24sp" />
 
@@ -87,7 +100,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:text="Contraseña"
+                    android:text="@string/contrasena"
                     android:textAlignment="textStart"
                     android:textSize="24sp" />
 
@@ -108,7 +121,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
-                    android:text="Entrar" />
+                    android:text="@string/entrar" />
 
                 <TextView
                     android:id="@+id/txtRegistro"
@@ -116,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:layout_weight="1"
-                    android:text="¿No estas registrado?  registrate."
+                    android:text="@string/noestasregistrado"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -126,8 +139,9 @@
             android:id="@+id/layoutRegistro1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -138,14 +152,15 @@
                     android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nombre completo de persona fisica" />
+                    android:text="Nombre completo de persona fisica"
+                    tools:text="@string/titulonombre" />
 
                 <EditText
                     android:id="@+id/editNombres1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Nombre (s)"
+                    android:hint="@string/nombre"
                     android:inputType="textPersonName" />
 
                 <EditText
@@ -153,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Apellido paterno"
+                    android:hint="@string/paterno"
                     android:inputType="textPersonName" />
 
                 <EditText
@@ -161,7 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Apellido materno"
+                    android:hint="@string/materno"
                     android:inputType="textPersonName" />
 
                 <TextView
@@ -169,7 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
-                    android:text="Correo electrónico" />
+                    android:text="@string/correo" />
 
                 <EditText
                     android:id="@+id/editEmail1"
@@ -184,14 +199,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
-                    android:text="Contraseña" />
+                    android:text="@string/contrasena" />
 
                 <EditText
                     android:id="@+id/editContra11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Contraseña"
+                    android:hint="@string/contrasena"
                     android:inputType="textPassword" />
 
                 <EditText
@@ -199,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Repetir contraseña"
+                    android:hint="@string/contrasena2"
                     android:inputType="textPassword" />
 
                 <TextView
@@ -207,14 +222,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
-                    android:text="Domicilio" />
+                    android:text="@string/domicilio" />
 
                 <EditText
                     android:id="@+id/editDomicilioCalle1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Calle"
+                    android:hint="@string/calle"
                     android:inputType="textPersonName" />
 
                 <LinearLayout
@@ -228,7 +243,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:hint="Núm. Exterior"
+                        android:hint="@string/nexterior"
                         android:inputType="number" />
 
                     <EditText
@@ -237,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:hint="Núm. Interior"
+                        android:hint="@string/ninterior"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -248,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Entre las calles"
+                    android:hint="@string/entrecalles"
                     android:inputType="textPersonName" />
 
                 <LinearLayout
@@ -262,7 +277,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:hint="Colonia"
+                        android:hint="@string/colonia"
                         android:inputType="textPersonName" />
 
                     <EditText
@@ -271,7 +286,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:hint="C.P."
+                        android:hint="@string/cp"
                         android:inputType="number" />
                 </LinearLayout>
 
@@ -280,44 +295,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Entidad federativa"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:text="@string/bcs"
+                    tools:text="@string/bcs" />
 
-                <EditText
-                    android:id="@+id/editDomicilioMunicipio1"
+                <Spinner
+                    android:id="@+id/spinnMunicipio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Municipio"
-                    android:inputType="textPersonName" />
+                    android:entries="@array/municipios" />
 
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
-                    android:text="Teléfono" />
+                    android:text="@string/telefono" />
 
                 <EditText
                     android:id="@+id/editTelefono1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Número telefónico"
+                    android:hint="@string/numtelefonico"
                     android:inputType="phone" />
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="70dp"
                     android:paddingTop="30dp"
-                    android:text="El llenado de estos datos evitará que deba capturarlos al momento de realizar alguna solicitud." />
-
-                <Button
-                    android:id="@+id/btnRegistro1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Terminar registro" />
+                    android:text="@string/leyendaregistro" />
 
             </LinearLayout>
         </ScrollView>

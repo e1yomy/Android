@@ -24,8 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static transparencia.itai.com.transparenciadigital.Conexion.idSO;
-import static transparencia.itai.com.transparenciadigital.Conexion.nombresSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
@@ -231,7 +231,7 @@ public class NuevaSolicitudAcceso extends Fragment implements MisSolicitudes.OnF
                 alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        CambiarPantalla(new MisSolicitudes());
+                        CambiarPantalla(new MisSolicitudes(),1);
                     }
                 });
                 alert.setNeutralButton("Volver", new DialogInterface.OnClickListener() {

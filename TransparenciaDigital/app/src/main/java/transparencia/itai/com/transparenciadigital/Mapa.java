@@ -3,6 +3,8 @@ package transparencia.itai.com.transparenciadigital;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -165,7 +168,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback{
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_SUBJECT, "");
                     intent.putExtra(Intent.EXTRA_TEXT, "");
-                    intent.setData(Uri.parse("mailto:elyo_my@hotail.com")); // or just "mailto:" for blank
+                    intent.setData(Uri.parse("mailto:itai@itaibcs.org.mx")); // or just "mailto:" for blank
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
                     startActivity(intent);
                 }
@@ -183,7 +186,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback{
         try{
             LatLng la = new LatLng(24.1518067,-110.3068054);
             //preferences.edit().putFloat("actualLat", (float) l.getLatitude()).putFloat("actualLon", (float) l.getLongitude()).commit();
-            MarkerOptions mar=new MarkerOptions().position(la).title("Instituto de Transparencia").snippet("Félix Ortega #1795 Esq. Melchor Ocampo.").icon(BitmapDescriptorFactory.defaultMarker());
+            //MarkerOptions mar=new MarkerOptions().position(la).title("Instituto de Transparencia").snippet("Félix Ortega #1795 Esq. Melchor Ocampo.").icon(BitmapDescriptorFactory.defaultMarker());
+            MarkerOptions mar=new MarkerOptions().position(la).title("Instituto de Transparencia").snippet("Félix Ortega #1795 Esq. Melchor Ocampo.").icon(bitmapSizeByScall());
 
             googleMap.addMarker(mar);
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(la,15));
@@ -197,6 +201,15 @@ public class Mapa extends Fragment implements OnMapReadyCallback{
         {
             Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+    public static BitmapDescriptor bitmapSizeByScall() {
+        BitmapDescriptor bit;
+        Bitmap bi= BitmapFactory.decodeResource(c.getResources(),R.mipmap.ic_marker);
+        Bitmap bi2 = Bitmap.createScaledBitmap(bi,
+                Math.round(bi.getWidth() * 1.0f),
+                Math.round(bi.getHeight() * 1.0f), false);
+        bit=BitmapDescriptorFactory.fromBitmap(bi2);
+        return bit;
     }
 
 }

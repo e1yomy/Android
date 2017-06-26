@@ -4,13 +4,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Ajustes</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="itai">ITAI</string>
     <string name="itai1">Instituto de Transparencia y Acceso a la Información Pública del. Estado de Baja California Sur</string>
+    <string name="itai2">Instituto de Transparencia</string>
     <string name="hello_blank_fragment">Te falta disenar esto, sí, lo se, falta la enie.</string>
-    <string name="quienessomos">¿Quiénes somos?</string>
     <string name="quienessomostexto">El Instituto es un organismo constitucional autónomo, especializado, imparcial y colegiado, con personalidad jurídica y patrimonio propio, el cual gozará de plena autonomía técnica, de gestión, capacidad para decidir sobre el ejercicio de su presupuesto y determinar su organización interna, responsable de garantizar el cumplimiento del derecho a la transparencia, acceso a la información pública y a la protección de datos personales en posesión de los sujetos obligados. El Instituto no se encuentra subordinado a ninguna autoridad. Las resoluciones del Instituto, en materia de clasificación de información y acceso a la información, serán vinculantes, definitivas e inatacables para todos los sujetos obligados.</string>
     <string name="articulo32">Artículo 32° Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur</string>
     <string name="articulo33">Artículo 33° Ley de Transparencia y Acceso a la Información Pública del Estado de Baja California Sur</string>
@@ -46,7 +46,7 @@
     <string name="reglamentointerior">Reglamento Interior del Instituto de Transparencia, Acceso a la Información Pública y Protección de Datos Personales del Estado de Baja California Sur</string>
     <string name="consultarestructuraorganica">Puede consultar la estructura orgánica dando click en el siguiente botón .</string>
     <string name="botonconsultarestructura">Consultar Estructura Orgánica</string>
-    <string name="marconormativo">Marco normativo</string>
+    <string name="marconormativo">Marco Normativo</string>
     <string name="constitucionpolitica">Constitución Política</string>
     <string name="constitucionpolitica1">Constitución Política de los Estados Unidos Mexicanos. (Última reforma publicada DOF 29-01-2016)</string>
     <string name="constitucionpolitica2">Constitución Política del Estado Libre y Soberano de Baja California Sur. (Última reforma publicada BOGE 31-07-2016)</string>
@@ -106,6 +106,7 @@
 
 
     <string-array name="municipios">
+        <item>Seleccionar municipio</item>
         <item>Mulegé</item>
         <item>Loreto</item>
         <item>Comondú</item>
@@ -141,6 +142,7 @@
     <string name="recursoderevision">Recurso de Revisión</string>
     <string name="denunciaporincumplimiento">Denuncia por Incumplimiento</string>
     <string name="sujetosobligados">Sujetos Obligados</string>
+
     <string name="encuentranos">Encuéntranos</string>
     <string name="misdatos">Mis Datos</string>
     <string name="salir">Salir</string>
@@ -199,4 +201,38 @@
     <string name="ayuda9">
 
 </string>
+    <string name="directorio">Directorio</string>
+    <string name="servicios">Servicios</string>
+    <string name="calendariooficial">Calendario Oficial</string>
+    <string name="quienessomos">¿Quiénes somos?</string>
+    <string name="sitiosdeinteres">Sitios de Interés</string>
+    <string name="listadoSujetosObligados">Listado de Sujetos Obligados</string>
+    <string name="correo">Correo electrónico</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="noestasregistrado">¿No estas registrado?. Registrate.</string>
+    <string name="entrar">Entrar</string>
+    <string name="titulonombre">Nombre completo de persona física</string>
+    <string name="nombre">Nombre (s)</string>
+    <string name="paterno">Apellido paterno</string>
+    <string name="materno">Apellido materno</string>
+    <string name="contrasena2">Repetir contraseña</string>
+    <string name="domicilio">Domicilio</string>
+    <string name="calle">Calle</string>
+    <string name="nexterior">Num. Exterior</string>
+    <string name="ninterior">Num. Interior</string>
+    <string name="entrecalles">Entre las calles</string>
+    <string name="colonia">Colonia</string>
+    <string name="cp">C.P.</string>
+    <string name="entidadfederativa">Entidad federativa</string>
+    <string name="municipio">Municipio</string>
+    <string name="telefono">Teléfono</string>
+    <string name="numtelefonico">Número telefónico</string>
+    <string name="leyendaregistro">El llenado de estos datos evitará que deba capturarlos al momento de realizar alguna solicitud.</string>
+    <string name="sujetoobligado">Sujeto Obligado</string>
+    <string name="incumplimiento">Incumplimiento</string>
+    <string name="incumplimientohint">Descripción clara y precisa del incumplimiento denunciado.</string>
+    <string name="informacionsolicitada">Información solicitada</string>
+    <string name="informacionsolicitadahint">Descripción clara y precisa de la información solicitada. Con el fin de brindar un mejor servicio, además de describir la información o documentos que solicita, se sugiere proporcionar todos los datos que considere facilitan su búsqueda.</string>
+    <string name="bcs">Baja California Sur</string>
+
 </resources>

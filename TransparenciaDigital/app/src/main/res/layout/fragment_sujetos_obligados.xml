@@ -32,7 +32,7 @@
             android:id="@+id/txtTituloSO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Listado de sujetos obligados" />
+            android:text="@string/listadoSujetosObligados" />
 
         <ListView
             android:id="@+id/listSujetosObligados"

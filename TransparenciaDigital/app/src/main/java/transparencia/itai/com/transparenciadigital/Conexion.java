@@ -14,10 +14,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static transparencia.itai.com.transparenciadigital.MainActivity.FormatoNombre;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.preferences;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.opcion;
@@ -37,8 +37,6 @@ public class Conexion {
     StringBuilder resul=new StringBuilder();
     HttpURLConnection conection;
     final String contrasenaWS="patito";
-    static List<String> nombresSO= new ArrayList<>();
-    static List<String> idSO = new ArrayList<>();
 
 
 

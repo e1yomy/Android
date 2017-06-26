@@ -25,7 +25,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sujeto Obligado" />
+                    android:text="@string/sujetoobligado" />
 
                 <AutoCompleteTextView
                     android:id="@+id/editSujeto"
@@ -43,14 +43,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
-                    android:text="Información solicitada" />
+                    android:text="@string/informacionsolicitada" />
 
                 <EditText
                     android:id="@+id/editDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Descripción clara y precisa de la información solicitada. Con el fin de brindar un mejor servicio, además de describir la información o documentos que solicita, se sugiere proporcionar todos los datos que considere facilitan su búsqueda"
+                    android:hint="@string/informacionsolicitadahint"
                     android:inputType="textMultiLine"
                     android:textAlignment="textStart" />
 

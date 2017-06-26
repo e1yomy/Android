@@ -5,47 +5,46 @@
         <item
             android:id="@+id/nav_missolicitudes"
             android:icon="@drawable/ic_mis_solicitudes"
-            android:title="Mis solicitudes" />
+            android:title="@string/missolisitudes" />
         <item
             android:id="@+id/nav_acceso"
             android:icon="@drawable/ic_sol_informacion"
-            android:title="Solicitud de informacion" />
+            android:title="@string/solicituddeinformacion" />
         <item
             android:id="@+id/nav_denuncia"
             android:icon="@drawable/ic_incumplimiento"
-            android:title="Denuncia por incumplimiento" />
+            android:title="@string/denunciaporincumplimiento" />
         <item
             android:id="@+id/nav_sujetosobligados"
             android:icon="@drawable/ic_sujeto_obligado"
-            android:title="Sujetos Obligados" />
+            android:title="@string/sujetosobligados" />
     </group>
-    <item android:title="¿Quiénes somos?">
-        <menu >
+    <item android:title="@string/quienessomos">
+        <menu>
             <group android:checkableBehavior="all">
-            <item
-                android:id="@+id/nav_quienessomos"
-                android:icon="@mipmap/ic_launcher"
-                android:title="Instituto de Transparencia"
-                />
-            <item
-                android:id="@+id/nav_mapa"
-                android:icon="@drawable/ic_ubicacion"
-                android:title="Encuéntranos" />
+                <item
+                    android:id="@+id/nav_quienessomos"
+                    android:icon="@mipmap/ic_launcher"
+                    android:title="@string/itai2" />
+                <item
+                    android:id="@+id/nav_mapa"
+                    android:icon="@drawable/ic_ubicacion"
+                    android:title="@string/encuentranos" />
             </group>
 
         </menu>
     </item>
-    <item android:title="Sitios de Interés">
+    <item android:title="@string/sitiosdeinteres">
         <menu>
             <group>
-            <item
-                android:id="@+id/nav_sitioitai"
-                android:icon="@mipmap/ic_launcher"
-                android:title="Instituto de Transparencia" />
-            <item
-                android:id="@+id/nav_sitiopnt"
-                android:icon="@drawable/ic_pnt"
-                android:title="PNT" />
+                <item
+                    android:id="@+id/nav_sitioitai"
+                    android:icon="@mipmap/ic_launcher"
+                    android:title="@string/itai2" />
+                <item
+                    android:id="@+id/nav_sitiopnt"
+                    android:icon="@drawable/ic_pnt"
+                    android:title="PNT" />
             </group>
         </menu>
     </item>
@@ -54,7 +53,7 @@
         <item
             android:id="@+id/nav_salir"
             android:icon="@drawable/ic_salir"
-            android:title="Salir" />
+            android:title="@string/salir" />
     </menu>
     </item>
 
