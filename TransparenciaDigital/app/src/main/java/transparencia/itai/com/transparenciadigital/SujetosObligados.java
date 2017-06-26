@@ -118,7 +118,7 @@ public class SujetosObligados extends Fragment {
     }
 
     byte nivel=0;
-    static ArrayList<ListView> listas= new ArrayList<>();
+    static ArrayList<ListView> listas;
     static List<String> lista = new ArrayList<>();
     FloatingActionButton btnVolverSO;
     static TextView txtTituloSO;
@@ -132,6 +132,7 @@ public class SujetosObligados extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_sujetos_obligados, container, false);
         listaSO=(ListView) view.findViewById(R.id.listSujetosObligados);
+        listas= new ArrayList<>();
         listas.add((ListView) view.findViewById(R.id.listSujetosObligados));
         listas.add((ListView) view.findViewById(R.id.listSolicitudes));
         listas.add((ListView) view.findViewById(R.id.listDetalles));
