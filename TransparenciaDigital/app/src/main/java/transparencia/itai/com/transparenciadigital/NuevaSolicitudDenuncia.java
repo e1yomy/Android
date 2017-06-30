@@ -2,6 +2,7 @@ package transparencia.itai.com.transparenciadigital;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,17 +15,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
-import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.CambiarPantalla;
 import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 import static transparencia.itai.com.transparenciadigital.MainActivity.c;
+import static transparencia.itai.com.transparenciadigital.MainActivity.idSO;
+import static transparencia.itai.com.transparenciadigital.MainActivity.nombresSO;
 import static transparencia.itai.com.transparenciadigital.MainActivity.postDataParams;
 import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 
@@ -130,6 +132,7 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
     AutoCompleteTextView editSujetoO;
     EditText editDescripcionIncumplimiento;
     View view;
+    TextView txtDenunciaLey,txtDenunciaArticulo75;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -143,6 +146,8 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
                     android.R.layout.simple_dropdown_item_1line, nombresSO);
             editSujetoO.setAdapter(adapter);
+            txtDenunciaLey= (TextView)view.findViewById(R.id.txtDenunciaLey);
+            txtDenunciaArticulo75= (TextView)view.findViewById(R.id.txtDenunciaArticulo75);
             Boton(view);
         }
         catch (Exception ex)
@@ -153,6 +158,18 @@ public class NuevaSolicitudDenuncia extends Fragment implements MisSolicitudes.O
     }
 
     private void Boton(final View view) {
+        txtDenunciaLey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/leyes/LTransparenciaAccesoBCS26MAY2016.pdf")));
+            }
+        });
+        txtDenunciaArticulo75.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/informacion-publica-obligatoria/articulo-75.html")));
+            }
+        });
         btnTerminarSolicitudDenuncia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

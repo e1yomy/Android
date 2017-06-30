@@ -34,7 +34,7 @@
             android:id="@+id/spinOpciones"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:backgroundTint="@color/common_action_bar_splitter"
+            android:backgroundTint="@color/colorAccent"
             android:entries="@array/opciones"
             android:paddingBottom="5dp"
             android:paddingTop="5dp" />

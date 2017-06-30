@@ -429,7 +429,8 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         textos.add((EditText) view.findViewById(R.id.editDomicilioColonia1));
         textos.add((EditText) view.findViewById(R.id.editDomicilioCP1));
         textos.add((EditText) view.findViewById(R.id.editDomicilioEntidadFederativa1));
-        textos.get(textos.size()-1).setEnabled(false);
+        textos.get(textos.size()-1).setFocusable(false);textos.get(textos.size()-1).setClickable(false);
+
         textos.add((EditText) view.findViewById(R.id.editTelefono1));
 
         for(byte i=0;i<textos.size();i++){

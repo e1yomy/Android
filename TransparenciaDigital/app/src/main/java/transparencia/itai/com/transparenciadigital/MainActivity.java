@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
@@ -371,10 +373,17 @@ public class MainActivity extends AppCompatActivity
                 preferences.getString("telefono","")
         );
     }
+    public static void removePhoneKeypad() {
+        InputMethodManager inputManager = (InputMethodManager) mainView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        IBinder binder =mainView.getWindowToken();
+        inputManager.hideSoftInputFromWindow(binder,
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
     public static  void CambiarPantalla(Fragment f, int p)
     {
         if(p!=pantalla) {
             OcultarSnack();
+            removePhoneKeypad();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.entrada, R.anim.salida);
             fragmentTransaction.replace(R.id.content_principal, f);
@@ -434,6 +443,7 @@ public class MainActivity extends AppCompatActivity
                     s.dismiss();
                 }
             });
+            s.setActionTextColor(c.getResources().getColor(R.color.colorPrimary));
         }
         s.show();
     }

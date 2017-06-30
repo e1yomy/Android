@@ -235,4 +235,6 @@
     <string name="informacionsolicitadahint">Descripción clara y precisa de la información solicitada. Con el fin de brindar un mejor servicio, además de describir la información o documentos que solicita, se sugiere proporcionar todos los datos que considere facilitan su búsqueda.</string>
     <string name="bcs">Baja California Sur</string>
 
+    <string name="denunciaLeyesENlace">Artículo 75: \nLos sujetos obligados pondrán a disposición del público y mantendrán actualizada, en los respectivos medios electrónicos, de acuerdo con sus facultades, atribuciones, funciones u objeto social, según corresponda la información, por lo menos, de los temas, documentos y políticas que a continuación se señalan. (Toque para ver detalles)</string>
+
 </resources>

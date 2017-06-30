@@ -10,8 +10,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,6 +46,20 @@
                 android:ems="10"
                 android:hint="@string/incumplimientohint"
                 android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/txtDenunciaLey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="30dp"
+                android:text="@string/leyes1" />
+
+            <TextView
+                android:id="@+id/txtDenunciaArticulo75"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="70dp"
+                android:text="@string/denunciaLeyesENlace" />
 
         </LinearLayout>
     </ScrollView>
