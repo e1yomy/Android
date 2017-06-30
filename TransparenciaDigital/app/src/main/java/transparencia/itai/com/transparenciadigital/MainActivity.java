@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,14 +114,22 @@ public class MainActivity extends AppCompatActivity
     static List<String> nombresSO= new ArrayList<>();
     static List<String> idSO = new ArrayList<>();
     static MainActivity ma;
+    static Snackbar s;
+    static ImageView imgEstadoConexion;
+    static Boolean hayConexion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
+            }
+        }).start();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_principal,new Splash()).commit();
         ma=MainActivity.this;
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -126,18 +137,19 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         appBarLayout= (AppBarLayout)findViewById(R.id.appBarLayout);
+        appBarLayout.setBackgroundResource(R.drawable.side_nav_bar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         header= navigationView.getHeaderView(0);
-        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
-        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
-        txtTituloPantalla= (TextView)findViewById(R.id.txtTituloPantalla);
+        Cabecera();
         mainView= (RelativeLayout)findViewById(R.id.content_principal);
-        appBarLayout.setBackgroundResource(R.drawable.side_nav_bar);
+        //toolbar.setLogo(this.getResources().getDrawable(R.mipmap.ic_launcher));
+
         c=this;
         preferences= getSharedPreferences("preferencias",Context.MODE_PRIVATE);
         msgAyuda= new AlertDialog.Builder(c);
         progressDialog=new ProgressDialog(c);
+
         Hilo();
 
 
@@ -174,8 +186,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText( c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -234,12 +244,6 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    private static void QuitarSeleccionMenu() {
-        for(byte i=0;i<navigationView.getMenu().size();i++){
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -269,67 +273,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void MostrarAyuda() {
-        String s1 = "", s2 = "";
-        switch (pantalla) {
-            case 1:
-                //Mis solicitudes
-                s1 = getResources().getString(R.string.missolisitudes);
-                s2 = getResources().getString(R.string.ayuda1);
-                break;
-            case 2:
-                //Solicitud de acceso
-                s1 = getResources().getString(R.string.solicituddeinformacion);
-                s2 = getResources().getString(R.string.ayuda2);
-                break;
-            case 3:
-                //Recurso de revision
-                s1 = getResources().getString(R.string.recursoderevision);
-                s2 = getResources().getString(R.string.ayuda3);
-                break;
-            case 4:
-                //Denuncia por incumplimiento
-                s1 = getResources().getString(R.string.denunciaporincumplimiento);
-                s2 = getResources().getString(R.string.ayuda4);
-                break;
-            case 5:
-                //Sujetos obligados
-                s1 = getResources().getString(R.string.sujetosobligados);
-                s2 = getResources().getString(R.string.ayuda5);
-                break;
-            case 6:
-                //Nosotros
-                s1 = getResources().getString(R.string.itai);
-                s2 = getResources().getString(R.string.ayuda6);
-                break;
-            case 7:
-                //Encuentranos
-                s1 = getResources().getString(R.string.encuentranos);
-                s2 = getResources().getString(R.string.ayuda7);
-                break;
-            case 8:
-                //Mis datos//registro
-                s1 = getResources().getString(R.string.misdatos);
-                s2 = getResources().getString(R.string.ayuda8);
-                break;
-            case 9:
-                //Inicio de sesion
-                s1 = getResources().getString(R.string.action_help);
-                s2 = getResources().getString(R.string.ayuda9);
-                QuitarSeleccionMenu();
-                break;
-
-        }
-        Mensaje(s1,s2);
-    }
-
-    private void Mensaje(String titulo,String mensaje) {
-        msgAyuda.setTitle(titulo);
-        msgAyuda.setMessage(mensaje);
-        msgAyuda.setPositiveButton("Aceptar",null);
-        msgAyuda.show();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -342,15 +285,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public static void HabilitarMenu(boolean boo)
-    {
+    private static void QuitarSeleccionMenu() {
+        for(byte i=0;i<navigationView.getMenu().size();i++){
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+    }
+    public static void HabilitarMenu(boolean boo){
         misDatos.setEnabled(boo);
         cerrarSesion.setEnabled(boo);
     }
-
-    //Funcion que se encarga de verificar que la cuenta que se ha ingresado sea valida
-    //
-
     public static String FormatoNombre(String nombre){
         return nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
     }
@@ -379,8 +322,7 @@ public class MainActivity extends AppCompatActivity
         inputManager.hideSoftInputFromWindow(binder,
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
-    public static  void CambiarPantalla(Fragment f, int p)
-    {
+    public static  void CambiarPantalla(Fragment f, int p){
         if(p!=pantalla) {
             OcultarSnack();
             removePhoneKeypad();
@@ -427,9 +369,7 @@ public class MainActivity extends AppCompatActivity
             pantalla = p;
         }
     }
-    static Snackbar s;
-    public static void Snack(final String mensaje)
-    {
+    public static void Snack(final String mensaje){
         s=Snackbar.make(mainView,mensaje+".",Snackbar.LENGTH_INDEFINITE);
         if(mensaje.contains("enviado")||mensaje.contains("enviada")||pantalla==9)
         {
@@ -447,108 +387,12 @@ public class MainActivity extends AppCompatActivity
         }
         s.show();
     }
-    public static void OcultarSnack()
-    {
+    public static void OcultarSnack(){
         if (s != null)
             if (s.isShown())
                 s.dismiss();
     }
-
-    public static void IniciarSesion(final String cuenta, final String contra)
-    {
-
-        Thread tr = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Conexion conexion = new Conexion();
-                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
-                    if(conexion.IniciarSesion(cuenta,contra)==1) {
-                        toolbar.setVisibility(View.VISIBLE);
-                        preferences.edit().putBoolean("sesion", true).commit();
-                        HabilitarMenu(preferences.getBoolean("sesion", false));
-                        navigationView.getMenu().getItem(0).setChecked(true);
-                        txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
-                        txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
-                        CambiarPantalla(new MisSolicitudes(),1);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    String s= ex.getMessage();
-                }
-            }
-        });
-        tr.start();
-
-    }
-    public static void Registro( final String correo, final String contrasena, final String nombres, final String paterno, final String materno, final String calle, final String noExterno, final String noInterno, final String entreCalles, final String colonia, final String cp, final String entidadFederativa, final String municipio, final String telefono)
-    {
-        Thread tr = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Conexion conexion = new Conexion();
-                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
-                    if(conexion.RegistrarUsuario( correo, contrasena, nombres, paterno, materno, calle, noExterno, noInterno, entreCalles, colonia, cp, entidadFederativa, municipio, telefono)==1) {
-                        btnVolverRegistro.hide();
-                        LimpiarCampos();
-                        layoutInicioSesion.setVisibility(View.VISIBLE);
-                        layoutRegistro1.setVisibility(View.GONE);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    String s= ex.getMessage();
-
-                }
-            }
-        });
-        tr.start();
-
-    }
-    public static void ListaSujetosObligados(final View view)
-    {
-
-        Thread tr = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Conexion conexion = new Conexion();
-                    if(conexion.ListarSujetos()==1) {
-                        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, nombresSO);
-                        listas.get(0).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                listas.get(0).setAdapter(arrayAdapter);
-                            }
-                        });
-                        if(nombresSO.size()>0) {
-
-                        }
-                        else
-                        {
-                            txtTituloSO.setText("Listado de Sujetos Obligados" +
-                                    "\n\n" +
-                                    "No se ha encontrado un listado.\n" +
-                                    "Revise su conexión e intente nuevamente.");
-                        }
-                    }
-                    else
-                        Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
-                }
-                catch (Exception ex)
-                {
-                    String s= ex.getMessage();
-                    Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
-                }
-            }
-        });
-        tr.start();
-
-    }
-    public static void CargarSujetosObligados()
-    {
+    public static void CargarSujetosObligados(){
         Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -617,6 +461,119 @@ public class MainActivity extends AppCompatActivity
         tr.start();
 
     }
+    private void MostrarAyuda() {
+    String s1 = "", s2 = "";
+    switch (pantalla) {
+        case 1:
+            //Mis solicitudes
+            s1 = getResources().getString(R.string.missolisitudes);
+            s2 = getResources().getString(R.string.ayuda1);
+            break;
+        case 2:
+            //Solicitud de acceso
+            s1 = getResources().getString(R.string.solicituddeinformacion);
+            s2 = getResources().getString(R.string.ayuda2);
+            break;
+        case 3:
+            //Recurso de revision
+            s1 = getResources().getString(R.string.recursoderevision);
+            s2 = getResources().getString(R.string.ayuda3);
+            break;
+        case 4:
+            //Denuncia por incumplimiento
+            s1 = getResources().getString(R.string.denunciaporincumplimiento);
+            s2 = getResources().getString(R.string.ayuda4);
+            break;
+        case 5:
+            //Sujetos obligados
+            s1 = getResources().getString(R.string.sujetosobligados);
+            s2 = getResources().getString(R.string.ayuda5);
+            break;
+        case 6:
+            //Nosotros
+            s1 = getResources().getString(R.string.itai);
+            s2 = getResources().getString(R.string.ayuda6);
+            break;
+        case 7:
+            //Encuentranos
+            s1 = getResources().getString(R.string.encuentranos);
+            s2 = getResources().getString(R.string.ayuda7);
+            break;
+        case 8:
+            //Mis datos//registro
+            s1 = getResources().getString(R.string.misdatos);
+            s2 = getResources().getString(R.string.ayuda8);
+            break;
+        case 9:
+            //Inicio de sesion
+            s1 = getResources().getString(R.string.action_help);
+            s2 = getResources().getString(R.string.ayuda9);
+            QuitarSeleccionMenu();
+            break;
+
+    }
+    Mensaje(s1,s2);
+}
+    private void Mensaje(String titulo,String mensaje) {
+        msgAyuda.setTitle(titulo);
+        msgAyuda.setMessage(mensaje);
+        msgAyuda.setPositiveButton("Aceptar",null);
+        msgAyuda.show();
+    }
+    public void Hilo(){
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //////////////
+
+                    //////////////
+                    toolbar.setBackgroundResource(R.drawable.side_nav_bar);
+                    toolbar.setVisibility(View.GONE);
+                    progressDialog.setTitle("Espere");
+                    progressDialog.setMessage("Un momento, por favor.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+                    fragmentManager=getSupportFragmentManager();
+                    }
+                catch (Exception ex)
+                {
+                    Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        tr.start();
+    }
+    public void Cabecera()
+    {
+        txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
+        txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
+        txtTituloPantalla= (TextView)findViewById(R.id.txtTituloPantalla);
+        imgEstadoConexion = (ImageView)header.findViewById(R.id.imgEstadoConexion);
+
+        imgEstadoConexion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    VerificarConexion();
+                    /*
+                    if (imgEstadoConexion.getDrawable().getConstantState() == ma.getResources().getDrawable(R.mipmap.ic_conn_ok).getConstantState()) {
+                        //Hay conexion
+                        imgEstadoConexion.setImageDrawable(ma.getResources().getDrawable(R.mipmap.ic_conn_nok));
+                    } else {
+                        //No hay conexion
+                        imgEstadoConexion.setImageDrawable(ma.getResources().getDrawable(R.mipmap.ic_conn_ok));
+                    }
+                    */
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        });
+    }
+
     public static void ListarSolicitudesDeSujetoObligado(final String id)
     {
 
@@ -669,7 +626,7 @@ public class MainActivity extends AppCompatActivity
 
                     ///Borrar el tercer parametro para que vuelva a funcionar como antes
                     if(conexion.CargarSolicitud(fecha,idUsuario,idNofiticaciones,idSujeto,nombreSujeto,descripcion
-                    ,idTipoDeEntrega)==1) {
+                            ,idTipoDeEntrega)==1) {
                         ma.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -798,26 +755,150 @@ public class MainActivity extends AppCompatActivity
         });
         tr.start();
     }
-    public void Hilo()
+    public static void IniciarSesion(final String cuenta, final String contra)
+    {
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.IniciarSesion(cuenta,contra)==1) {
+                        toolbar.setVisibility(View.VISIBLE);
+                        preferences.edit().putBoolean("sesion", true).commit();
+                        HabilitarMenu(preferences.getBoolean("sesion", false));
+                        navigationView.getMenu().getItem(0).setChecked(true);
+                        txtNombreUsuario.setText(preferences.getString("headernombreusuario","Nombre"));
+                        txtEmailUsuario.setText(preferences.getString("headercorreo","alguien@example.com"));
+                        CambiarPantalla(new MisSolicitudes(),1);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                }
+            }
+        });
+        tr.start();
+
+    }
+    public static void Registro( final String correo, final String contrasena, final String nombres, final String paterno, final String materno, final String calle, final String noExterno, final String noInterno, final String entreCalles, final String colonia, final String cp, final String entidadFederativa, final String municipio, final String telefono)
     {
         Thread tr = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    toolbar.setBackgroundResource(R.drawable.side_nav_bar);
-                    toolbar.setVisibility(View.GONE);
-                    progressDialog.setTitle("Espere");
-                    progressDialog.setMessage("Un momento, por favor.");
-                    progressDialog.setCanceledOnTouchOutside(false);
-                    progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-                    fragmentManager=getSupportFragmentManager();
+                    Conexion conexion = new Conexion();
+                    ///Borrar el tercer parametro para que vuelva a funcionar como antes
+                    if(conexion.RegistrarUsuario( correo, contrasena, nombres, paterno, materno, calle, noExterno, noInterno, entreCalles, colonia, cp, entidadFederativa, municipio, telefono)==1) {
+                        btnVolverRegistro.hide();
+                        LimpiarCampos();
+                        layoutInicioSesion.setVisibility(View.VISIBLE);
+                        layoutRegistro1.setVisibility(View.GONE);
                     }
+                }
                 catch (Exception ex)
                 {
-                    Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    String s= ex.getMessage();
+
                 }
             }
         });
         tr.start();
+
+    }
+    public static void ListaSujetosObligados(final View view)
+    {
+
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Conexion conexion = new Conexion();
+                    if(conexion.ListarSujetos()==1) {
+                        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, nombresSO);
+                        listas.get(0).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listas.get(0).setAdapter(arrayAdapter);
+                            }
+                        });
+                        if(nombresSO.size()>0) {
+
+                        }
+                        else
+                        {
+                            txtTituloSO.setText("Listado de Sujetos Obligados" +
+                                    "\n\n" +
+                                    "No se ha encontrado un listado.\n" +
+                                    "Revise su conexión e intente nuevamente.");
+                        }
+                    }
+                    else
+                        Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
+                }
+                catch (Exception ex)
+                {
+                    String s= ex.getMessage();
+                    Snack("Ha ocurrido un problema y la lista no ha podido cargarse");
+                }
+            }
+        });
+        tr.start();
+
+    }
+
+    public Boolean VerificarConexion() {
+        //Debug.waitForDebugger();
+        try {
+            if (HayWIFI() || HayDatos()) {
+                imgEstadoConexion.setImageDrawable(ma.getResources().getDrawable(R.mipmap.ic_conn_ok));
+                return true;
+            } else {
+                imgEstadoConexion.setImageDrawable(ma.getResources().getDrawable(R.mipmap.ic_conn_nok));
+                Snack("No se ha detectado una conexión a Internet");
+                return false;
+            }
+        } catch (Exception ex) {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+
+    public Boolean HayWIFI(){
+        try{
+            ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
+                NetworkInfo info = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                if (info != null) {
+                    if (info.isConnected()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        catch (Exception ex) {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+    public Boolean HayDatos(){
+        try{
+            ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
+                NetworkInfo info = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                if (info != null) {
+                    if (info.isConnected()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        catch (Exception ex) {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 }

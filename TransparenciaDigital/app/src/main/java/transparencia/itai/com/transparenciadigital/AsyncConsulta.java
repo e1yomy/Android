@@ -60,58 +60,59 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
     int i=0;
     protected void onPreExecute(){
         progressDialog.show();
+
     }
 
     @Override
     protected String doInBackground(String... arg0) {
+        if(ma.VerificarConexion()) {
+            try {
+                URL url = new URL("http://pruebastec.890m.com/finales/datos.php"); // here is your URL path
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/json");
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(postDataParams.toString());
+                writer.flush();
+                writer.close();
+                os.close();
+                int responseCode = conn.getResponseCode();
+                InputStream inputStream;
+                // get stream
+                if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                    inputStream = conn.getInputStream();
+                } else {
+                    inputStream = conn.getErrorStream();
+                }
+                // parse stream
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp, response = "";
+                while ((temp = bufferedReader.readLine()) != null) {
+                    response += temp;
+                }
 
-        try {
+                return response;
 
-            URL url = new URL("http://pruebastec.890m.com/finales/datos.php"); // here is your URL path
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type", "application/json");
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(postDataParams.toString());
-            writer.flush();
-            writer.close();
-            os.close();
-            int responseCode=conn.getResponseCode();
-            InputStream inputStream;
-            // get stream
-            if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                inputStream = conn.getInputStream();
+            } catch (final Exception e) {
+                return new String("Exception: " + e.getMessage());
             }
-            else {
-                inputStream = conn.getErrorStream();
-            }
-            // parse stream
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String temp, response = "";
-            while ((temp = bufferedReader.readLine()) != null) {
-                response += temp;
-            }
-
-            return response;
-
         }
-        catch(final Exception e){
-            return new String("Exception: " + e.getMessage());
-        }
-
+        return "";
     }
+
     protected void onPostExecute(String result) {
         //Debug.waitForDebugger();
 
         //Toast.makeText(c, result,Toast.LENGTH_LONG).show();
-        try {
-            i=0;
+        if(!result.equals("")) {
+            try {
+                i = 0;
                 switch (postDataParams.get("funcion").toString()) {
                     case "registro":
                         Registro(result);
@@ -120,7 +121,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                         NuevaSolicitud(result);
                         break;
                     case "nuevoRecurso":
-                       NuevoRecurso(result);
+                        NuevoRecurso(result);
                         break;
                     case "nuevaDenuncia":
                         NuevaDenuncia(result);
@@ -142,15 +143,18 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                         break;
 
                 }
-        } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
-        } catch (Exception e){
-            Toast.makeText(c,e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+            } catch (Exception e) {
+                Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
-
+        else
+        {
+            //Snack("Verificar la conexión");
+        }
         progressDialog.dismiss();
     }
-
 
     private void NuevaSolicitud(String result) {
         if(result.equals("true"))
@@ -290,6 +294,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
             String a=e.getMessage();
         }
     }
+
     private void SolicitudesSujeto(String result) {
         try {
             solicitudes.clear();
