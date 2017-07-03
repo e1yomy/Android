@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="transparencia.itai.com.transparenciadigital.Registro">
+    tools:context="transparencia.itai.com.transparenciadigital.MisDatos">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/nexterior"
+                    android:hint="@string/ninterior"
                     android:inputType="number" />
 
             </LinearLayout>
@@ -198,13 +198,10 @@
                 android:hint="@string/entidadfederativa"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/editDomicilioMunicipio"
+            <Spinner
+                android:id="@+id/spinnDomicilioMunicipio"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/municipio"
-                android:inputType="textPersonName" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/textView10"

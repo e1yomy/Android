@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,12 +26,12 @@ import static transparencia.itai.com.transparenciadigital.MainActivity.usr;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Registro.OnFragmentInteractionListener} interface
+ * {@link MisDatos.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Registro#newInstance} factory method to
+ * Use the {@link MisDatos#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Registro extends Fragment  {
+public class MisDatos extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,7 +44,7 @@ public class Registro extends Fragment  {
     private OnFragmentInteractionListener mListener;
 
 
-    public Registro() {
+    public MisDatos() {
         // Required empty public constructor
     }
 
@@ -52,11 +54,11 @@ public class Registro extends Fragment  {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Registro.
+     * @return A new instance of fragment MisDatos.
      */
     // TODO: Rename and change types and number of parameters
-    public static Registro newInstance(String param1, String param2) {
-        Registro fragment = new Registro();
+    public static MisDatos newInstance(String param1, String param2) {
+        MisDatos fragment = new MisDatos();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -116,13 +118,17 @@ public class Registro extends Fragment  {
     ArrayList<EditText> texto;
     FloatingActionButton btnEditar, btnActualizar;
     View view;
+    Spinner spinnDomicilioMunicipio;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view =inflater.inflate(R.layout.fragment_registro, container, false);
+        view =inflater.inflate(R.layout.fragment_misdatos, container, false);
         btnEditar= (FloatingActionButton)view.findViewById(R.id.btnEditar);
         btnActualizar=(FloatingActionButton)view.findViewById(R.id.btnActualizar);
-
+        spinnDomicilioMunicipio=(Spinner)view.findViewById(R.id.spinnDomicilioMunicipio);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(c, R.array.municipios,R.layout.textospinner);
+        spinnDomicilioMunicipio.setAdapter(adapter);
+        spinnDomicilioMunicipio.setEnabled(false);
         Llenar(view);
         HabilitarCampos(false);
         Boton();
@@ -197,7 +203,6 @@ public class Registro extends Fragment  {
         texto.add((EditText) view.findViewById(R.id.editDomicilioColonia));
         texto.add((EditText) view.findViewById(R.id.editDomicilioCP));
         texto.add((EditText) view.findViewById(R.id.editDomicilioEntidadFederativa));
-        texto.add((EditText) view.findViewById(R.id.editDomicilioMunicipio));
         texto.add((EditText) view.findViewById(R.id.editTelefono));
 
         try {
@@ -206,8 +211,15 @@ public class Registro extends Fragment  {
                 final byte finalI = i;
                 if(i<2)
                     texto.get(i).setText(usr.datos.get(i+1));
+                else if(i==13)
+                    texto.get(i).setText(usr.datos.get(i+1));
                 else
                     texto.get(i).setText(usr.datos.get(i));
+
+                for (byte r = 0; r < spinnDomicilioMunicipio.getCount(); r++) {
+                    if (spinnDomicilioMunicipio.getItemAtPosition(r).toString().equals(usr.getMunicipio()))
+                        spinnDomicilioMunicipio.setSelection(r);
+                }
 
 
                 texto.get(i).setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -222,6 +234,7 @@ public class Registro extends Fragment  {
                     }
                 });
             }
+
         }
         catch (Exception ex)
         {
@@ -233,6 +246,7 @@ public class Registro extends Fragment  {
         for(byte i=0;i<texto.size();i++) {
             texto.get(i).setEnabled(boo);
         }
+        spinnDomicilioMunicipio.setEnabled(boo);
     }
 
 }

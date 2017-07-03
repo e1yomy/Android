@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Transparencia Digital</string>
+    <string name="app_name2">Transparencia\r\nDigital</string>
     <string name="apiMapas">AIzaSyCXbQ2nOh4wc5aCwvY-ROcY_SwUnUuoUYQ</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

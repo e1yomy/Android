@@ -43,7 +43,7 @@ import static transparencia.itai.com.transparenciadigital.MainActivity.txtTitulo
  * Use the {@link Sesion#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Sesion extends Fragment implements Registro.OnFragmentInteractionListener {
+public class Sesion extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -140,10 +140,6 @@ public class Sesion extends Fragment implements Registro.OnFragmentInteractionLi
         mListener = null;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

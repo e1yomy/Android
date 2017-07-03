@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         NuevaSolicitudRecurso.OnFragmentInteractionListener,
         NuevaSolicitudDenuncia.OnFragmentInteractionListener,
         MisSolicitudes.OnFragmentInteractionListener,
-        Registro.OnFragmentInteractionListener,
+        MisDatos.OnFragmentInteractionListener,
         SujetosObligados.OnFragmentInteractionListener,
         QuienesSomos.OnFragmentInteractionListener,
         Mapa.OnFragmentInteractionListener
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity
             MostrarAyuda();
         }
         else if(id==R.id.action_misdatos){
-            CambiarPantalla(new Registro(),8);
+            CambiarPantalla(new MisDatos(),8);
 
         } else if(id==R.id.action_cerrarsesion){
             preferences.edit().putBoolean("sesion",false).commit();
@@ -323,50 +323,56 @@ public class MainActivity extends AppCompatActivity
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
     public static  void CambiarPantalla(Fragment f, int p){
-        if(p!=pantalla) {
-            OcultarSnack();
-            removePhoneKeypad();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.entrada, R.anim.salida);
-            fragmentTransaction.replace(R.id.content_principal, f);
-            fragmentTransaction.commit();
-            QuitarSeleccionMenu();
-            switch (p) {
-                case 1:
-                    txtTituloPantalla.setText("Mis Solicitudes");
-                    navigationView.getMenu().getItem(0).setChecked(true);
-                    break;
-                case 2:
-                    txtTituloPantalla.setText("Nueva Solicitud de Información");
-                    navigationView.getMenu().getItem(1).setChecked(true);
-                    break;
-                case 3:
-                    txtTituloPantalla.setText("Nuevo Recurso de Revisión");
-                    break;
-                case 4:
-                    txtTituloPantalla.setText("Nueva Denuncia por Incumplimiento");
-                    navigationView.getMenu().getItem(2).setChecked(true);
-                    break;
-                case 5:
-                    txtTituloPantalla.setText("Listado de Sujetos Obligados");
-                    navigationView.getMenu().getItem(3).setChecked(true);
-                    break;
-                case 6:
-                    txtTituloPantalla.setText("¿Quiénes Somos?");
-                    navigationView.getMenu().getItem(4).setChecked(true);
-                    break;
-                case 7:
-                    txtTituloPantalla.setText("Encuéntranos");
-                    navigationView.getMenu().getItem(5).setChecked(true);
-                    break;
-                case 8:
-                    txtTituloPantalla.setText("Mis Datos");
-                    break;
-                case 9:
-                    txtTituloPantalla.setText("Inicio de Sesión");
-                    break;
+        try {
+            if (p != pantalla) {
+                OcultarSnack();
+                removePhoneKeypad();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.entrada, R.anim.salida);
+                fragmentTransaction.replace(R.id.content_principal, f);
+                fragmentTransaction.commit();
+                QuitarSeleccionMenu();
+                switch (p) {
+                    case 1:
+                        txtTituloPantalla.setText("Mis Solicitudes");
+                        navigationView.getMenu().getItem(0).setChecked(true);
+                        break;
+                    case 2:
+                        txtTituloPantalla.setText("Nueva Solicitud de Información");
+                        navigationView.getMenu().getItem(1).setChecked(true);
+                        break;
+                    case 3:
+                        txtTituloPantalla.setText("Nuevo Recurso de Revisión");
+                        break;
+                    case 4:
+                        txtTituloPantalla.setText("Nueva Denuncia por Incumplimiento");
+                        navigationView.getMenu().getItem(2).setChecked(true);
+                        break;
+                    case 5:
+                        txtTituloPantalla.setText("Listado de Sujetos Obligados");
+                        navigationView.getMenu().getItem(3).setChecked(true);
+                        break;
+                    case 6:
+                        txtTituloPantalla.setText("¿Quiénes Somos?");
+                        navigationView.getMenu().getItem(4).setChecked(true);
+                        break;
+                    case 7:
+                        txtTituloPantalla.setText("Encuéntranos");
+                        navigationView.getMenu().getItem(5).setChecked(true);
+                        break;
+                    case 8:
+                        txtTituloPantalla.setText("Mis Datos");
+                        break;
+                    case 9:
+                        txtTituloPantalla.setText("Inicio de Sesión");
+                        break;
+                }
+                pantalla = p;
             }
-            pantalla = p;
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(c, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
     public static void Snack(final String mensaje){
@@ -530,10 +536,7 @@ public class MainActivity extends AppCompatActivity
                     //////////////
                     toolbar.setBackgroundResource(R.drawable.side_nav_bar);
                     toolbar.setVisibility(View.GONE);
-                    progressDialog.setTitle("Espere");
-                    progressDialog.setMessage("Un momento, por favor.");
-                    progressDialog.setCanceledOnTouchOutside(false);
-                    progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+                    DialogDeProgreso();
                     fragmentManager=getSupportFragmentManager();
                     }
                 catch (Exception ex)
@@ -544,13 +547,21 @@ public class MainActivity extends AppCompatActivity
         });
         tr.start();
     }
+    private void DialogDeProgreso() {
+        progressDialog.setTitle("Espere");
+        progressDialog.setMessage("Un momento, por favor.");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+    }
+
     public void Cabecera()
     {
         txtNombreUsuario= (TextView)header.findViewById(R.id.txtNombreUsuario);
         txtEmailUsuario= (TextView)header.findViewById(R.id.txtEmailUsuario);
         txtTituloPantalla= (TextView)findViewById(R.id.txtTituloPantalla);
         imgEstadoConexion = (ImageView)header.findViewById(R.id.imgEstadoConexion);
-
+        imgEstadoConexion.setVisibility(View.GONE);
         imgEstadoConexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

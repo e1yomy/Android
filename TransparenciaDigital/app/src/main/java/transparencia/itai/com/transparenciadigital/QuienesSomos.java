@@ -141,7 +141,7 @@ public class QuienesSomos extends Fragment {
         clink=new ArrayList<>();
         CargarTextViewPantalla3(view);
         CargarTabs(view);
-
+        tabTitulos.setBackgroundResource(R.drawable.side_nav_bar);
 
         return view;
     }

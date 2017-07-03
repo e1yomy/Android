@@ -17,7 +17,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +67,9 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... arg0) {
-        if(ma.VerificarConexion()) {
-            try {
+        try {
+            //if (ma.VerificarConexion())
+            {
                 URL url = new URL("http://pruebastec.890m.com/finales/datos.php"); // here is your URL path
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(15000 /* milliseconds */);
@@ -96,21 +99,34 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 while ((temp = bufferedReader.readLine()) != null) {
                     response += temp;
                 }
-
+                conn.disconnect();
                 return response;
-
-            } catch (final Exception e) {
-                return new String("Exception: " + e.getMessage());
             }
+
         }
-        return "";
+        catch (UnknownHostException uh)
+        {
+            return "UH";
+        }
+        catch (SocketTimeoutException to)
+        {
+            return "TO";
+        }
+        catch (final Exception e) {
+            return "Exception: " + e.getMessage();
+        }
+        finally{
+
+        }
     }
 
     protected void onPostExecute(String result) {
         //Debug.waitForDebugger();
-
-        //Toast.makeText(c, result,Toast.LENGTH_LONG).show();
-        if(!result.equals("")) {
+        if(result.equals("UH"))
+            Snack("No se ha podido conectar con la plataforma");
+        else if(result.equals("TO"))
+            Snack("Se ha sobrepasado el tiempo de espera");
+        else if(!result.equals("")) {
             try {
                 i = 0;
                 switch (postDataParams.get("funcion").toString()) {
@@ -151,7 +167,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         }
         else
         {
-            //Snack("Verificar la conexión");
+            Snack("Verificar la conexión");
         }
         progressDialog.dismiss();
     }
