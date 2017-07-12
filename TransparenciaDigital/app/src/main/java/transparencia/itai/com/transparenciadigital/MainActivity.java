@@ -167,12 +167,14 @@ public class MainActivity extends AppCompatActivity
                         navigationView.getMenu().getItem(0).setChecked(true);
                         //CambiarPantalla(new MisSolicitudes(),1);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new MisSolicitudes()).commit();
+                        txtTituloPantalla.setText("Mis Solicitudes");
                         pantalla=1;
                     }
                     else
                     {
                         toolbar.setVisibility(View.GONE);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_principal, new Sesion()).commit();
+                        txtTituloPantalla.setText("Inicio de Sesión");
                         pantalla=9;
                         //CambiarPantalla(new Sesion(),9);
 

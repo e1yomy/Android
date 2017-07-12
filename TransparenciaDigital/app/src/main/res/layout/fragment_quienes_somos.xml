@@ -45,11 +45,6 @@
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/servicios" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/calendariooficial" />
         </android.support.design.widget.TabLayout>
 
@@ -168,7 +163,8 @@
             android:id="@+id/scroll2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp">
+            android:layout_margin="5dp"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -203,18 +199,31 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
                     android:textSize="22sp" />
 
+                <ProgressBar
+                    android:id="@+id/progressBarEstructura"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <WebView
+                    android:id="@+id/webViewEstructura"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/consultarestructuraorganica"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/btnEstructura"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/botonconsultarestructura" />
+                    android:text="@string/botonconsultarestructura"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </ScrollView>
@@ -844,43 +853,36 @@
         </ScrollView>
 
         <ScrollView
-            android:id="@+id/scroll5"
+            android:id="@+id/scroll6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:fillViewport="true"
             android:visibility="gone">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView21"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="pantalla5 " />
-            </LinearLayout>
+                    android:text="@string/calendariotexto" />
 
-        </ScrollView>
-
-        <ScrollView
-            android:id="@+id/scroll6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:visibility="gone">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
+                <ProgressBar
+                    android:id="@+id/progressBarCalendario"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="pantalla6 " />
+                    android:layout_height="wrap_content" />
+
+                <WebView
+                    android:id="@+id/webViewCalendario"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

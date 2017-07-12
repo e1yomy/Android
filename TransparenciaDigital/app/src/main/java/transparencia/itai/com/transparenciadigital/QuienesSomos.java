@@ -14,13 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static transparencia.itai.com.transparenciadigital.MainActivity.Snack;
 
 
 /**
@@ -116,12 +120,14 @@ public class QuienesSomos extends Fragment {
 
     TabLayout tabTitulos;
     ArrayList<ScrollView> tabDatos;
-    WebView webView1;
+
     Button btnEstructura;
     TextView textView30, textView31, textView32, textView33, textView34, textView35, textView36, textView37, textView38, textView39, textView40, textView41, textView42, textView43, textView44, textView45, textView46, textView47, textView48, textView49, textView50, textView51, textView52, textView53, textView54, textView55, textView56, textView57, textView58, textView59, textView60, textView61, textView62, textView63, textView64, textView65, textView66, textView67, textView68, textView69, textView70, textView71, textView72, textView73, textView74, textView75, textView76, textView77, textView78, textView79, textView80, textView81, textView82, textView83, textView84, textView85, textView86;
     List<TextView> c;
     List<String> clink;
     FloatingActionButton btnIrArriba;
+    ProgressBar progressBarCalendario,progressBarEstructura;
+    WebView webViewCalendario,webViewEstructura;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,6 +143,11 @@ public class QuienesSomos extends Fragment {
                 startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/EstructuraOrganica/EstructuraOrganica.pdf")));
             }
         });
+        progressBarCalendario= (ProgressBar)view.findViewById(R.id.progressBarCalendario);
+        progressBarEstructura= (ProgressBar)view.findViewById(R.id.progressBarEstructura);
+        webViewCalendario = (WebView) view.findViewById(R.id.webViewCalendario);
+        webViewEstructura = (WebView) view.findViewById(R.id.webViewEstructura);
+        CargarPaginas(view);
         c=new ArrayList<>();
         clink=new ArrayList<>();
         CargarTextViewPantalla3(view);
@@ -144,6 +155,34 @@ public class QuienesSomos extends Fragment {
         tabTitulos.setBackgroundResource(R.drawable.side_nav_bar);
 
         return view;
+    }
+
+    private void CargarPaginas(final View view) {
+        try {
+            progressBarCalendario.setMax(100);
+            progressBarEstructura.setMax(100);
+            progressBarCalendario.setProgress(0);
+            progressBarEstructura.setProgress(0);
+            webViewCalendario.post(new Runnable() {
+                @Override
+                public void run() {
+                    webViewCalendario.setWebChromeClient(new CalendarioWebView());
+                    webViewCalendario.getSettings().setJavaScriptEnabled(true);
+                    webViewCalendario.loadUrl("https://docs.google.com/viewer?url=http://itaibcs.org.mx/ifile/Calendariooficial/Calendario2017ITAIBCS.pdf");
+                }
+            });
+            webViewEstructura.post(new Runnable() {
+                @Override
+                public void run() {
+                    webViewEstructura.setWebChromeClient(new EstructuraWebView());
+                    webViewEstructura.getSettings().setJavaScriptEnabled(true);
+                    webViewEstructura.loadUrl("https://docs.google.com/viewer?url=http://itaibcs.org.mx/ifile/EstructuraOrganica/EstructuraOrganica.pdf");
+                }
+            });
+
+        } catch (Exception ex) {
+            Snack(ex.getMessage());
+        }
     }
 
     private void CargarTextViewPantalla3(View view) {
@@ -233,6 +272,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView31);
                 textView32.setVisibility(View.VISIBLE);
                 textView33.setVisibility(View.VISIBLE);
             }
@@ -256,6 +296,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView34);
                 textView35.setVisibility(View.VISIBLE);
                 textView36.setVisibility(View.VISIBLE);
             }
@@ -272,6 +313,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView37);
                 textView38.setVisibility(View.VISIBLE);
                 textView39.setVisibility(View.VISIBLE);
             }
@@ -294,6 +336,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView40);
                 textView41.setVisibility(View.VISIBLE);
             }
         });
@@ -308,6 +351,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView42);
                 textView43.setVisibility(View.VISIBLE);
                 textView44.setVisibility(View.VISIBLE);
                 textView45.setVisibility(View.VISIBLE);
@@ -437,6 +481,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView60);
                 textView61.setVisibility(View.VISIBLE);
                 textView62.setVisibility(View.VISIBLE);
                 textView63.setVisibility(View.VISIBLE);
@@ -495,6 +540,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView68);
                 textView69.setVisibility(View.VISIBLE);
                 textView70.setVisibility(View.VISIBLE);
                 textView71.setVisibility(View.VISIBLE);
@@ -531,6 +577,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView73);
                 textView74.setVisibility(View.VISIBLE);
             }
         });
@@ -546,6 +593,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView75);
                 textView76.setVisibility(View.VISIBLE);
                 textView77.setVisibility(View.VISIBLE);
                 textView78.setVisibility(View.VISIBLE);
@@ -583,6 +631,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView80);
                 textView81.setVisibility(View.VISIBLE);
                 textView82.setVisibility(View.VISIBLE);
             }
@@ -605,6 +654,7 @@ public class QuienesSomos extends Fragment {
             @Override
             public void onClick(View v) {
                 OcultarTextos();
+                ScrollMarco(textView83);
                 textView84.setVisibility(View.VISIBLE);
                 textView85.setVisibility(View.VISIBLE);
             }
@@ -643,7 +693,6 @@ public class QuienesSomos extends Fragment {
             tabDatos.add((ScrollView) view.findViewById(R.id.scroll2));
             tabDatos.add((ScrollView) view.findViewById(R.id.scroll3));
             tabDatos.add((ScrollView) view.findViewById(R.id.scroll4));
-            tabDatos.add((ScrollView) view.findViewById(R.id.scroll5));
             tabDatos.add((ScrollView) view.findViewById(R.id.scroll6));
             btnIrArriba.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -712,5 +761,30 @@ public class QuienesSomos extends Fragment {
             else
                 tabDatos.get(i).setVisibility(View.GONE);
         }
+    }
+    private class CalendarioWebView extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+
+            progressBarCalendario.setProgress(newProgress);
+            super.onProgressChanged(view, newProgress);
+        }
+    }
+    private class EstructuraWebView extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+
+            progressBarEstructura.setProgress(newProgress);
+            super.onProgressChanged(view, newProgress);
+        }
+    }
+    public void ScrollMarco(final TextView textView)
+    {
+        tabDatos.get(2).post(new Runnable() {
+            @Override
+            public void run() {
+                tabDatos.get(2).scrollTo(0,textView.getTop());
+            }
+        });
     }
 }
