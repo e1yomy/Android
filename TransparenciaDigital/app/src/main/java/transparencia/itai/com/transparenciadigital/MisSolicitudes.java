@@ -120,8 +120,7 @@ public class MisSolicitudes extends Fragment {
 
     static ListView lv1;
     static ListView lv2;
-    static List<String> lista1 = new ArrayList<>();
-    static List<String> lista2 = new ArrayList<>();
+    static ListView lv3;
     static List<SolicitudItem> solicitudes= new ArrayList<>();
     FloatingActionButton btnVolver;
     LinearLayout layoutMisSolicitudes;
@@ -136,6 +135,7 @@ public class MisSolicitudes extends Fragment {
 
         lv1 = (ListView) view.findViewById(R.id.listSolicitudes);
         lv2 = (ListView) view.findViewById(R.id.listDatos);
+        lv3 = (ListView) view.findViewById(R.id.listRespuesta);
         btnVolver = (FloatingActionButton) view.findViewById(R.id.btnVolver);
         layoutMisSolicitudes = (LinearLayout)view.findViewById(R.id.layoutMisSolicitudes);
 
@@ -144,18 +144,10 @@ public class MisSolicitudes extends Fragment {
         lv1.setVisibility(View.VISIBLE);
         lv2.setVisibility(View.GONE);
         lv2.setItemsCanFocus(false);
+        lv3.setVisibility(View.GONE);
+        lv3.setItemsCanFocus(false);
         btnVolver.setVisibility(View.GONE);
-
-        lista1.add("lista1");
-        lista1.add("lista1");
-        lista1.add("lista1");
-        lista1.add("lista1");
-        lista1.add("lista1");
-
-        lista2.add("lista2");
-        lista2.add("lista2");
-        lista2.add("lista2");
-        lista2.add("lista2");
+        
 
 
 

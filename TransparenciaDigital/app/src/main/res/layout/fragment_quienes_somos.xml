@@ -164,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -208,7 +208,7 @@
                 <WebView
                     android:id="@+id/webViewEstructura"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp" />
+                    android:layout_height="350dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -858,7 +858,7 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:fillViewport="true"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <LinearLayout
@@ -881,8 +881,21 @@
                 <WebView
                     android:id="@+id/webViewCalendario"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="350dp" />
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/consultarcalendario" />
+
+                <Button
+                    android:id="@+id/btnCalendario"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/botonconsultarcalendario"
+                    android:visibility="visible" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

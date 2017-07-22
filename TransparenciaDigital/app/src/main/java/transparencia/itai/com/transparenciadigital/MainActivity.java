@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity
                         postDataParams.put("token", "12345678");
                         postDataParams.put("funcion", "listarSujetos");
 
-                        URL url = new URL("http://pruebastec.890m.com/finales/datos.php"); // here is your URL path
+                        URL url = new URL("http://pruebastec.890m.com/finales/ciudadanos/datos.php"); // here is your URL path
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setReadTimeout(15000 /* milliseconds */);
                         conn.setConnectTimeout(15000 /* milliseconds */);

@@ -70,7 +70,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         try {
             //if (ma.VerificarConexion())
             {
-                URL url = new URL("http://pruebastec.890m.com/finales/datos.php"); // here is your URL path
+                URL url = new URL("http://pruebastec.890m.com/finales/ciudadanos/datos.php"); // here is your URL path
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(15000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
@@ -129,6 +129,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         else if(!result.equals("")) {
             try {
                 i = 0;
+
                 switch (postDataParams.get("funcion").toString()) {
                     case "registro":
                         Registro(result);
@@ -273,7 +274,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 while (i < j1.length()) {
                     {
                         JSONObject j = j1.getJSONObject(i);
-                        solicitudes.add(new SolicitudItem(opcion, j.getInt(t), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], 2));
+                        solicitudes.add(new SolicitudItem(opcion, j.getInt(t), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], j.getInt("estado")));
                     }
                     i++;
                 }
@@ -324,7 +325,8 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 while (i < json.length()) {
                     {
                         JSONObject j = json.getJSONObject(i);
-                        solicitudes.add(new SolicitudItem(0, j.getInt("idAcceso"), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], 3));
+                        if(j.getInt("estado")==3)
+                        solicitudes.add(new SolicitudItem(0, j.getInt("idAcceso"), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], j.getInt("estado")));
                     }
                     i++;
                 }
@@ -380,7 +382,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 listas.get(2).setAdapter(arrayAdapter);
             }
         } catch (Exception e) {
-
+            Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

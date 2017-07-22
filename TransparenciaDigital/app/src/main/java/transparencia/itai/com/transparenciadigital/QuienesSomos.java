@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -121,7 +122,7 @@ public class QuienesSomos extends Fragment {
     TabLayout tabTitulos;
     ArrayList<ScrollView> tabDatos;
 
-    Button btnEstructura;
+    Button btnEstructura, btnCalendario;
     TextView textView30, textView31, textView32, textView33, textView34, textView35, textView36, textView37, textView38, textView39, textView40, textView41, textView42, textView43, textView44, textView45, textView46, textView47, textView48, textView49, textView50, textView51, textView52, textView53, textView54, textView55, textView56, textView57, textView58, textView59, textView60, textView61, textView62, textView63, textView64, textView65, textView66, textView67, textView68, textView69, textView70, textView71, textView72, textView73, textView74, textView75, textView76, textView77, textView78, textView79, textView80, textView81, textView82, textView83, textView84, textView85, textView86;
     List<TextView> c;
     List<String> clink;
@@ -137,10 +138,17 @@ public class QuienesSomos extends Fragment {
         //tab= new ArrayList<>();
         tabDatos= new ArrayList<>();
         btnEstructura= (Button)view.findViewById(R.id.btnEstructura);
+        btnCalendario= (Button)view.findViewById(R.id.btnCalendario);
         btnEstructura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/EstructuraOrganica/EstructuraOrganica.pdf")));
+            }
+        });
+        btnCalendario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://itaibcs.org.mx/ifile/Calendariooficial/Calendario2017ITAIBCS.pdf")));
             }
         });
         progressBarCalendario= (ProgressBar)view.findViewById(R.id.progressBarCalendario);
@@ -169,6 +177,23 @@ public class QuienesSomos extends Fragment {
                     webViewCalendario.setWebChromeClient(new CalendarioWebView());
                     webViewCalendario.getSettings().setJavaScriptEnabled(true);
                     webViewCalendario.loadUrl("https://docs.google.com/viewer?url=http://itaibcs.org.mx/ifile/Calendariooficial/Calendario2017ITAIBCS.pdf");
+                    webViewCalendario.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            int action = event.getAction();
+                            switch (action) {
+                                case MotionEvent.ACTION_DOWN:
+                                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                                    break;
+
+                                case MotionEvent.ACTION_UP:
+                                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                                    break;
+                            }
+                            v.onTouchEvent(event);
+                            return true;
+                        }
+                    });
                 }
             });
             webViewEstructura.post(new Runnable() {
@@ -177,6 +202,23 @@ public class QuienesSomos extends Fragment {
                     webViewEstructura.setWebChromeClient(new EstructuraWebView());
                     webViewEstructura.getSettings().setJavaScriptEnabled(true);
                     webViewEstructura.loadUrl("https://docs.google.com/viewer?url=http://itaibcs.org.mx/ifile/EstructuraOrganica/EstructuraOrganica.pdf");
+                    webViewEstructura.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            int action = event.getAction();
+                            switch (action) {
+                                case MotionEvent.ACTION_DOWN:
+                                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                                    break;
+
+                                case MotionEvent.ACTION_UP:
+                                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                                    break;
+                            }
+                            v.onTouchEvent(event);
+                            return true;
+                        }
+                    });
                 }
             });
 
@@ -719,6 +761,10 @@ public class QuienesSomos extends Fragment {
                             */
                         }
                     });
+                    if(i==tabDatos.size())
+                    {
+                        s.setOnTouchListener(null);
+                    }
 
                 } catch (Exception e) {
                     String as = e.getMessage();

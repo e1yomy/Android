@@ -185,7 +185,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback{
 
         try{
             LatLng la = new LatLng(24.1518067,-110.3068054);
-            //preferences.edit().putFloat("actualLat", (float) l.getLatitude()).putFloat("actualLon", (float) l.getLongitude()).commit();
             //MarkerOptions mar=new MarkerOptions().position(la).title("Instituto de Transparencia").snippet("Félix Ortega #1795 Esq. Melchor Ocampo.").icon(BitmapDescriptorFactory.defaultMarker());
             MarkerOptions mar=new MarkerOptions().position(la).title("Instituto de Transparencia").snippet("Félix Ortega #1795 Esq. Melchor Ocampo.").icon(bitmapSizeByScall());
 

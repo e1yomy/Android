@@ -45,8 +45,10 @@
         Artículo 6°.- El Instituto contará con un Consejo Consultivo, con funciones de consulta y asesoría, en la planeación y promoción de las actividades relacionadas con la transparencia y acceso a la información pública, atendiendo a las disposiciones que establece la Ley.\n
     </string>
     <string name="reglamentointerior">Reglamento Interior del Instituto de Transparencia, Acceso a la Información Pública y Protección de Datos Personales del Estado de Baja California Sur</string>
-    <string name="consultarestructuraorganica">Puede consultar la estructura orgánica dando click en el siguiente botón .</string>
+    <string name="consultarestructuraorganica">Puede ver mejor la estructura orgánica dando click en el siguiente botón .</string>
     <string name="botonconsultarestructura">Consultar Estructura Orgánica</string>
+    <string name="consultarcalendario">Puede ver mejor el calendario dando click en el siguiente botón .</string>
+    <string name="botonconsultarcalendario">Consultar Calendario Oficial</string>
     <string name="marconormativo">Marco Normativo</string>
     <string name="constitucionpolitica">Constitución Política</string>
     <string name="constitucionpolitica1">Constitución Política de los Estados Unidos Mexicanos. (Última reforma publicada DOF 29-01-2016)</string>
