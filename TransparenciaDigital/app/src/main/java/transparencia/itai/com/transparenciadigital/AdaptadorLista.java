@@ -66,19 +66,21 @@ public class AdaptadorLista extends BaseAdapter {
 
                     switch (s.estado) {
                         case 0:
-                            imgSemaforo.setImageResource(R.mipmap.ic_red);
+                            imgSemaforo.setImageResource(R.mipmap.ic_green);
                             break;
                         case 1:
                             imgSemaforo.setImageResource(R.mipmap.ic_yellow);
                             break;
                         case 2:
-                            imgSemaforo.setImageResource(R.mipmap.ic_green);
+                            imgSemaforo.setImageResource(R.mipmap.ic_brown);
                             break;
                         case 3:
+                            imgSemaforo.setImageResource(R.mipmap.ic_red);
+                            break;
+                        case 4:
                             imgSemaforo.setImageResource(R.mipmap.ic_blue);
                             break;
                     }
-                    //Hacer la petición de las solicitudes de este tipo para ese usuario
                 }
                 else {
 

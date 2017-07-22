@@ -45,6 +45,7 @@ import static transparencia.itai.com.transparenciadigital.MisSolicitudes.Actuali
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lista2;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv1;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv2;
+import static transparencia.itai.com.transparenciadigital.MisSolicitudes.lv3;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.opcion;
 import static transparencia.itai.com.transparenciadigital.MisSolicitudes.solicitudes;
 import static transparencia.itai.com.transparenciadigital.Sesion.LimpiarCampos;
@@ -158,6 +159,9 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                     case "listarSolicitudSujetos":
                         SolicitudesSujeto(result);
                         break;
+                    case "listarRespuestaSolicitud":
+                        ListarRespuestaSolicitud(result);
+                        break;
 
                 }
             } catch (JSONException e) {
@@ -172,6 +176,8 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         }
         progressDialog.dismiss();
     }
+
+
 
     private void NuevaSolicitud(String result) {
         if(result.equals("true"))
@@ -325,7 +331,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 while (i < json.length()) {
                     {
                         JSONObject j = json.getJSONObject(i);
-                        if(j.getInt("estado")==3)
+                        if(j.getInt("estado")==4)
                         solicitudes.add(new SolicitudItem(0, j.getInt("idAcceso"), j.getString("nombreSujeto"), j.getString("fecha").split(" ")[0], j.getInt("estado")));
                     }
                     i++;
@@ -349,6 +355,14 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                         lista2.add("Fecha: " + js.getString("fecha").split(" ")[0]);
                         lista2.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
                         lista2.add("Descripción: " + js.getString("descripcion"));
+
+                        ////////////////////////
+                        postDataParams = new JSONObject();
+                        postDataParams.put("token", "12345678");
+                        postDataParams.put("funcion", "listarRespuestaSolicitud");
+                        postDataParams.put("idAcceso", js.getString("idAcceso"));
+                        new AsyncConsulta().execute();
+                        ///////////////////////
                         break;
                     case 1:
                         lista2.add("Recurso de Revisión");
@@ -369,6 +383,8 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, lista2);
                 lv2.setAdapter(arrayAdapter);
+
+
             }
             else if(pantalla==5)
             {
@@ -384,6 +400,23 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void ListarRespuestaSolicitud(String result) {
+        try{
+            JSONObject js = new JSONObject(result);
+            if(!js.getString("descripcion").equals("")) {
+                List<String> l = new ArrayList<String>();
+                l.add("Respuesta: " + js.getString("descripcion"));
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, l);
+                lv3.setAdapter(arrayAdapter);
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+
     }
 
     private void Acceso(String result) {

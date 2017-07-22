@@ -121,6 +121,8 @@ public class MisSolicitudes extends Fragment {
     static ListView lv1;
     static ListView lv2;
     static ListView lv3;
+    static List<String> lista1 = new ArrayList<>();
+    static List<String> lista2 = new ArrayList<>();
     static List<SolicitudItem> solicitudes= new ArrayList<>();
     FloatingActionButton btnVolver;
     LinearLayout layoutMisSolicitudes;
@@ -147,29 +149,23 @@ public class MisSolicitudes extends Fragment {
         lv3.setVisibility(View.GONE);
         lv3.setItemsCanFocus(false);
         btnVolver.setVisibility(View.GONE);
-        
-
-
-
         Toques();
         return view;
     }
     static int indice=0;
     private void Toques() {
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1,lista1);
-        //lv1.setAdapter(arrayAdapter);
-
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     lv1.setVisibility(View.GONE);
                     lv2.setVisibility(View.VISIBLE);
+                    lv3.setVisibility(View.VISIBLE);
                     btnVolver.show();
                     spinOpciones.setVisibility(View.GONE);
-                    ////////////
-                    //Hacer solicitud de detalles de solicitud
-                    //////////////////
+                    ////////////////////////////////////////////
+                    //Hacer solicitud de detalles de solicitud//
+                    ////////////////////////////////////////////
                     postDataParams = new JSONObject();
                     postDataParams.put("token", "12345678");
                     postDataParams.put("funcion", "datosSolicitud");
@@ -189,17 +185,6 @@ public class MisSolicitudes extends Fragment {
                     }
                     postDataParams.put("id", solicitudes.get(position).id);
                     new AsyncConsulta().execute();
-                    //////////////////
-                    /*
-                    lista2.add(String.valueOf(solicitudes.get(position).tipo));
-                    lista2.add(String.valueOf(solicitudes.get(position).id));
-                    lista2.add(solicitudes.get(position).sujetoObligado);
-                    lista2.add(solicitudes.get(position).fecha);
-                    lista2.add(String.valueOf(solicitudes.get(position).estado));
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1, lista2);
-                    lv2.setAdapter(arrayAdapter);
-                    */
-                    //////////////
                 }
                 catch (Exception e)
                 {
@@ -244,6 +229,7 @@ public class MisSolicitudes extends Fragment {
             public void onClick(View v) {
                 lv1.setVisibility(View.VISIBLE);
                 lv2.setVisibility(View.GONE);
+                lv3.setVisibility(View.GONE);
                 btnVolver.hide();
                 spinOpciones.setVisibility(View.VISIBLE);
 
