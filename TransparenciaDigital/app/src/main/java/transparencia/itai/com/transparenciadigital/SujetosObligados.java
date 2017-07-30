@@ -126,6 +126,7 @@ public class SujetosObligados extends Fragment {
     int indSO=-1;
     View view;
     static ListView listaSO;
+    static ListView listRespuesta;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class SujetosObligados extends Fragment {
         listas.add((ListView) view.findViewById(R.id.listSujetosObligados));
         listas.add((ListView) view.findViewById(R.id.listSolicitudes));
         listas.add((ListView) view.findViewById(R.id.listDetalles));
+        listRespuesta= (ListView)view.findViewById(R.id.listRespuesta);
         btnVolverSO=(FloatingActionButton)view.findViewById(R.id.btnVolverSO);
         txtTituloSO= (TextView)view.findViewById(R.id.txtTituloSO);
         Clics();
@@ -168,11 +170,13 @@ public class SujetosObligados extends Fragment {
     }
 
     private void Clics() {
+        /*
         lista.add("item1");
         lista.add("item2");
         lista.add("item3");
         lista.add("item4");
         lista.add("item5");
+        */
 
         btnVolverSO.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +184,7 @@ public class SujetosObligados extends Fragment {
 
                 try {
                     ActualizarPantalla(--nivel);
+                    listRespuesta.setAdapter(null);
                 }
                 catch (Exception e)
                 {
@@ -195,7 +200,6 @@ public class SujetosObligados extends Fragment {
 
                     ActualizarPantalla(++nivel);
                     //Llamar a hacer lista de solicitude
-                    listas.get(1).setAdapter(null);
                     CargarSolicitudes();
                 }
                 catch (Exception e)
@@ -210,6 +214,7 @@ public class SujetosObligados extends Fragment {
                 try {
                     indSolicitud = position;
                     ActualizarPantalla(++nivel);
+
                     //List<String> l = new ArrayList<String>();
                     //l.add(String.valueOf(solicitudes.get(position).tipo));
                     //l.add(String.valueOf(solicitudes.get(position).id));
@@ -258,15 +263,18 @@ public class SujetosObligados extends Fragment {
             case 0:
                 btnVolverSO.hide();
                 txtTituloSO.setText("Listado de Sujetos Obligados");
+                listRespuesta.setVisibility(View.GONE);
                 break;
             case 1:
                 btnVolverSO.show();
                 txtTituloSO.setText("Listado solicitudes realizadas a "+nombresSO.get(indSO));
+                listRespuesta.setVisibility(View.GONE);
                 ///Guardar el texto del item seleccionado y mostrarlo aquí
                 break;
             case 2:
                 btnVolverSO.show();
                 txtTituloSO.setText("Detalles de la solicitud");
+                listRespuesta.setVisibility(View.VISIBLE);
                 break;
             default:
                 n=0;

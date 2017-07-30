@@ -53,6 +53,7 @@ import static transparencia.itai.com.transparenciadigital.Sesion.btnRegistro1;
 import static transparencia.itai.com.transparenciadigital.Sesion.btnVolverRegistro;
 import static transparencia.itai.com.transparenciadigital.Sesion.layoutInicioSesion;
 import static transparencia.itai.com.transparenciadigital.Sesion.layoutRegistro1;
+import static transparencia.itai.com.transparenciadigital.SujetosObligados.listRespuesta;
 import static transparencia.itai.com.transparenciadigital.SujetosObligados.listas;
 
 /**
@@ -357,11 +358,21 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                         lista2.add("Descripción: " + js.getString("descripcion"));
 
                         ////////////////////////
-                        postDataParams = new JSONObject();
-                        postDataParams.put("token", "12345678");
-                        postDataParams.put("funcion", "listarRespuestaSolicitud");
-                        postDataParams.put("idAcceso", js.getString("idAcceso"));
-                        new AsyncConsulta().execute();
+                        RecibirRespuesta(js.getInt("estado"),js.getString("idAcceso"));
+                        /*
+                        int estado =js.getInt("estado");
+                        if(estado==3||estado==4) {
+                            postDataParams = new JSONObject();
+                            postDataParams.put("token", "12345678");
+                            postDataParams.put("funcion", "listarRespuestaSolicitud");
+                            postDataParams.put("idAcceso", js.getString("idAcceso"));
+                            new AsyncConsulta().execute();
+                        }
+                        else
+                        {
+                            lv3.setAdapter(null);
+                        }
+                        */
                         ///////////////////////
                         break;
                     case 1:
@@ -394,6 +405,7 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
                 l.add("Fecha: " + js.getString("fecha").split(" ")[0]);
                 l.add("Sujeto Obligado: " + js.getString("nombreSujeto"));
                 l.add("Descripción: " + js.getString("descripcion"));
+                RecibirRespuesta(js.getInt("estado"),js.getString("idAcceso"));
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, l);
                 listas.get(2).setAdapter(arrayAdapter);
             }
@@ -401,16 +413,43 @@ public class AsyncConsulta extends AsyncTask<String, Void, String> {
             Toast.makeText(c, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+    private void RecibirRespuesta(int estado, String id)
+    {
+        try {
+            if (estado == 3 || estado == 4) {
+                postDataParams = new JSONObject();
+                postDataParams.put("token", "12345678");
+                postDataParams.put("funcion", "listarRespuestaSolicitud");
+                postDataParams.put("idAcceso", id);
+                new AsyncConsulta().execute();
+            } else {
+                if(pantalla==1)
+                lv3.setAdapter(null);
+                else
+                {
+                    listRespuesta.setAdapter(null);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
 
     private void ListarRespuestaSolicitud(String result) {
         try{
             JSONObject js = new JSONObject(result);
-            if(!js.getString("descripcion").equals("")) {
                 List<String> l = new ArrayList<String>();
                 l.add("Respuesta: " + js.getString("descripcion"));
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, l);
-                lv3.setAdapter(arrayAdapter);
-            }
+                if(pantalla==1)
+                {lv3.setAdapter(arrayAdapter);}
+                else if(pantalla==5)
+                {
+                    listRespuesta.setAdapter(arrayAdapter);
+                }
+
         }
         catch (Exception ex)
         {
